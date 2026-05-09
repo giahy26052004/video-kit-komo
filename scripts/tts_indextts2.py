@@ -24,9 +24,50 @@ Setup:
 """
 import json
 import os
+import re
 import sys
 import time
 from pathlib import Path
+
+VOICE_RULES_PATH = Path(os.path.expanduser("~/Projects/content/video-daily/voice-text-tts-rules.json"))
+
+
+def load_voice_rules() -> dict:
+    if not VOICE_RULES_PATH.exists():
+        return {}
+    try:
+        return json.loads(VOICE_RULES_PATH.read_text())
+    except Exception as e:
+        print(f"[warn] failed to load voice rules: {e}", flush=True)
+        return {}
+
+
+def preprocess_voice_text(text: str, rules: dict) -> str:
+    """Apply CN/EN mix preprocessing rules so IndexTTS2 reads acronyms correctly.
+
+    Order:
+      1. tokens (longest-first match) — exact-string replace for known phrases
+      2. domain_suffix — .me / .com → ' 点 me' / ' 点 com'
+      3. letters fallback — regex \\b[A-Z]{1,3}\\b on remaining capitals
+    """
+    if not text or not rules:
+        return text
+
+    tokens = rules.get("tokens", {}) or {}
+    for k in sorted([k for k in tokens.keys() if not k.startswith("$")], key=len, reverse=True):
+        text = text.replace(k, tokens[k])
+
+    if (rules.get("domain_suffix") or {}).get("enabled"):
+        text = re.sub(r"\.([a-z]{2,4})\b", r" 点 \1", text)
+
+    letters = rules.get("letters", {}) or {}
+    if letters:
+        def _replace_acronym(m):
+            s = m.group(0)
+            return " ".join(letters.get(c, c) for c in s)
+        text = re.sub(r"\b[A-Z]{1,3}\b", _replace_acronym, text)
+
+    return text
 
 try:
     from dotenv import load_dotenv
@@ -125,6 +166,10 @@ def main() -> int:
     workspace = project / "workspace"
     workspace.mkdir(exist_ok=True)
 
+    voice_rules = load_voice_rules()
+    if voice_rules:
+        print(f"[voice rules] loaded {len(voice_rules.get('tokens', {}))} tokens + {len(voice_rules.get('letters', {}))} letters", flush=True)
+
     # --- Generate ---
     total = len(slides)
     success = 0
@@ -139,15 +184,33 @@ def main() -> int:
             print(f"[{i}/{total}] {out.name}: already exists, skip", flush=True)
             success += 1
             continue
-        print(f"[{i}/{total}] {out.name}: {text[:50]}...", flush=True)
+
+        tts_text = preprocess_voice_text(text, voice_rules)
+        if tts_text != text:
+            print(f"[{i}/{total}] {out.name}: {text[:40]}... → {tts_text[:40]}...", flush=True)
+        else:
+            print(f"[{i}/{total}] {out.name}: {text[:50]}...", flush=True)
 
         t1 = time.time()
-        tts.infer(ref_audio, text, str(out))
+        tts.infer(ref_audio, tts_text, str(out))
         elapsed = time.time() - t1
 
         if out.exists():
+            try:
+                speed = float(os.environ.get("INDEXTTS2_SPEED", "1.08"))
+            except ValueError:
+                speed = 1.0
+            if abs(speed - 1.0) > 0.01:
+                import subprocess
+                tmp = out.with_suffix(".tmp.wav")
+                cp = subprocess.run(
+                    ["ffmpeg", "-y", "-i", str(out), "-filter:a", f"atempo={speed:.3f}", str(tmp), "-loglevel", "error"],
+                    check=False,
+                )
+                if cp.returncode == 0 and tmp.exists():
+                    tmp.replace(out)
             size_kb = out.stat().st_size / 1024
-            print(f"  ✅ {size_kb:.0f} KB, {elapsed:.1f}s", flush=True)
+            print(f"  ✅ {size_kb:.0f} KB, {elapsed:.1f}s, speed={speed}x", flush=True)
             success += 1
         else:
             print(f"  ❌ generation failed", flush=True)
