@@ -6,6 +6,9 @@
 
 这是我自己做视频用的管线。第一条视频发出去之后，评论区有人问"这怎么做的"，于是我把它抽出来开源了。
 
+**横屏 8–15 分钟长视频**（HyperFrames + CosyVoice + 逐镜验收）见 **[docs/LONGFORM_HYPERFRAMES_PIPELINE.md](./docs/LONGFORM_HYPERFRAMES_PIPELINE.md)** — 编排脚本在生产 long-form workspace，本仓库提供 TTS / align / 分发等共用模块。  
+→ 2026-05-26：**[可考虑升级](./docs/UPGRADE-NOTE-2026-05-26.md)**（编排已在生产 long-form workflow；kit 侧主要是 TTS/文档/slide-review 同步）。
+
 ## 核心能力
 
 - **一条命令跑完整个管线** — TTS、字幕对齐、帧数计算、Remotion 渲染全自动串联
