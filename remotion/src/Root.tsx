@@ -17,6 +17,7 @@ import { NumberHero } from "./compositions/NumberHero";
 import { CaptionsLayer, CaptionPosition } from "./compositions/CaptionsLayer";
 import { BrandConfig } from "./compositions/BrandedSlideLayout";
 import { Preset, resolvePreset } from "./presets";
+import { UiKitDemo } from "./ui-kit/UiKitDemo";
 
 /**
  * Metadata is produced by scripts/build-metadata.mjs after TTS + Whisper.
@@ -291,6 +292,7 @@ const calcDuration = (m: Metadata) =>
 
 export const Root: React.FC = () => {
   return (
+    <>
     <Composition
       id="Main"
       component={Main}
@@ -317,5 +319,14 @@ export const Root: React.FC = () => {
         };
       }}
     />
+    <Composition
+      id="UiKitDemo"
+      component={UiKitDemo}
+      durationInFrames={720}
+      fps={24}
+      width={1920}
+      height={1080}
+    />
+    </>
   );
 };
