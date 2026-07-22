@@ -2,8 +2,13 @@
 /**
  * verify-shorts.mjs — objective acceptance gate for the shorts pipeline.
  *
+ * asset-version: v0.3.0-rc.1 / 2026-07-22 / verify generated cuts from bound render metadata
+ * owner_surface: claude-video-kit / T0580 / shorts acceptance
+ * behavior_change: include first/last scenes and prefer a duration-matched render schedule when supplied
+ * rollback: omit --metadata to retain visual scene detection; revert this file for legacy interval math
+ *
  * Usage:
- *   node scripts/verify-shorts.mjs <path/to/video.mp4>
+ *   node scripts/verify-shorts.mjs <path/to/video.mp4> [--metadata <metadata.json>]
  *
  * Hard gates (any failing → exit 1):
  *   1. Canvas is 1080×1920 (vertical 9:16)
@@ -24,7 +29,7 @@
  */
 
 import { spawn } from "node:child_process";
-import { stat } from "node:fs/promises";
+import { readFile, stat } from "node:fs/promises";
 import { argv, exit } from "node:process";
 
 const SHORTS_WIDTH = 1080;
@@ -97,6 +102,69 @@ async function detectScenes(path, threshold = 0.1) {
   return ts;
 }
 
+function optionValue(args, name) {
+  const index = args.indexOf(name);
+  return index >= 0 ? args[index + 1] : undefined;
+}
+
+async function loadRenderSchedule(path, videoMeta) {
+  let data;
+  try {
+    data = JSON.parse(await readFile(path, "utf8"));
+  } catch (error) {
+    throw new Error(`invalid render metadata: ${error.message}`);
+  }
+
+  const fps = Number(data.fps);
+  const slides = data.slides;
+  if (!Number.isFinite(fps) || fps <= 0 || !Array.isArray(slides) || slides.length === 0) {
+    throw new Error("invalid render metadata: fps and at least one slide are required");
+  }
+  if (data.width !== videoMeta.width || data.height !== videoMeta.height) {
+    throw new Error(
+      `render metadata canvas ${data.width}×${data.height} does not match video ${videoMeta.width}×${videoMeta.height}`,
+    );
+  }
+
+  const durations = slides.map((slide, index) => {
+    const frames = Number(slide.durationInFrames);
+    if (!Number.isFinite(frames) || frames <= 0) {
+      throw new Error(`invalid render metadata: slide ${index} has no positive durationInFrames`);
+    }
+    return frames;
+  });
+  const scheduledDuration = durations.reduce((sum, frames) => sum + frames, 0) / fps;
+  const tolerance = Math.max(0.25, 2 / fps);
+  if (Math.abs(scheduledDuration - videoMeta.duration) > tolerance) {
+    throw new Error(
+      `render metadata duration ${fmt(scheduledDuration)}s does not match video ${fmt(videoMeta.duration)}s`,
+    );
+  }
+
+  let elapsedFrames = 0;
+  const scenes = [];
+  for (const frames of durations.slice(0, -1)) {
+    elapsedFrames += frames;
+    scenes.push(elapsedFrames / fps);
+  }
+  return scenes;
+}
+
+function sceneIntervals(duration, scenes) {
+  const boundaries = [
+    0,
+    ...scenes
+      .filter((time) => Number.isFinite(time) && time > 0 && time < duration)
+      .sort((a, b) => a - b),
+    duration,
+  ];
+  const intervals = [];
+  for (let i = 1; i < boundaries.length; i++) {
+    intervals.push(boundaries[i] - boundaries[i - 1]);
+  }
+  return intervals;
+}
+
 function median(arr) {
   if (arr.length === 0) return 0;
   const s = [...arr].sort((a, b) => a - b);
@@ -111,7 +179,12 @@ function fmt(n, digits = 2) {
 async function main() {
   const path = argv[2];
   if (!path) {
-    console.error("usage: verify-shorts <video.mp4>");
+    console.error("usage: verify-shorts <video.mp4> [--metadata <metadata.json>]");
+    exit(2);
+  }
+  const metadataPath = optionValue(argv.slice(3), "--metadata");
+  if (argv.includes("--metadata") && !metadataPath) {
+    console.error("--metadata requires a path");
     exit(2);
   }
 
@@ -123,16 +196,13 @@ async function main() {
   }
 
   const meta = await probeMeta(path);
-  const scenes = await detectScenes(path);
+  const scenes = metadataPath
+    ? await loadRenderSchedule(metadataPath, meta)
+    : await detectScenes(path);
+  const sceneSource = metadataPath ? "metadata schedule" : "visual detector";
 
-  const intervals = [];
-  for (let i = 1; i < scenes.length; i++) {
-    intervals.push(scenes[i] - scenes[i - 1]);
-  }
-  const avgInterval =
-    intervals.length > 0
-      ? intervals.reduce((a, b) => a + b, 0) / intervals.length
-      : meta.duration;
+  const intervals = sceneIntervals(meta.duration, scenes);
+  const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
   const medianInterval = median(intervals);
 
   const hookSceneCount = scenes.filter((t) => t <= FIRST_HOOK_WINDOW_S).length;
@@ -177,6 +247,7 @@ async function main() {
   console.log(`canvas: ${meta.width}×${meta.height}`);
   console.log(`duration: ${fmt(meta.duration)}s`);
   console.log(`size: ${fmt(meta.sizeBytes / 1024 / 1024)}MB`);
+  console.log(`scene source: ${sceneSource}`);
   console.log(`scenes detected: ${scenes.length}`);
   console.log(`avg interval: ${fmt(avgInterval)}s`);
   console.log(`median interval: ${fmt(medianInterval)}s`);

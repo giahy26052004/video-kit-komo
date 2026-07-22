@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# asset-version: v0.3.0-rc.1
+# updated: 2026-07-22
+# owner_surface: claude-video-kit / video-explainer rendering
+# behavior_change: add an explicit script-timed caption mode for the no-key canonical demo
+# rollback: remove VIDEO_EXPLAINER_ALIGN_MODE handling and restore best-effort Whisper alignment
 # render.sh — end-to-end pipeline: script.json → out/full.mp4
 #
 # Usage: ./scripts/render.sh <project_dir>
@@ -17,6 +22,14 @@ if [[ -z "$PROJECT" ]]; then
 fi
 PROJECT="$(cd "$PROJECT" && pwd)"
 KIT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ALIGN_MODE="${VIDEO_EXPLAINER_ALIGN_MODE:-whisper}"
+case "$ALIGN_MODE" in
+  whisper|script) ;;
+  *)
+    echo "unsupported VIDEO_EXPLAINER_ALIGN_MODE: $ALIGN_MODE (expected whisper or script)" >&2
+    exit 2
+    ;;
+esac
 
 echo "▶ [1/4] TTS (backend: ${TTS_BACKEND:-fish})"
 PYTHON="${PYTHON:-python3}"
@@ -29,8 +42,13 @@ case "${TTS_BACKEND:-fish}" in
     ;;
 esac
 
-echo "▶ [2/4] Whisper align"
-python3 "$KIT_ROOT/scripts/align.py" "$PROJECT" || echo "  (align failed, continuing without captions)"
+if [[ "$ALIGN_MODE" == "script" ]]; then
+  echo "▶ [2/4] Script-timed caption align (demo-quality, no Whisper download)"
+  "$PYTHON" "$KIT_ROOT/scripts/align.py" "$PROJECT" --legacy-char-ratio
+else
+  echo "▶ [2/4] Whisper align"
+  "$PYTHON" "$KIT_ROOT/scripts/align.py" "$PROJECT" || echo "  (align failed, continuing without captions)"
+fi
 
 echo "▶ [3/4] Build metadata"
 node "$KIT_ROOT/scripts/build-metadata.mjs" "$PROJECT"

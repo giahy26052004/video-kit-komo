@@ -27,4 +27,6 @@ remotion/public/captions.json
 # Distribute outputs (Leo-specific content; do not commit to upstream)
 examples/*/distribute/
 examples/*/distribute.zip
+**/review-result.json
+**/video-explainer-result.json
 .env

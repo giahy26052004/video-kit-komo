@@ -1,0 +1,55 @@
+{
+  "title": "Review before render",
+  "preset": "shorts",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "slides": [
+    {
+      "type": "cover",
+      "title": "Review first",
+      "subtitle": "Render once",
+      "voice_text": "Review first."
+    },
+    {
+      "type": "text",
+      "textMode": "hero",
+      "text": "A brief is not a finished script.",
+      "voice_text": "A brief still needs review."
+    },
+    {
+      "type": "text",
+      "text": "Facts · structure · duration",
+      "voice_text": "Check facts, structure, duration."
+    },
+    {
+      "type": "text",
+      "text": "Visuals · privacy · copyright",
+      "voice_text": "Check visuals, privacy, copyright."
+    },
+    {
+      "type": "code",
+      "language": "text",
+      "code": "review.status = fix  →  STOP",
+      "voice_text": "Fix or block stops rendering."
+    },
+    {
+      "type": "code",
+      "language": "text",
+      "code": "review.status = pass → RENDER",
+      "voice_text": "Pass unlocks rendering."
+    },
+    {
+      "type": "text",
+      "text": "Narrate → render → verify",
+      "voice_text": "Narrate, render, verify."
+    },
+    {
+      "type": "cover",
+      "title": "One reviewed MP4",
+      "subtitle": "Local only · no upload",
+      "voice_text": "One reviewed MP4. Local only.",
+      "endCard": true
+    }
+  ]
+}

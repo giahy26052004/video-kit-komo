@@ -4,6 +4,27 @@
 
 Turn a JSON script into a vertical short video. TTS + Whisper caption alignment + Remotion render, all automated. Built for people who'd rather write code than open a video editor.
 
+> **v0.3.0-rc.1 local release candidate:** the new `video-explainer` Agent Skill turns a brief or script into a reviewed, rendered, and verified vertical explainer. It stops before upload or publication.
+
+## Fastest first success: Agent Skill
+
+The Skill orchestrates a local clone; it does not bundle the Remotion runtime. From the repository root, install the renderer dependencies and then register the Skill:
+
+```bash
+npm ci --prefix remotion
+npx skills add runesleo/claude-video-kit --skill video-explainer
+```
+
+From a clone of this repository, run the neutral credential-free macOS demo:
+
+```bash
+npm run doctor -- --output /tmp/video-explainer-first-success
+npm run demo -- --output /tmp/video-explainer-first-success
+# equivalent: node scripts/video-explainer.mjs demo --output /tmp/video-explainer-first-success
+```
+
+The demo creates a script-bound independent review receipt before TTS, uses the built-in `say` voice as an explicitly demo-quality fallback, renders a local 1080×1920 MP4, and runs the shorts verifier. It does not upload anything. For a custom project, use `node scripts/video-explainer.mjs review`, then `render`; `fix`, `block`, missing, or stale receipts cannot start rendering.
+
 > Editing scripts or compositions? Read [docs/DESIGN.md](docs/DESIGN.md) first — it's the design system contract.
 
 ## What you get

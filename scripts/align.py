@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# asset-version: v0.3.0-rc.1
+# updated: 2026-07-22
+# owner_surface: claude-video-kit / caption alignment
+# behavior_change: reuse TTS text extraction so script-only cover captions never load Whisper
+# rollback: restore direct voice_text/caption_text lookup and remove caption_source_for_slide
 """
 align.py — Word-level caption alignment via faster-whisper.
 
@@ -15,6 +20,15 @@ Usage:
 import argparse
 import json
 from pathlib import Path
+
+from tts import extract_text
+
+
+def caption_source_for_slide(slide: dict) -> str:
+    """Return the exact narration source used by TTS for this slide."""
+    if not isinstance(slide, dict):
+        return ""
+    return str(extract_text(slide) or "").strip()
 
 
 def transcribe(wav_path: Path, model, fps: int, t2s=None):
@@ -308,7 +322,7 @@ def main() -> int:
         caption_source = None
         if script and slide_idx < len(script.get("slides", [])):
             slide = script["slides"][slide_idx]
-            caption_source = slide.get("voice_text") or slide.get("caption_text")
+            caption_source = caption_source_for_slide(slide)
 
         # Lazy-load whisper unless using legacy char-ratio mode
         def _ensure_whisper():
