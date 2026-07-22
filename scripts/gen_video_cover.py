@@ -24,6 +24,7 @@ Templates (script._meta.cover_template):
 """
 import json
 import os
+import sys
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
