@@ -1,0 +1,41 @@
+{
+  "$comment": "Sample TTS preprocessing rules. Copy this file and set VOICE_RULES_PATH to your own JSON for production use.",
+  "tokens": {
+    "AI": "A I",
+    "API": "A P I",
+    "MCP": "M C P",
+    "leolabs.me": "leolabs 点 me"
+  },
+  "domain_suffix": {
+    "enabled": true
+  },
+  "letters_fallback": false,
+  "letters": {
+    "A": "A",
+    "B": "B",
+    "C": "C",
+    "D": "D",
+    "E": "E",
+    "F": "F",
+    "G": "G",
+    "H": "H",
+    "I": "I",
+    "J": "J",
+    "K": "K",
+    "L": "L",
+    "M": "M",
+    "N": "N",
+    "O": "O",
+    "P": "P",
+    "Q": "Q",
+    "R": "R",
+    "S": "S",
+    "T": "T",
+    "U": "U",
+    "V": "V",
+    "W": "W",
+    "X": "X",
+    "Y": "Y",
+    "Z": "Z"
+  }
+}

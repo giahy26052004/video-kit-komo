@@ -1,0 +1,30 @@
+{
+  "author": "canonical-demo-fixture",
+  "reviewer": "independent-maintainer-review",
+  "checks": {
+    "facts": {
+      "status": "pass",
+      "notes": "The script makes only claims demonstrated by the local review gate."
+    },
+    "structure": {
+      "status": "pass",
+      "notes": "Problem, six checks, stop condition, pass path, and result are explicit."
+    },
+    "duration": {
+      "status": "pass",
+      "notes": "Eight concise slides target a 20–30 second short on the demo-quality voice path."
+    },
+    "visual_feasibility": {
+      "status": "pass",
+      "notes": "Every slide uses the existing cover, text, or code composition."
+    },
+    "privacy": {
+      "status": "pass",
+      "notes": "No personal data, local paths, credentials, account identifiers, or private assets."
+    },
+    "copyright": {
+      "status": "pass",
+      "notes": "Repository-owned copy and generated text-only visuals; no third-party media."
+    }
+  }
+}

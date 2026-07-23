@@ -1,5 +1,11 @@
+/**
+ * asset-version: v0.3.0-rc.1 / 2026-07-22 / remove duplicate code-slide captions
+ * owner_surface: claude-video-kit / T0580 / code slides
+ * behavior_change: captions render only through Root's shared CaptionsLayer
+ * rollback: restore the local active-caption overlay below the code panel
+ */
 import React from "react";
-import { AbsoluteFill, useCurrentFrame } from "remotion";
+import { AbsoluteFill } from "remotion";
 
 type Caption = { from: number; to: number; text: string };
 
@@ -8,8 +14,9 @@ export const CodeSlide: React.FC<{
   language: string;
   captions?: Caption[];
 }> = ({ code, language, captions }) => {
-  const frame = useCurrentFrame();
-  const active = captions?.find((c) => frame >= c.from && frame < c.to);
+  // Root owns the single caption overlay for every slide type. Keep this prop
+  // for metadata/API compatibility, but never render a second local layer.
+  void captions;
 
   return (
     <AbsoluteFill
@@ -57,25 +64,6 @@ export const CodeSlide: React.FC<{
         </pre>
       </div>
 
-      {active && (
-        <div
-          style={{
-            position: "absolute",
-            bottom: 160,
-            left: 80,
-            right: 80,
-            textAlign: "center",
-            fontSize: 44,
-            fontWeight: 500,
-            color: "#fff",
-            background: "rgba(0,0,0,0.6)",
-            padding: "18px 28px",
-            borderRadius: 12,
-          }}
-        >
-          {active.text}
-        </div>
-      )}
     </AbsoluteFill>
   );
 };

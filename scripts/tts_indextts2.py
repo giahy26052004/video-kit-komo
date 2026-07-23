@@ -12,9 +12,11 @@ Writes:
     <project>/workspace/<slide_idx>.wav
 
 Env:
+    INDEXTTS2_FORCE=1   — 即使 workspace/<idx>.wav 已存在也重生成（改 tts_text / rules 后必开）
     INDEXTTS2_DIR       — path to cloned IndexTTS2 repo (required)
     INDEXTTS2_MODEL_DIR — checkpoint directory (default: $INDEXTTS2_DIR/checkpoints)
     INDEXTTS2_REF_AUDIO — reference voice WAV for cloning (required)
+    VOICE_RULES_PATH    — optional JSON preprocessing rules; defaults to config sample
 
 Setup:
     git clone https://github.com/index-tts/IndexTTS2 ~/tools/IndexTTS2
@@ -24,9 +26,62 @@ Setup:
 """
 import json
 import os
+import re
 import sys
 import time
 from pathlib import Path
+
+DEFAULT_VOICE_RULES_PATH = Path(__file__).resolve().parents[1] / "config" / "voice-text-tts-rules.sample.json"
+VOICE_RULES_PATH = Path(os.environ.get("VOICE_RULES_PATH", str(DEFAULT_VOICE_RULES_PATH))).expanduser()
+
+
+def load_voice_rules() -> dict:
+    if not VOICE_RULES_PATH.exists():
+        return {}
+    try:
+        return json.loads(VOICE_RULES_PATH.read_text())
+    except Exception as e:
+        print(f"[warn] failed to load voice rules: {e}", flush=True)
+        return {}
+
+
+def preprocess_voice_text(text: str, rules: dict) -> str:
+    """Apply CN/EN mix preprocessing rules so IndexTTS2 reads acronyms correctly.
+
+    Order:
+      1. tokens (longest-first match) — exact-string replace for known phrases
+      2. domain_suffix — .me / .com → ' 点 me' / ' 点 com'
+      3. letters fallback — regex \\b[A-Z]{1,3}\\b on remaining capitals
+    """
+    if not text or not rules:
+        return text
+
+    tokens = rules.get("tokens", {}) or {}
+    # 只跳过 JSON 元数据键（如 $comment），不能跳过「$460」这类合法 token —— 旧逻辑 not startswith("$") 会漏掉 $460
+    def _token_keys() -> list:
+        out = []
+        for k in tokens.keys():
+            if not isinstance(k, str):
+                continue
+            if k == "$comment" or k.startswith("$comment"):
+                continue
+            out.append(k)
+        return sorted(out, key=len, reverse=True)
+
+    for k in _token_keys():
+        text = text.replace(k, tokens[k])
+
+    if (rules.get("domain_suffix") or {}).get("enabled"):
+        text = re.sub(r"\.([a-z]{2,4})\b", r" 点 \1", text)
+
+    letters = rules.get("letters", {}) or {}
+    if letters and rules.get("letters_fallback", True) is not False:
+        def _replace_acronym(m):
+            s = m.group(0)
+            return " ".join(letters.get(c, c) for c in s)
+        text = re.sub(r"\b[A-Z]{1,3}\b", _replace_acronym, text)
+
+    return text
 
 try:
     from dotenv import load_dotenv
@@ -36,7 +91,14 @@ except ImportError:
 
 
 def extract_text(slide: dict) -> str:
-    """Extract narration text from a slide, matching tts.py interface."""
+    """Extract narration text from a slide, matching tts.py interface.
+
+    tts_text（可选）：专供 IndexTTS 的中文友好稿；屏上字幕仍用 voice_text（分镜/观众可读）。
+    解决「屏上要保留专名写法」与「口播不能堆英文」的矛盾 — 此前仅靠 tokens + letters 易复发念错。
+    """
+    tt = slide.get("tts_text")
+    if isinstance(tt, str) and tt.strip():
+        return tt.strip()
     if "voice_text" in slide:
         return slide["voice_text"]
     if "narration" in slide:
@@ -125,29 +187,77 @@ def main() -> int:
     workspace = project / "workspace"
     workspace.mkdir(exist_ok=True)
 
+    voice_rules = load_voice_rules()
+    if voice_rules:
+        print(f"[voice rules] loaded {len(voice_rules.get('tokens', {}))} tokens + {len(voice_rules.get('letters', {}))} letters", flush=True)
+
     # --- Generate ---
     total = len(slides)
     success = 0
     for i, slide in enumerate(slides):
+        # 2026-05-14 修：videoClip 类型不生成 wav（视频片段自带音轨），
+        # 否则 script-to-html 期望的 wav 列表与实际不符报"多余 wav"错。
+        if isinstance(slide, dict) and slide.get("type") == "videoClip":
+            print(f"[{i}/{total}] videoClip — skip wav generation (uses clip's own audio)", flush=True)
+            continue
         text = extract_text(slide)
         if not text:
             print(f"[{i}/{total}] no voice text, skipping", flush=True)
             continue
 
         out = workspace / f"{i:02d}.wav"
-        if out.exists() and out.stat().st_size > 1024:
+        force = os.environ.get("INDEXTTS2_FORCE", "").strip().lower() in (
+            "1",
+            "true",
+            "yes",
+        )
+        if out.exists() and out.stat().st_size > 1024 and not force:
             print(f"[{i}/{total}] {out.name}: already exists, skip", flush=True)
             success += 1
             continue
-        print(f"[{i}/{total}] {out.name}: {text[:50]}...", flush=True)
+        if force and out.exists():
+            print(f"[{i}/{total}] {out.name}: INDEXTTS2_FORCE=1, regenerating", flush=True)
+
+        tts_text = preprocess_voice_text(text, voice_rules)
+        if tts_text != text:
+            print(f"[{i}/{total}] {out.name}: {text[:40]}... → {tts_text[:40]}...", flush=True)
+        else:
+            print(f"[{i}/{total}] {out.name}: {text[:50]}...", flush=True)
 
         t1 = time.time()
-        tts.infer(ref_audio, text, str(out))
+        tts.infer(ref_audio, tts_text, str(out))
         elapsed = time.time() - t1
 
         if out.exists():
+            try:
+                speed = float(os.environ.get("INDEXTTS2_SPEED", "1.08"))
+            except ValueError:
+                speed = 1.0
+            if abs(speed - 1.0) > 0.01:
+                import subprocess
+                tmp = out.with_suffix(".tmp.wav")
+                cp = subprocess.run(
+                    ["ffmpeg", "-y", "-i", str(out), "-filter:a", f"atempo={speed:.3f}", str(tmp), "-loglevel", "error"],
+                    check=False,
+                )
+                if cp.returncode == 0 and tmp.exists():
+                    tmp.replace(out)
+            # === 2026-05-14 修：per-wav loudnorm 到 -20 LUFS ===
+            # IndexTTS2 输出 mean_volume ~ -35 dB，与 videoClip (volume 0.55 后 ~-20dB) 严重不齐。
+            # daily.sh amix 加 dynaudnorm 后又造成"声音慢慢起来"(AGC ramp)。
+            # 正解：TTS wav 在此处 normalize 到一致响度，amix 时不再需要 dynaudnorm，淡入直接进入。
+            import subprocess as _sp
+            tmp_ln = out.with_suffix(".ln.wav")
+            cp_ln = _sp.run(
+                ["ffmpeg", "-y", "-i", str(out),
+                 "-af", "loudnorm=I=-20:LRA=7:TP=-3",
+                 str(tmp_ln), "-loglevel", "error"],
+                check=False,
+            )
+            if cp_ln.returncode == 0 and tmp_ln.exists():
+                tmp_ln.replace(out)
             size_kb = out.stat().st_size / 1024
-            print(f"  ✅ {size_kb:.0f} KB, {elapsed:.1f}s", flush=True)
+            print(f"  ✅ {size_kb:.0f} KB, {elapsed:.1f}s, speed={speed}x, normalized=-20 LUFS", flush=True)
             success += 1
         else:
             print(f"  ❌ generation failed", flush=True)

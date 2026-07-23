@@ -17,6 +17,8 @@ import { NumberHero } from "./compositions/NumberHero";
 import { CaptionsLayer, CaptionPosition } from "./compositions/CaptionsLayer";
 import { BrandConfig } from "./compositions/BrandedSlideLayout";
 import { Preset, resolvePreset } from "./presets";
+import { UiKitDemo } from "./ui-kit/UiKitDemo";
+import { OkxAspDemo, defaultOkxAspDemoProps, type OkxAspDemoProps } from "./ui-kit/OkxAspDemo";
 
 /**
  * Metadata is produced by scripts/build-metadata.mjs after TTS + Whisper.
@@ -291,6 +293,7 @@ const calcDuration = (m: Metadata) =>
 
 export const Root: React.FC = () => {
   return (
+    <>
     <Composition
       id="Main"
       component={Main}
@@ -317,5 +320,35 @@ export const Root: React.FC = () => {
         };
       }}
     />
+    <Composition
+      id="UiKitDemo"
+      component={UiKitDemo}
+      durationInFrames={720}
+      fps={24}
+      width={1920}
+      height={1080}
+    />
+    <Composition
+      id="OkxAspDemo"
+      component={OkxAspDemo}
+      durationInFrames={defaultOkxAspDemoProps.totalFrames ?? 1890}
+      fps={24}
+      width={1920}
+      height={1080}
+      defaultProps={defaultOkxAspDemoProps}
+      calculateMetadata={({ props }) => {
+        const p = props as OkxAspDemoProps;
+        const total =
+          p.totalFrames ??
+          p.scenes?.reduce((a, s) => a + s.durationInFrames, 0) ??
+          1890;
+        return {
+          durationInFrames: total,
+          fps: p.fps ?? 24,
+          props: p,
+        };
+      }}
+    />
+    </>
   );
 };

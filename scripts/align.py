@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# asset-version: v0.3.0-rc.1
+# updated: 2026-07-22
+# owner_surface: claude-video-kit / caption alignment
+# behavior_change: reuse TTS text extraction so script-only cover captions never load Whisper
+# rollback: restore direct voice_text/caption_text lookup and remove caption_source_for_slide
 """
 align.py — Word-level caption alignment via faster-whisper.
 
@@ -15,6 +20,15 @@ Usage:
 import argparse
 import json
 from pathlib import Path
+
+from tts import extract_text
+
+
+def caption_source_for_slide(slide: dict) -> str:
+    """Return the exact narration source used by TTS for this slide."""
+    if not isinstance(slide, dict):
+        return ""
+    return str(extract_text(slide) or "").strip()
 
 
 def transcribe(wav_path: Path, model, fps: int, t2s=None):
@@ -68,6 +82,93 @@ def wav_duration(wav_path: Path) -> float:
         text=True,
     )
     return float(out.strip())
+
+
+def split_stitch_sentences(text: str, min_chars: int = 3):
+    """Match cosyvoice-sentence-stitch.py — coarse breaks only."""
+    import re
+
+    parts = re.split(r"[。！？!?；;]", text or "")
+    return [p.strip() for p in parts if p and len(p.strip()) >= min_chars]
+
+
+def normalize_caption_segments(captions: list, fps: int, duration: float):
+    """Remove overlaps; keep monotonic [from, to] within wav duration."""
+    if not captions:
+        return captions
+    max_frame = max(1, int(duration * fps))
+    out = []
+    prev_to = 0
+    for cap in captions:
+        start = max(prev_to, int(cap.get("from", 0)))
+        end = max(start + 1, int(cap.get("to", start + 1)))
+        end = min(end, max_frame)
+        if end <= start:
+            end = min(start + 1, max_frame)
+        out.append({"from": start, "to": end, "text": cap.get("text", "")})
+        prev_to = end
+    if out:
+        out[-1]["to"] = max(out[-1]["to"], min(max_frame, out[-1]["from"] + 1))
+    return out
+
+
+def captions_from_script_stitch_timed(
+    text: str, wav_path: Path, fps: int, gap_ms: int = 220, fine_punct: bool = True
+):
+    """Caption timing for cosyvoice_stitch wavs.
+
+    Stitch TTS only breaks on 。！？; — not on commas. Map coarse stitch
+    sentences to wav duration (minus inter-sentence silence), then optionally
+    subdivide each sentence by split_by_punct inside its time window.
+    """
+    stitch_pieces = split_stitch_sentences(text)
+    if not stitch_pieces:
+        return []
+
+    duration = wav_duration(wav_path)
+    gap_sec = max(0, gap_ms) / 1000.0
+    n = len(stitch_pieces)
+    gap_total = gap_sec * (n - 1) if n > 1 else 0.0
+    speech_duration = max(0.05, duration - gap_total)
+
+    stitch_chars = sum(len(p) for p in stitch_pieces) or 1
+    captions = []
+    cursor = 0.0
+
+    for i, piece in enumerate(stitch_pieces):
+        share = len(piece) / stitch_chars
+        seg_seconds = speech_duration * share
+        block_start = cursor
+        block_end = cursor + seg_seconds
+
+        if fine_punct:
+            subs = split_by_punct(piece)
+            if not subs:
+                subs = [piece]
+            sub_chars = sum(len(s) for s in subs) or 1
+            sub_cursor = block_start
+            for j, sub in enumerate(subs):
+                sub_share = len(sub) / sub_chars
+                sub_seconds = seg_seconds * sub_share
+                sub_end = sub_cursor + sub_seconds
+                if j == len(subs) - 1:
+                    sub_end = block_end
+                captions.append({
+                    "from": int(sub_cursor * fps),
+                    "to": int(sub_end * fps),
+                    "text": sub,
+                })
+                sub_cursor = sub_end
+        else:
+            captions.append({
+                "from": int(block_start * fps),
+                "to": int(block_end * fps),
+                "text": piece,
+            })
+
+        cursor = block_end + (gap_sec if i < n - 1 else 0.0)
+
+    return normalize_caption_segments(captions, fps, duration)
 
 
 def split_by_punct(text: str):
@@ -183,7 +284,7 @@ def captions_from_script_whisper_aligned(text: str, wav_path: Path, fps: int, mo
         })
         voice_cursor = end_voice
 
-    return captions
+    return normalize_caption_segments(captions, fps, duration)
 
 
 def main() -> int:
@@ -221,7 +322,7 @@ def main() -> int:
         caption_source = None
         if script and slide_idx < len(script.get("slides", [])):
             slide = script["slides"][slide_idx]
-            caption_source = slide.get("voice_text") or slide.get("caption_text")
+            caption_source = caption_source_for_slide(slide)
 
         # Lazy-load whisper unless using legacy char-ratio mode
         def _ensure_whisper():

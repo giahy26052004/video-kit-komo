@@ -1,3 +1,9 @@
+/**
+ * asset-version: v0.3.0-rc.1 / 2026-07-22 / preserve Latin spacing across caption wraps
+ * owner_surface: claude-video-kit / T0580 / shorts captions
+ * behavior_change: whitespace is retained while visible-character limits remain unchanged
+ * rollback: restore the whitespace-dropping token loop from the previous revision
+ */
 import React from "react";
 import { interpolate, spring, useCurrentFrame, useVideoConfig } from "remotion";
 
@@ -31,8 +37,11 @@ interface CaptionsLayerProps {
  * Latin words are kept atomic (not broken mid-word).
  */
 function wrapText(text: string, maxChars: number): string[] {
-  const tokens = text.match(/[一-龥　-〿＀-￯]|[A-Za-z0-9]+|[^\s]/g) ?? [];
-  const totalLen = tokens.reduce((s, t) => s + t.length, 0);
+  const tokens = text.match(/\s+|[一-龥　-〿＀-￯]|[A-Za-z0-9]+|[^\s]/g) ?? [];
+  const totalLen = tokens.reduce(
+    (sum, token) => sum + (/^\s+$/.test(token) ? 0 : token.length),
+    0,
+  );
 
   // Short caption → single line, no forced split
   if (totalLen <= maxChars + 2) return [text];
@@ -44,19 +53,33 @@ function wrapText(text: string, maxChars: number): string[] {
 
   const lines: string[] = [];
   let current = "";
+  let currentLen = 0;
   for (const tok of tokens) {
-    if (current.length + tok.length > targetPerLine && current.length > 0) {
-      lines.push(current);
+    if (/^\s+$/.test(tok)) {
+      if (current.length > 0) current += tok;
+      continue;
+    }
+    if (/^[^\p{L}\p{N}]+$/u.test(tok) && current.trim().length > 0) {
+      current = `${current.trimEnd()}${tok}`;
+      currentLen += tok.length;
+      continue;
+    }
+    if (currentLen + tok.length > targetPerLine && current.trim().length > 0) {
+      lines.push(current.trimEnd());
       current = tok;
+      currentLen = tok.length;
     } else {
       current += tok;
+      currentLen += tok.length;
     }
   }
-  if (current.length > 0) lines.push(current);
+  if (current.trim().length > 0) lines.push(current.trim());
   // Hard cap: merge any 4th+ line back into line 3
   while (lines.length > 3) {
     const tail = lines.pop()!;
-    lines[lines.length - 1] += tail;
+    const head = lines[lines.length - 1];
+    const spacer = /[A-Za-z0-9]$/.test(head) && /^[A-Za-z0-9]/.test(tail) ? " " : "";
+    lines[lines.length - 1] = `${head}${spacer}${tail}`;
   }
   return lines;
 }

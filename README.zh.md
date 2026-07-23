@@ -6,6 +6,30 @@
 
 这是我自己做视频用的管线。第一条视频发出去之后，评论区有人问"这怎么做的"，于是我把它抽出来开源了。
 
+> **v0.3.0-rc.1 本地 release candidate：** 新增 `video-explainer` Agent Skill，把 brief / 脚本变成经过审稿、渲染和验证的竖屏解释视频；上传和公开发布不在 Skill 内执行。
+
+## 最快跑出第一条：Agent Skill
+
+这个 Skill 编排本地 clone 中的渲染器，不会把 Remotion runtime 一起打包。先在仓库根目录安装渲染依赖，再注册 Skill：
+
+```bash
+npm ci --prefix remotion
+npx skills add runesleo/claude-video-kit --skill video-explainer
+```
+
+在本仓库 clone 中运行中性的 macOS 无凭证 demo：
+
+```bash
+npm run doctor -- --output /tmp/video-explainer-first-success
+npm run demo -- --output /tmp/video-explainer-first-success
+# 等价命令：node scripts/video-explainer.mjs demo --output /tmp/video-explainer-first-success
+```
+
+demo 会先生成与当前 `script.json` 哈希绑定的独立审稿回执，再用系统 `say` 作为明确标注的 demo-quality 语音，输出本地 1080×1920 MP4 并运行 shorts 验收；它不会上传任何内容。自定义项目先运行 `node scripts/video-explainer.mjs review`，再运行 `render`；`fix`、`block`、缺失或过期回执都不能启动渲染。
+
+**横屏 8–15 分钟长视频**（HyperFrames + CosyVoice + 逐镜验收）见 **[docs/LONGFORM_HYPERFRAMES_PIPELINE.md](./docs/LONGFORM_HYPERFRAMES_PIPELINE.md)** — 编排脚本在生产 long-form workspace，本仓库提供 TTS / align / 分发等共用模块。  
+→ 2026-05-26：**[可考虑升级](./docs/UPGRADE-NOTE-2026-05-26.md)**（编排已在生产 long-form workflow；kit 侧主要是 TTS/文档/slide-review 同步）。
+
 ## 核心能力
 
 - **一条命令跑完整个管线** — TTS、字幕对齐、帧数计算、Remotion 渲染全自动串联
