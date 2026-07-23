@@ -12,8 +12,10 @@ Writes:
     <project>/workspace/<slide_idx>.wav
 
 Env:
-    FISH_AUDIO_API_KEY   — required
+    FISH_AUDIO_API_KEY   — required for Fish Audio
     FISH_AUDIO_VOICE_ID  — default voice; per-slide "voice" field overrides
+    SAY_VOICE            — optional macOS `say -v` name for keyless fallback
+                           (e.g. Tingting for zh_CN demo quality)
 
 If FISH_AUDIO_API_KEY is missing, falls back to `say` (macOS) / `espeak` for
 local dry-runs so the pipeline still exercises end-to-end.
@@ -57,7 +59,12 @@ def local_fallback(text: str, out_path: Path) -> None:
     """macOS `say` fallback so pipeline runs without an API key."""
     if shutil.which("say"):
         aiff = out_path.with_suffix(".aiff")
-        subprocess.run(["say", "-o", str(aiff), text], check=True)
+        cmd = ["say", "-o", str(aiff)]
+        voice = os.environ.get("SAY_VOICE", "").strip()
+        if voice:
+            cmd.extend(["-v", voice])
+        cmd.append(text)
+        subprocess.run(cmd, check=True)
         subprocess.run(
             ["ffmpeg", "-y", "-i", str(aiff), str(out_path)],
             check=True,
