@@ -2,28 +2,25 @@
 
 **English** · [中文](./README.zh.md) · [README.en.md](./README.en.md)
 
-Turn a JSON script into a vertical short video. TTS + Whisper caption alignment + Remotion render, all automated. Built for people who'd rather write code than open a video editor.
+Turn a research brief or JSON script into a **vertical explainer** — TTS + caption alignment + Remotion — without opening a timeline editor.
 
-> **v0.3.0-rc.1 local release candidate:** the new `video-explainer` Agent Skill turns a brief or script into a reviewed, rendered, and verified vertical explainer. It stops before upload or publication.
+**Who it's for:** people already writing research / technical explainers in Claude Code or Cursor who want a repeatable 9:16 pipeline with a **pre-render review gate**.  
+**Who it's not for:** one-click “topic → AI b-roll Short” factories. We optimize for auditable scripts and reproducible motion graphics, not generative video lottery.
+
+> **[v0.3.0-rc.1](https://github.com/runesleo/claude-video-kit/releases/tag/v0.3.0-rc.1) (public release candidate):** installable `video-explainer` Agent Skill. Independent review receipt must bind to the exact `script.json` before render. Skill never uploads or publishes.
 
 ## Fastest first success: Agent Skill
 
-The Skill orchestrates a local clone; it does not bundle the Remotion runtime. From the repository root, install the renderer dependencies and then register the Skill:
-
 ```bash
+git clone https://github.com/runesleo/claude-video-kit.git
+cd claude-video-kit
 npm ci --prefix remotion
 npx skills add runesleo/claude-video-kit --skill video-explainer
-```
-
-From a clone of this repository, run the neutral credential-free macOS demo:
-
-```bash
 npm run doctor -- --output /tmp/video-explainer-first-success
 npm run demo -- --output /tmp/video-explainer-first-success
-# equivalent: node scripts/video-explainer.mjs demo --output /tmp/video-explainer-first-success
 ```
 
-The demo creates a script-bound independent review receipt before TTS, uses the built-in `say` voice as an explicitly demo-quality fallback, renders a local 1080×1920 MP4, and runs the shorts verifier. It does not upload anything. For a custom project, use `node scripts/video-explainer.mjs review`, then `render`; `fix`, `block`, missing, or stale receipts cannot start rendering.
+The Skill orchestrates this local clone (it does not bundle Remotion). Demo creates a script-bound pass receipt, uses macOS `say` as an explicitly **demo-quality** voice, renders 1080×1920, and runs the shorts verifier — no API key, no upload. For real projects: `review` then `render`; `fix` / `block` / missing / stale receipts cannot start rendering. The six review checks are product-defined; pass/fail is judged by the reviewer — the tool enforces process, not truth.
 
 > Editing scripts or compositions? Read [docs/DESIGN.md](docs/DESIGN.md) first — it's the design system contract.
 
