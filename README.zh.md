@@ -2,30 +2,27 @@
 
 [English](./README.md) · **中文**
 
-写一份 JSON，产出一条竖屏短视频。没有录屏、没有剪辑、没有时间轴 — 只有代码。
+把研究 brief 或 JSON 脚本，变成一条**竖屏讲解片**——TTS + 字幕对齐 + Remotion，不用打开时间轴。
 
-这是我自己做视频用的管线。第一条视频发出去之后，评论区有人问"这怎么做的"，于是我把它抽出来开源了。
+这是我自己做视频用的管线。第一条发出去之后有人问「这怎么做的」，于是抽出来开源。
 
-> **v0.3.0-rc.1 本地 release candidate：** 新增 `video-explainer` Agent Skill，把 brief / 脚本变成经过审稿、渲染和验证的竖屏解释视频；上传和公开发布不在 Skill 内执行。
+**适合谁：** 已经在 Claude Code / Cursor 里写研究或技术讲解、需要可重复 9:16 管线，并且接受**渲染前审稿闸**的人。  
+**不适合谁：** 想要「输入选题 → AI 画面 Short 一条龙」的工厂党。我们优化的是可复查脚本 + 可复现 motion graphics，不是生成视频彩票。
+
+> **[v0.3.0-rc.1](https://github.com/runesleo/claude-video-kit/releases/tag/v0.3.0-rc.1)（公开候选版）：** 可安装 `video-explainer` Skill；独立审稿回执必须绑定当前 `script.json` 才能渲染。Skill 不做上传/发帖。
 
 ## 最快跑出第一条：Agent Skill
 
-这个 Skill 编排本地 clone 中的渲染器，不会把 Remotion runtime 一起打包。先在仓库根目录安装渲染依赖，再注册 Skill：
-
 ```bash
+git clone https://github.com/runesleo/claude-video-kit.git
+cd claude-video-kit
 npm ci --prefix remotion
 npx skills add runesleo/claude-video-kit --skill video-explainer
-```
-
-在本仓库 clone 中运行中性的 macOS 无凭证 demo：
-
-```bash
 npm run doctor -- --output /tmp/video-explainer-first-success
 npm run demo -- --output /tmp/video-explainer-first-success
-# 等价命令：node scripts/video-explainer.mjs demo --output /tmp/video-explainer-first-success
 ```
 
-demo 会先生成与当前 `script.json` 哈希绑定的独立审稿回执，再用系统 `say` 作为明确标注的 demo-quality 语音，输出本地 1080×1920 MP4 并运行 shorts 验收；它不会上传任何内容。自定义项目先运行 `node scripts/video-explainer.mjs review`，再运行 `render`；`fix`、`block`、缺失或过期回执都不能启动渲染。
+Skill 编排的是本仓库本地渲染器（不打包 Remotion）。demo 会生成与脚本绑定的 pass 回执，用 macOS `say` 作**明确标注的 demo 音质**，输出 1080×1920 并跑 shorts 验收——无 API key、不上传。正式项目：先 `review` 再 `render`；`fix` / `block` / 缺失 / 过期都不能开渲。六个检查项是产品定的清单；过不过由 reviewer 判断——工具强制流程，不替你保证内容正确。
 
 **横屏 8–15 分钟长视频**（HyperFrames + CosyVoice + 逐镜验收）见 **[docs/LONGFORM_HYPERFRAMES_PIPELINE.md](./docs/LONGFORM_HYPERFRAMES_PIPELINE.md)** — 编排脚本在生产 long-form workspace，本仓库提供 TTS / align / 分发等共用模块。  
 → 2026-05-26：**[可考虑升级](./docs/UPGRADE-NOTE-2026-05-26.md)**（编排已在生产 long-form workflow；kit 侧主要是 TTS/文档/slide-review 同步）。
