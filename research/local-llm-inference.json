@@ -2,13 +2,13 @@
   "query": "local llm inference",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-30T04:09:52.413Z",
+  "fetchedAt": "2026-07-30T10:03:20.865Z",
   "github": {
     "source": "github",
     "name": "Andyyyy64/whichllm",
     "description": "Find the local LLM that actually runs and performs best on your hardware. Ranked by real, recency-aware benchmarks, not parameter count. One command, run it instantly.",
     "url": "https://github.com/Andyyyy64/whichllm",
-    "stars": 6050,
+    "stars": 6057,
     "language": "Python",
     "homepage": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/105579829?v=4",
@@ -22,7 +22,7 @@
     "otherCandidates": [
       {
         "name": "raullenchai/Rapid-MLX",
-        "stars": 3449,
+        "stars": 3450,
         "description": "The fastest local AI engine for Apple Silicon. 4.2x faster than Ollama, 0.08s cached TTFT, 100% tool calling. 17 tool parsers, prompt cache, reasoning separation, cloud routing. Drop-in OpenAI replacement. Works with Claude Code, Cursor, Aider."
       },
       {

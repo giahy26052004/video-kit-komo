@@ -1,5 +1,5 @@
 {
-  "queryIndex": 28,
+  "queryIndex": 29,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -28,6 +28,7 @@
     "Andyyyy64/whichllm",
     "Anil-matcha/Open-Generative-AI",
     "easydiffusion/easydiffusion",
-    "lucidrains/PaLM-rlhf-pytorch"
+    "lucidrains/PaLM-rlhf-pytorch",
+    "topoteretes/cognee"
   ]
 }
