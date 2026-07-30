@@ -1,0 +1,54 @@
+{
+  "query": "text to image ai",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-30T03:39:29.796Z",
+  "github": {
+    "source": "github",
+    "name": "easydiffusion/easydiffusion",
+    "description": "An easy 1-click way to create beautiful artwork on your PC using AI, with no tech knowledge. Provides a browser UI for generating images from text prompts and images. Just enter your text prompt, and see the generated image.",
+    "url": "https://github.com/easydiffusion/easydiffusion",
+    "stars": 10441,
+    "language": "JavaScript",
+    "homepage": "https://easydiffusion.github.io/",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/118806966?v=4",
+    "pushedAt": "2026-07-24T09:56:20Z",
+    "readmeExcerpt": "# Easy Diffusion 3.0\n### An easy way to install and use [Stable Diffusion](https://github.com/CompVis/stable-diffusion) on your computer.\n\nDoes not require technical knowledge, does not require pre-installed software. 1-click install, powerful features, friendly community.\n\n️‍🔥🎉 **New!** Support for Ernie, Z-Image, Flux 1 and 2, Lumina, Anima and quantized models have been added to the v4 engine!\n\n[Installation guide](#installation) | [Troubleshooting guide](https://github.com/easydiffusion/easydiffusion/wiki/Troubleshooting) | [User guide](https://github.com/easydiffusion/easydiffusion/wiki) | <sub>[![Discord Server](https://img.shields.io/discord/1014774730907209781?label=Discord)](https://discord.com/invite/u9yhsFmEkB)</sub> <sup>(for support queries, and development discussions)</sup>\n\n---\n![262597678-11089485-2514-4a11-88fb-c3acc81fc9ec](https://github.com/easydiffusion/easydiffusion/assets/844287/050b5e15-e909-45bf-8162-a38234830e38)\n\n\n# Installation\nClick the download button for your operating system:\n\n<p float=\"left\">\n  <a href=\"https://github.com/easydiffusion/easydiffusion/releases/latest/download/Easy-Diffusion-Linux.zip\"><img src=\"https://github.com/easydiffusion/easydiffusion/raw/main/media/download-linux.png\" width=\"200\" /></a>\n  <a href=\"https://github.com/easydiffusion/easydiffusion/releases/latest/download/Easy-Diffusion-Mac.zip\"><img src=\"https://github.com/easydiffusion/easydiffusion/raw/main/media/download-mac.png\" width=\"200\" /></a>\n  <a href=\"https://github.com/easydiffusion/easydiffusion/releases/latest/download/Easy-Diffusion-Windows.exe\"><img src=\"https://github.com/easydiffusion/easydiffusion/raw/main/media/download-win.png\" width=\"200\" /></a>\n</p>\n\n**Hardware requirements:**\n- **Windows:** NVIDIA¹ or AMD graphics card (minimum 2 GB RAM), or run on your CPU.\n- **Linux:** NVIDIA¹ or AMD² graphics card (minimum 2 GB RAM), or run on your CPU.\n- **Mac:** M1/M2/M3/M4 or AMD graphics card (Intel Mac), or run on your CPU.\n- Minimum 8 GB of system RAM.\n- Atleast 25 GB of space on the hard disk.\n\n¹) [CUDA Compute capability](https://en.wikipedia.org/wiki/CUDA#GPUs_supported) level of 3.7 or higher required.\n\n²) ROCm 5.2 (or newer) support required.\n\nThe installer will take care of whatever is needed. If you face any problems, you can join the friendly [Discord community](https://discord.com/invite/u9yhsFmEkB) and ask for assistance.\n\n## On Windows:\n1. Run the downloaded `Easy-Diffusion-Windows.exe` file.\n2. Run `Easy Diffusion` once the installation finishes. You can also start from your Start Menu, or from your desktop (if you created a shortcut).\n\nIf Windows SmartScreen prevents you from running the program click `More info` and then `Run anyway`.\n\n**Tip:** On Windows 10, please install at the top level in your drive, e.g. `C:\\EasyDiffusion` or `D:\\EasyDiffusion`. This will avoid a common problem with Windows 10 (file path length limits).\n\n## On Linux/Mac:\n1. Unzip/extract the folder `easy-diffusion` which should be in your downloads folder, unless you changed your default downloads destination.\n2. Open a terminal window, and navigate to the `easy-diffusion` directory.\n3. Run `./start.sh` (or `bash start.sh`) in a terminal.\n\n# To remove/uninstall:\nJust delete the `EasyDiffusion` folder to uninstall all the downloaded packages.\n\n----\n\n# Easy for new users, powerful features for advanced users\n## Features:\n\n### User experience\n- **Hassle-free installation**: Does not require technical knowledge, does not require pre-installed software. Just download and run!\n- **Clutter-free UI**: A friendly and simple UI, while providing a lot of powerful features.\n- **Task Queue**: Queue up all your ideas, without waiting for the current task to finish.\n- **Intelligent Model Detection**: Automatically figures out the YAML config file to use for the chosen model (via a models database).\n- **Live Preview**: See the image as the AI is drawing it.\n- **Image Modifiers**: A library of *modifier tags* like *\"Realistic\"*, *\"Pencil Sketch\"*, *\"ArtStation\"* etc. Experiment with various styles quickly.\n- **Multiple Prompts File**: Queue multiple prompts by entering one prompt per line, or by running a text file.\n- **Save generated images to disk**: Save your images to your PC!\n- **UI Themes**: Customize the program to your liking.\n- **Searchable models dropdown**: organize your models into sub-folders, and search through them in the UI.\n\n### Powerful image generation\n- **Supports**: \"*Text to Image*\", \"*Image to Image*\" and \"*InPainting*\"\n- **ControlNet**: For advanced control over the image, e.g. by setting the pose or drawing the outline for the AI to fill in.\n- **16 Samplers**: `PLMS`, `DDIM`, `DEIS`, `Heun`, `Euler`, `Euler Ancestral`, `DPM2`, `DPM2 Ancestral`, `LMS`, `DPM Solver`, `DPM++ 2s Ancestral`, `DPM++ 2m`, `DPM++ 2m SDE`, `DPM++ SDE`, `DDPM`, `UniPC`.\n- **Stable Diffusion XL and 2.1**: Generate higher-quality images using the latest Stable Diffusion XL models.\n- **Textual Inversion Embeddings**: For guiding the AI strongly towards a particular concept.\n- **Simple Drawing Tool**: Draw basic images to guide the AI, without needing an external drawing program.\n- **Face Correction (GFPGAN)**\n- **Upscaling (RealESRGAN)**\n- **Loopback**: Use the output image as the input image for the next image task.\n- **Negative Prompt**: Specify aspects of the image to *remove*.\n- **Attention/Emphasis**: `+` in the prompt increases the model's attention to enclosed words, and `-` decreases it. E.g. `apple++ falling from a tree`.\n- **Weighted Prompts**: Use weights for specific words in your prompt to change their importance, e.g. `(red)2.4 (dragon)1.2`.\n- **Prompt Matrix**: Quickly create multiple variations of your prompt, e.g. `a photograph of an astronaut riding a horse | illustration | cinematic lighting`.\n- **Prompt Set**: Quickly create multiple variations of your prompt, e.g. `a photograph of an astronaut on the {moon,earth}`\n- **1-click Upscale/Face Correction**: Upscale or correct an image af",
+    "latestRelease": {
+      "tag": "v3.0.16",
+      "name": "v3.0.16",
+      "body": "🔥 Adds support for:\r\n- Flux 2 Klein, Z-Image, Qwen and lots more models (including quantized gguf)!\r\n- Improves support for AMD and Intel GPUs (including integrated)\r\n\r\nEnable the `v4` engine to get the new features:\r\n1. Open the `Settings` tab in Easy Diffusion's UI.\r\n2. Select `v4 engine` in the Backend option.\r\n3. Press `Save` and restart Easy Diffusion."
+    },
+    "otherCandidates": [
+      {
+        "name": "enricoros/big-AGI",
+        "stars": 7067,
+        "description": "AI suite powered by state-of-the-art models and providing advanced AI/AGI functions. Includes AI personas, AGI functions, world-class Beam multi-model chats, text-to-image, voice, response streaming, code highlighting and execution, PDF import, presets for developers, much more. Deploy on-prem or in the cloud."
+      },
+      {
+        "name": "off-grid-ai/OGAM",
+        "stars": 2839,
+        "description": "The Swiss Army Knife of Offline AI. Chat, see, speak, and generate images on your phone or Mac — GGUF LLMs, vision, Whisper speech-to-text, Stable Diffusion, tool calling, and local-network servers. Runs on your CPU, GPU, or NPU. No account, no API key, zero data leaves your device."
+      },
+      {
+        "name": "jd-opensource/JoyAI-Image",
+        "stars": 2244,
+        "description": "JoyAI-Image is the unified multimodal foundation model for image understanding, text-to-image generation, and instruction-guided image editing."
+      },
+      {
+        "name": "techjarves/Uncensored-Local-Studio",
+        "stars": 761,
+        "description": "Uncensored local AI studio for Windows, Linux, and macOS. Zero-setup GUI for Image Generation, GGUF LLMs, Text to Speech & Speech to Text"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: Stable Diffusion v2 web interface",
+    "url": "https://getimg.ai/text-to-image",
+    "hnUrl": "https://news.ycombinator.com/item?id=33735565",
+    "points": 72,
+    "numComments": 44,
+    "createdAt": "2022-11-24T19:58:05Z"
+  }
+}

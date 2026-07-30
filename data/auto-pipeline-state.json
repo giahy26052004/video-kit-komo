@@ -1,5 +1,5 @@
 {
-  "queryIndex": 26,
+  "queryIndex": 27,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -26,6 +26,7 @@
     "langgenius/dify",
     "modelscope/FunASR",
     "Andyyyy64/whichllm",
-    "Anil-matcha/Open-Generative-AI"
+    "Anil-matcha/Open-Generative-AI",
+    "easydiffusion/easydiffusion"
   ]
 }
