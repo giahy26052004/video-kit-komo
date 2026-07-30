@@ -69,4 +69,10 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add data/auto-pipeline-state.json research/ || true
           git diff --cached --quiet || git commit -m "chore: cap nhat state auto-pipeline [skip ci]"
-          git push
+          # Nhánh remote có thể đã đổi trong lúc job này chạy (push từ máy khác,
+          # hoặc job trước đó) -> rebase lên rồi push lại, thử tối đa 3 lần.
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && break
+            echo "push lần $i thất bại, thử lại..."
+            sleep 5
+          done
