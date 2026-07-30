@@ -214,6 +214,9 @@ async function buildScript(research, slug, workspace) {
   const music = ["night", "chill", "lounge", "festive"][Math.floor(Math.random() * 4) % 4];
   return {
     title: `${gh.name} - ${gh.stars.toLocaleString("vi-VN")} sao trên GitHub`,
+    // Caption tự nhiên dùng khi đăng Facebook — KHÔNG phải "title" kỹ thuật ở trên
+    // (title vẫn giữ để dễ nhận diện project trong gallery.html local).
+    fbCaption: loc.fb_caption || null,
     preset: "shorts",
     width: 1080,
     height: 1920,

@@ -31,6 +31,7 @@ function fallback(gh, hn) {
     release_voice: truncate(gh.latestRelease?.body, 200),
     hn_onscreen: hn ? truncate(hn.title, 40) : "",
     hn_voice: hn ? truncate(hn.title, 150) : "",
+    fb_caption: truncate(gh.description, 100) || gh.name,
   };
 }
 
@@ -67,6 +68,7 @@ Trả về DUY NHẤT 1 object JSON (không markdown, không giải thích thêm
 - "release_voice": 1 đoạn tiếng Việt tự nhiên (2-3 câu, 30-50 từ) kể lại đầy đủ các điểm mới trong release_highlights theo giọng văn nói chuyện, dùng để đọc giọng (chỉ điền nếu có)
 - "hn_onscreen": nhãn ngắn 3-6 từ (vd "Đang hot trên Hacker News") (chỉ điền nếu có hackernews_title_en)
 - "hn_voice": 1 câu tiếng Việt tự nhiên giới thiệu chủ đề đang bàn luận, dịch ý chính của hackernews_title_en, 15-25 từ (chỉ điền nếu có)
+- "fb_caption": 1 câu tiếng Việt TỰ NHIÊN dùng làm caption đăng Facebook (như 1 người thật viết, không phải tiêu đề kỹ thuật) — tập trung vào ĐIỂM HAY NHẤT/gây tò mò nhất của repo này, 10-20 từ, KHÔNG ghi tên repo dạng "owner/repo", KHÔNG ghi số sao, không hashtag, không dấu ngoặc kép
 
 Field nào input là null thì trả về "" (hoặc [] cho release_highlights) cho field tương ứng. KHÔNG bịa thêm thông tin ngoài input.`;
 

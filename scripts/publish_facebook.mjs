@@ -27,7 +27,8 @@ function arg(name, def) {
 function buildDefaultCaption(script) {
   const cover = script.slides.find((s) => s.type === "cover" && s.endCard);
   const cta = cover?.endCardCTAs?.[0]?.value;
-  const lines = [script.title];
+  // fbCaption (do LLM viết, tự nhiên) ưu tiên hơn title kỹ thuật "owner/repo - X sao".
+  const lines = [script.fbCaption || script.title];
   if (cta) {
     // Facebook chỉ auto-link khi có scheme http(s):// đầy đủ, domain trần
     // ("komoapi.site") thường không bấm vào được trong caption.
