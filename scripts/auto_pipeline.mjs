@@ -133,7 +133,6 @@ async function buildScript(research, slug, workspace) {
     releases: gh.latestRelease?.name && exists("github-releases.png") && { imageSrc: "github-releases.png", browserUrl: releasesUrlShort },
     hn: hn && exists("hn-post.png") && { imageSrc: "hn-post.png", browserUrl: hnUrlShort },
   };
-  const hasReleaseShot = Boolean(IMG.releases);
   const hasHn = Boolean(hn && IMG.hn); // chỉ thêm slide HN nếu có ảnh minh hoạ thật
   let lastImageSrc = null;
   function assetFor(...preferredKeys) {
@@ -176,14 +175,13 @@ async function buildScript(research, slug, workspace) {
     sfxVolume: 0.11,
   });
 
-  if (hasReleaseShot) {
-    const releaseAsset = assetFor("releases", "repo", "website");
+  if (gh.latestRelease?.name) {
+    // Release note KHÔNG bao giờ render nguyên văn / KHÔNG đè lên screenshot —
+    // slide riêng, chỉ vài bullet ngắn đã qua LLM diễn giải (không thuật ngữ Git).
+    const highlights = (loc.release_highlights?.length ? loc.release_highlights : [stripMarkdown(gh.latestRelease.name, 40)]).slice(0, 3);
     slides.push({
-      type: "image",
-      imageMode: "screen",
-      imageSrc: releaseAsset.imageSrc,
-      browserUrl: releaseAsset.browserUrl,
-      title: loc.release_onscreen || "Bản cập nhật mới nhất",
+      type: "text",
+      text: [loc.release_onscreen || "🚀 Có gì mới?", ...highlights.map((h) => `✅ ${h}`)].join("\n"),
       voice_text: loc.release_voice || `Bản cập nhật mới nhất: ${stripMarkdown(gh.latestRelease.name, 80)}. ${stripMarkdown(gh.latestRelease.body, 160)}`,
       sfx: "transition",
       sfxVolume: 0.2,

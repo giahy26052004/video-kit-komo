@@ -26,7 +26,8 @@ function fallback(gh, hn) {
   return {
     desc_onscreen: truncate(gh.description, 40),
     desc_voice: truncate(gh.description, 200),
-    release_onscreen: gh.latestRelease?.tag || gh.latestRelease?.name || "",
+    release_onscreen: "Có gì mới?",
+    release_highlights: gh.latestRelease ? [truncate(gh.latestRelease.name, 40)] : [],
     release_voice: truncate(gh.latestRelease?.body, 200),
     hn_onscreen: hn ? truncate(hn.title, 40) : "",
     hn_voice: hn ? truncate(hn.title, 150) : "",
@@ -36,7 +37,7 @@ function fallback(gh, hn) {
 /**
  * @param {object} gh - research.github (name, description, latestRelease)
  * @param {object|null} hn - research.hackernews
- * @returns {Promise<object>} { desc_onscreen, desc_voice, release_onscreen, release_voice, hn_onscreen, hn_voice }
+ * @returns {Promise<object>} { desc_onscreen, desc_voice, release_onscreen, release_highlights, release_voice, hn_onscreen, hn_voice }
  */
 export async function localizeContent(gh, hn) {
   if (!LLM_URL || !LLM_KEY) {
@@ -53,6 +54,7 @@ export async function localizeContent(gh, hn) {
 
   const prompt = `Bạn là biên tập viên viết script video ngắn (TikTok/Reels) tiếng Việt về công nghệ AI.
 Dịch và VIẾT LẠI (không dịch máy word-by-word) nội dung tiếng Anh sau thành tiếng Việt tự nhiên, dễ hiểu.
+KHÔNG bao giờ render nguyên văn markdown/changelog GitHub (vd "What's Changed", "ci: guard...", "merge pull request...") — luôn diễn giải lại thành ý nghĩa thực tế cho người xem phổ thông, không dùng thuật ngữ Git (PR, merge, CI, commit...).
 
 Input (JSON):
 ${JSON.stringify(fields, null, 2)}
@@ -60,12 +62,13 @@ ${JSON.stringify(fields, null, 2)}
 Trả về DUY NHẤT 1 object JSON (không markdown, không giải thích thêm) với các field:
 - "desc_onscreen": tóm tắt repo_description_en thành 3-8 từ tiếng Việt, không dấu chấm cuối, dùng làm chữ hiện trên màn hình (chỉ điền nếu repo_description_en có giá trị)
 - "desc_voice": viết lại repo_description_en thành 1 câu tiếng Việt tự nhiên, đầy đủ ý, 15-30 từ, dùng để đọc giọng (chỉ điền nếu repo_description_en có giá trị)
-- "release_onscreen": nhãn ngắn 3-6 từ cho bản cập nhật (vd "Bản cập nhật mới nhất") (chỉ điền nếu có latest_release_name_en)
-- "release_voice": 1 câu tiếng Việt tự nhiên tóm tắt điểm chính của latest_release_body_en, 15-30 từ (chỉ điền nếu có)
+- "release_onscreen": tiêu đề ngắn 2-4 từ cho slide "có gì mới" (vd "Có gì mới?") (chỉ điền nếu có latest_release_name_en)
+- "release_highlights": mảng ĐÚNG 2-3 chuỗi tiếng Việt (không hơn), MỖI chuỗi tối đa 5 từ, mỗi chuỗi là 1 điểm mới thực tế (tính năng/cải tiến/sửa lỗi quan trọng nhất) diễn giải từ latest_release_body_en — KHÔNG phải câu markdown gốc, không thuật ngữ Git. Ví dụ: ["Tăng tốc nhận diện", "Sửa lỗi cắt video"] (mảng rỗng nếu không có latest_release_name_en)
+- "release_voice": 1 đoạn tiếng Việt tự nhiên (2-3 câu, 30-50 từ) kể lại đầy đủ các điểm mới trong release_highlights theo giọng văn nói chuyện, dùng để đọc giọng (chỉ điền nếu có)
 - "hn_onscreen": nhãn ngắn 3-6 từ (vd "Đang hot trên Hacker News") (chỉ điền nếu có hackernews_title_en)
 - "hn_voice": 1 câu tiếng Việt tự nhiên giới thiệu chủ đề đang bàn luận, dịch ý chính của hackernews_title_en, 15-25 từ (chỉ điền nếu có)
 
-Field nào input là null thì trả về "" cho field tương ứng. KHÔNG bịa thêm thông tin ngoài input.`;
+Field nào input là null thì trả về "" (hoặc [] cho release_highlights) cho field tương ứng. KHÔNG bịa thêm thông tin ngoài input.`;
 
   try {
     const res = await fetch(LLM_URL, {

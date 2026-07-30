@@ -50,7 +50,11 @@ export const TextSlide: React.FC<TextSlideProps> = ({
   const isHero = mode === "hero";
   // Default base font: 72 (legacy). Hero amplifies via fontScale × 1.5.
   const baseFont = isHero ? 96 : 72;
-  const textFont = baseFont * fontScale;
+  // Bullet-style multi-line text (vd release highlights "title\n✅ a\n✅ b\n✅ c")
+  // tràn khung/đè caption nếu giữ nguyên cỡ chữ mặc định — tự co lại theo số dòng.
+  const lineCount = text.split("\n").filter(Boolean).length;
+  const autoShrink = isHero ? 1 : Math.max(0.5, 1 - Math.max(0, lineCount - 1) * 0.15);
+  const textFont = baseFont * fontScale * autoShrink;
 
   // KenBurns: subtle 1.0 → 1.04 zoom across the slide for "alive" feel.
   const kenBurnsScale = interpolate(frame, [0, durationInFrames], [1.0, 1.04], {
@@ -110,6 +114,7 @@ export const TextSlide: React.FC<TextSlideProps> = ({
           lineHeight: isHero ? 1.15 : 1.3,
           textAlign: "center",
           maxWidth: isHero ? 1000 : 900,
+          whiteSpace: "pre-line",
           fontFamily: "-apple-system, Inter, sans-serif",
           letterSpacing: isHero ? "-0.03em" : "normal",
           opacity: heroOpacity,
