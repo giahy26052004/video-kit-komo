@@ -1,5 +1,5 @@
 {
-  "queryIndex": 33,
+  "queryIndex": 34,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -31,6 +31,7 @@
     "lucidrains/PaLM-rlhf-pytorch",
     "topoteretes/cognee",
     "vercel-labs/agent-browser",
-    "BinWang28/audio-ai-hub"
+    "BinWang28/audio-ai-hub",
+    "MGdaasLab/WHartTest"
   ]
 }
