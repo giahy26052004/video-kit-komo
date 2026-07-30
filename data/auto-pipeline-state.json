@@ -1,5 +1,5 @@
 {
-  "queryIndex": 27,
+  "queryIndex": 28,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -27,6 +27,7 @@
     "modelscope/FunASR",
     "Andyyyy64/whichllm",
     "Anil-matcha/Open-Generative-AI",
-    "easydiffusion/easydiffusion"
+    "easydiffusion/easydiffusion",
+    "lucidrains/PaLM-rlhf-pytorch"
   ]
 }

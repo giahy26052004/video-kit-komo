@@ -1,0 +1,39 @@
+{
+  "query": "reinforcement learning human feedback",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-30T06:32:06.666Z",
+  "github": {
+    "source": "github",
+    "name": "lucidrains/PaLM-rlhf-pytorch",
+    "description": "Implementation of RLHF (Reinforcement Learning with Human Feedback) on top of the PaLM architecture. Basically ChatGPT but with PaLM",
+    "url": "https://github.com/lucidrains/PaLM-rlhf-pytorch",
+    "stars": 7864,
+    "language": "Python",
+    "homepage": null,
+    "avatarUrl": "https://avatars.githubusercontent.com/u/108653?v=4",
+    "pushedAt": "2026-07-27T23:39:41Z",
+    "readmeExcerpt": "<img src=\"./chatgpt.png\" width=\"450px\"></img>\n\n*<a href=\"https://openai.com/blog/chatgpt/\">official chatgpt blogpost</a>*\n\n## PaLM + RLHF - Pytorch (wip)\n\nImplementation of RLHF (Reinforcement Learning with Human Feedback) on top of the PaLM architecture. Maybe I'll add retrieval functionality too, à la <a href=\"https://github.com/lucidrains/RETRO-pytorch\">RETRO</a>\n\nIf you are interested in replicating something like ChatGPT out in the open, please consider joining <a href=\"https://discord.gg/xBPBXfcFHd\">Laion <img alt=\"Join us on Discord\" src=\"https://img.shields.io/discord/823813159592001537?color=5865F2&logo=discord&logoColor=white\"></a>\n\nPotential successor: <a href=\"https://arxiv.org/abs/2305.18290\">Direct Preference Optimization</a> - all the code in this repo becomes ~ binary cross entropy loss, < 5 loc. So much for Reward models and PPO\n\n## FAQ\n\n- Does this contain a model for inference?\n\nThere is no trained model. This is just the ship and overall map. We still need millions of dollars of compute + data to sail to the correct point in high dimensional parameter space. Even then, you need professional sailors (like Robin Rombach of Stable Diffusion fame) to actually guide the ship through turbulent times to that point.\n\n## Community\n\n<a href=\"https://carper.ai/\">CarperAI</a> had been working on <a href=\"https://github.com/CarperAI/trlx\">an RLHF framework</a> for large language models for many months prior to the release of ChatGPT.\n\n<a href=\"https://www.youtube.com/watch?v=sswA4j_IUxg\">Yannic Kilcher</a> is also working on an <a href=\"https://github.com/LAION-AI/Open-Assistant\">open sourced implementation</a>\n\n<a href=\"https://www.youtube.com/watch?v=SWwQ3k-DWyo\">AI Coffeebreak w/ Letitia</a> | <a href=\"https://www.youtube.com/watch?v=NpmnWgQgcsA\">Code Emporium</a> | <a href=\"https://www.youtube.com/watch?v=_MPJ3CyDokU\">Code Emporium Part 2</a>\n\n## Appreciation\n\n- <a href=\"https://stability.ai/\">Stability.ai</a> for the generous sponsorship to work on cutting edge artificial intelligence research\n\n- <a href=\"https://huggingface.co/\">🤗 Hugging Face</a> and <a href=\"https://carper.ai/\">CarperAI</a> for penning the blog post <a href=\"https://huggingface.co/blog/rlhf\">Illustrating Reinforcement Learning from Human Feedback (RLHF)</a>, and the former also for their <a href=\"https://huggingface.co/docs/accelerate/index\">accelerate</a> library\n\n- <a href=\"https://github.com/kisseternity\">@kisseternity</a> and <a href=\"https://github.com/taynoel84\">@taynoel84</a> for the code review and finding bugs\n\n- <a href=\"https://github.com/conceptofmind\">Enrico</a> for integrating <a href=\"https://arxiv.org/abs/2205.14135\">Flash Attention</a> from Pytorch 2.0\n\n- [bycloud](https://www.youtube.com/@bycloudAI) for his educational video for [Reasoning with Exploration](https://www.youtube.com/watch?v=uOrJUksvIhs)\n\n## Install\n\n```bash\n$ pip install palm-rlhf-pytorch\n```\n\n## Usage\n\nFirst train `PaLM`, like any other autoregressive transformer\n\n```python\nimport torch\nfrom palm_rlhf_pytorch import PaLM\n\npalm = PaLM(\n    num_tokens = 20000,\n    dim = 512,\n    depth = 12,\n    flash_attn = True # https://arxiv.org/abs/2205.14135\n).cuda()\n\nseq = torch.randint(0, 20000, (1, 2048)).cuda()\n\nloss = palm(seq, return_loss = True)\nloss.backward()\n\n# after much training, you can now generate sequences\n\ngenerated = palm.generate(2048) # (1, 2048)\n```\n\nThen train your reward model, with the curated human feedback. In the original paper, they could not get reward model to be finetuned from a pretrained transformer without overfitting, but I gave the option to finetune with `LoRA` anyways, since it is still open research.\n\n```python\nimport torch\nfrom palm_rlhf_pytorch import PaLM, RewardModel\n\npalm = PaLM(\n    num_tokens = 20000,\n    dim = 512,\n    depth = 12,\n    causal = False\n)\n\nreward_model = RewardModel(\n    palm,\n    num_binned_output = 5 # say rating from 1 to 5\n).cuda()\n\n# mock data\n\nseq = torch.randint(0, 20000, (1, 1024)).cuda()\nprompt_mask = torch.zeros(1, 1024).bool().cuda() # which part of the sequence is prompt, which part is response\nlabels = torch.randint(0, 5, (1,)).cuda()\n\n# train\n\nloss = reward_model(seq, prompt_mask = prompt_mask, labels = labels)\nloss.backward()\n\n# after much training\n\nreward = reward_model(seq, prompt_mask = prompt_mask)\n```\n\nThen you will pass your transformer and the rewards model to the `RLHFTrainer`\n\n```python\nimport torch\nfrom palm_rlhf_pytorch import PaLM, RewardModel, RLHFTrainer\n\n# load your pretrained palm\n\npalm = PaLM(\n    num_tokens = 20000,\n    dim = 512,\n    depth = 12\n).cuda()\n\npalm.load('./path/to/pretrained/palm.pt')\n\n# load your pretrained reward model\n\nreward_model = RewardModel(\n    palm,\n    num_binned_output = 5\n).cuda()\n\nreward_model.load('./path/to/pretrained/reward_model.pt')\n\n# ready your list of prompts for reinforcement learning\n\nprompts = torch.randint(0, 256, (50000, 512)).cuda() # 50k prompts\n\n# pass it all to the trainer and train\n\ntrainer = RLHFTrainer(\n    palm = palm,\n    reward_model = reward_model,\n    prompt_token_ids = prompts\n)\n\ntrainer.train(num_episodes = 50000)\n\n# then, if it succeeded...\n# generate say 10 samples and use the reward model to return the best one\n\nanswer = trainer.generate(2048, prompt = prompts[0], num_samples = 10) # (<= 2048,)\n```\n\n## Todo\n\n- [x] clone base transformer with separate lora for critic\n- [x] also allow for non-LoRA based finetuning\n- [x] redo normalize to be able to have a masked version, not sure if anyone will ever use per token rewards / values, but good practice to implement\n- [x] equip with <a href=\"https://github.com/hazyResearch/flash-attention\">the best attention</a>\n\n- [ ] add Hugging Face accelerate and test out wandb instrumentation\n- [ ] search literature to figure out what is the latest SOTA for PPO, assuming RL field is still making progress.\n- [ ] test the system using a pretrained sentiment network as reward model\n- [ ] write the memory in PPO to memmapped numpy file\n- [ ] get sampling with va",
+    "latestRelease": {
+      "tag": "0.7.1",
+      "name": "0.7.1",
+      "body": "**Full Changelog**: https://github.com/lucidrains/PaLM-rlhf-pytorch/compare/0.6.3...0.7.1"
+    },
+    "otherCandidates": [
+      {
+        "name": "natolambert/rlhf-book",
+        "stars": 2230,
+        "description": "Textbook on reinforcement learning from human feedback"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Reinforcement Learning from Human Feedback",
+    "url": "https://rlhfbook.com/",
+    "hnUrl": "https://news.ycombinator.com/item?id=46923463",
+    "points": 133,
+    "numComments": 5,
+    "createdAt": "2026-02-07T12:53:39Z"
+  }
+}
