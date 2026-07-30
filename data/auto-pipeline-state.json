@@ -32,6 +32,7 @@
     "topoteretes/cognee",
     "vercel-labs/agent-browser",
     "BinWang28/audio-ai-hub",
-    "MGdaasLab/WHartTest"
+    "MGdaasLab/WHartTest",
+    "the-open-agent/openagent"
   ]
 }
