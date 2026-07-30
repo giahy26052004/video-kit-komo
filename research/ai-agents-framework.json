@@ -2,13 +2,13 @@
   "query": "ai agents framework",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-30T06:32:06.203Z",
+  "fetchedAt": "2026-07-30T08:20:52.705Z",
   "github": {
     "source": "github",
     "name": "obra/superpowers",
     "description": "An agentic skills framework & software development methodology that works.",
     "url": "https://github.com/obra/superpowers",
-    "stars": 263493,
+    "stars": 263583,
     "language": "Shell",
     "homepage": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/45416?v=4",
@@ -22,22 +22,22 @@
     "otherCandidates": [
       {
         "name": "langchain-ai/langchain",
-        "stars": 142951,
+        "stars": 142966,
         "description": "The agent engineering platform."
       },
       {
         "name": "crewAIInc/crewAI",
-        "stars": 56356,
+        "stars": 56367,
         "description": "Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks."
       },
       {
         "name": "HKUDS/nanobot",
-        "stars": 46395,
+        "stars": 46398,
         "description": "Ultra-lightweight, open-source, self-hosted personal AI agent framework in Python with WebUI, tools, memory, MCP, multi-agent workflows, automation, and chat apps"
       },
       {
         "name": "heygen-com/hyperframes",
-        "stars": 38696,
+        "stars": 38713,
         "description": "Write HTML. Render video. Built for agents."
       }
     ]

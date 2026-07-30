@@ -2,7 +2,7 @@
   "query": "reinforcement learning human feedback",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-30T06:32:06.666Z",
+  "fetchedAt": "2026-07-30T08:20:54.683Z",
   "github": {
     "source": "github",
     "name": "lucidrains/PaLM-rlhf-pytorch",
@@ -22,7 +22,7 @@
     "otherCandidates": [
       {
         "name": "natolambert/rlhf-book",
-        "stars": 2230,
+        "stars": 2231,
         "description": "Textbook on reinforcement learning from human feedback"
       }
     ]

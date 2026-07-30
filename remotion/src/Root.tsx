@@ -15,6 +15,7 @@ import { FormulaSlide, FormulaGroup } from "./compositions/FormulaSlide";
 import { TransitionSlide } from "./compositions/TransitionSlide";
 import { NumberHero } from "./compositions/NumberHero";
 import { ImageSlide, ImageMode } from "./compositions/ImageSlide";
+import { VideoTheme } from "./ui-kit/AnimatedBackground";
 import { CaptionsLayer, CaptionPosition } from "./compositions/CaptionsLayer";
 import { BrandConfig } from "./compositions/BrandedSlideLayout";
 import { Preset, resolvePreset } from "./presets";
@@ -139,6 +140,8 @@ type Metadata = {
   music?: string;
   /** Volume nhạc nền (0-1). Mặc định 0.15 — đủ nghe, không át giọng đọc. */
   musicVolume?: number;
+  /** Nền động dùng chung cho cả video: "default" | "neon" | "particles". Random mỗi video ở auto_pipeline.mjs. */
+  theme?: VideoTheme;
 };
 
 const DEFAULT_METADATA: Metadata = {
@@ -232,6 +235,7 @@ const Main: React.FC<Metadata> = (meta) => {
                 reveal={slide.textReveal}
                 accentColor={slide.accentColor}
                 fontScale={fontScale}
+                theme={meta.theme}
               />
             )}
             {slide.type === "code" && (
@@ -299,6 +303,7 @@ const Main: React.FC<Metadata> = (meta) => {
                 browserUrl={slide.browserUrl}
                 fontScale={fontScale}
                 accentColor={slide.accentColor ?? meta.brand?.accentColor}
+                theme={meta.theme}
               />
             )}
             {slide.type === "numberHero" && slide.heroValue !== undefined && (

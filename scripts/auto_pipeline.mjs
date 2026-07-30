@@ -212,6 +212,8 @@ async function buildScript(research, slug, workspace) {
   });
 
   const music = ["night", "chill", "lounge", "festive"][Math.floor(Math.random() * 4) % 4];
+  // Random 1/3 theme nền động mỗi video (không cố định 1 loại) — cho video đỡ nhàm.
+  const theme = ["default", "neon", "particles"][Math.floor(Math.random() * 3) % 3];
   return {
     title: `${gh.name} - ${gh.stars.toLocaleString("vi-VN")} sao trên GitHub`,
     // Caption tự nhiên dùng khi đăng Facebook — KHÔNG phải "title" kỹ thuật ở trên
@@ -223,6 +225,7 @@ async function buildScript(research, slug, workspace) {
     fps: 30,
     music,
     musicVolume: 0.05,
+    theme,
     slides,
   };
 }

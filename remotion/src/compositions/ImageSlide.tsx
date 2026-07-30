@@ -9,6 +9,7 @@ import {
   useVideoConfig,
 } from "remotion";
 import { FakeBrowser } from "../ui-kit/FakeBrowser";
+import { AnimatedBackground, VideoTheme } from "../ui-kit/AnimatedBackground";
 
 export type ImageMode = "background" | "popup" | "screen";
 
@@ -23,6 +24,8 @@ interface ImageSlideProps {
   browserUrl?: string;
   fontScale?: number;
   accentColor?: string;
+  /** Nền động dùng chung cho cả video (random mỗi video). "default" = giữ nguyên nền cũ. */
+  theme?: VideoTheme;
 }
 
 /**
@@ -39,9 +42,10 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
   browserUrl = "komoapi.site",
   fontScale = 1,
   accentColor = "#22d3ee",
+  theme = "default",
 }) => {
   const frame = useCurrentFrame();
-  const { fps, width, height } = useVideoConfig();
+  const { fps, width, height, durationInFrames } = useVideoConfig();
 
   const entrance = spring({
     frame,
@@ -52,10 +56,18 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
     extrapolateRight: "clamp",
   });
   const imgSrc = staticFile(src);
+  // Zoom nhẹ liên tục trong suốt slide (KenBurns) — cho cảm giác "sống", không
+  // phải ảnh tĩnh cứng đờ. Áp cho khung screenshot/browser mockup.
+  const kenBurns = interpolate(frame, [0, durationInFrames], [1, 1.035], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const bgLayer = theme !== "default" ? <AnimatedBackground theme={theme} accentColor={accentColor} /> : null;
 
   if (mode === "background") {
     return (
       <AbsoluteFill style={{ background: "#0b0b0f" }}>
+        {bgLayer}
         <Img
           src={imgSrc}
           style={{
@@ -116,16 +128,17 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
   }
 
   if (mode === "popup") {
-    const scale = 0.9 + entrance * 0.1;
+    const scale = (0.9 + entrance * 0.1) * kenBurns;
     return (
       <AbsoluteFill
         style={{
-          background: "linear-gradient(180deg, #0b0b0f 0%, #1a1a25 100%)",
+          background: theme === "default" ? "linear-gradient(180deg, #0b0b0f 0%, #1a1a25 100%)" : "transparent",
           alignItems: "center",
           justifyContent: "center",
           padding: 90,
         }}
       >
+        {bgLayer}
         {title && (
           <div
             style={{
@@ -177,17 +190,18 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
   // Canvas dọc (vd 1080x1920) nên browser landscape phải scale nhỏ lại cho vừa chiều ngang.
   const browserWidth = Math.round(width * 0.92);
   const browserHeight = Math.round(browserWidth * 0.625); // tỉ lệ ~16:10 giống ảnh gốc
-  const scale = 0.92 + entrance * 0.08;
+  const scale = (0.92 + entrance * 0.08) * kenBurns;
 
   return (
     <AbsoluteFill
       style={{
-        background: "linear-gradient(180deg, #0b0b0f 0%, #1a1a25 100%)",
+        background: theme === "default" ? "linear-gradient(180deg, #0b0b0f 0%, #1a1a25 100%)" : "transparent",
         alignItems: "center",
         justifyContent: "center",
         padding: 60,
       }}
     >
+      {bgLayer}
       {title && (
         <div
           style={{

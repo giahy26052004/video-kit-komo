@@ -6,6 +6,7 @@ import {
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
+import { AnimatedBackground, VideoTheme } from "../ui-kit/AnimatedBackground";
 
 type Caption = { from: number; to: number; text: string };
 
@@ -26,6 +27,8 @@ interface TextSlideProps {
   fontScale?: number;
   /** Override accent color used for caption pill / hero glow. */
   accentColor?: string;
+  /** Nền động dùng chung cho cả video. "default" = giữ nguyên nền phẳng cũ. */
+  theme?: VideoTheme;
 }
 
 /**
@@ -40,6 +43,7 @@ export const TextSlide: React.FC<TextSlideProps> = ({
   reveal = "spring",
   fontScale = 1,
   accentColor = "#f59e0b",
+  theme = "default",
 }) => {
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
@@ -84,7 +88,7 @@ export const TextSlide: React.FC<TextSlideProps> = ({
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: "#0b0b0f",
+        backgroundColor: theme === "default" ? "#0b0b0f" : "transparent",
         alignItems: "center",
         justifyContent: "center",
         padding: 80,
@@ -92,6 +96,7 @@ export const TextSlide: React.FC<TextSlideProps> = ({
         transformOrigin: "center",
       }}
     >
+      {theme !== "default" && <AnimatedBackground theme={theme} accentColor={accentColor} />}
       {isHero && (
         <div
           style={{
