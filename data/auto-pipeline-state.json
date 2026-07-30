@@ -1,5 +1,5 @@
 {
-  "queryIndex": 24,
+  "queryIndex": 25,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -22,6 +22,7 @@
     "Blaizzy/mlx-vlm",
     "tirth8205/code-review-graph",
     "crewAIInc/crewAI",
-    "maziyarpanahi/openmed"
+    "maziyarpanahi/openmed",
+    "langgenius/dify"
   ]
 }
