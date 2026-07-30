@@ -2,9 +2,13 @@ name: Auto AI Video Pipeline
 
 # Cứ 2 tiếng research + render + đăng 1 video AI-trending lên Facebook Page.
 # Chạy trên GitHub-hosted runner, không phụ thuộc máy cá nhân có bật hay không.
+#
+# ĐANG TẮT auto-schedule: quyết định chạy trên máy qua Windows Task Scheduler
+# thay vì GitHub Actions. Bật lại bằng cách un-comment khối `schedule:` bên
+# dưới (và nhớ thêm secret FB_PAGE_ACCESS_TOKEN + PEXELS_API_KEY trước).
 on:
-  schedule:
-    - cron: "0 */2 * * *"
+  # schedule:
+  #   - cron: "0 */2 * * *"
   workflow_dispatch: {}
 
 permissions:
