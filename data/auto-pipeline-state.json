@@ -1,5 +1,5 @@
 {
-  "queryIndex": 25,
+  "queryIndex": 26,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -23,6 +23,7 @@
     "tirth8205/code-review-graph",
     "crewAIInc/crewAI",
     "maziyarpanahi/openmed",
-    "langgenius/dify"
+    "langgenius/dify",
+    "modelscope/FunASR"
   ]
 }
