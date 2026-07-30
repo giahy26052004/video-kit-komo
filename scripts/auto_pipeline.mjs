@@ -241,14 +241,21 @@ function buildReviewInput(slug) {
   };
 }
 
+// Chỉ soi ~3000 ký tự CUỐI (gần lỗi thật/exit code nhất) — log dài có thể chứa
+// cảnh báo vô hại ở đầu (vd HuggingFace "unauthenticated requests... rate
+// limits") làm regex match nhầm nếu soi toàn bộ output.
+function tailOf(output) {
+  return output.slice(-3000);
+}
+
 // Hết quota/rate-limit API bên ngoài (Edge TTS, Pexels...) -> đáng đợi lâu rồi thử lại.
 function isQuotaError(output) {
-  return /rate limit|too many requests|quota|usage limit|429|NoAudioReceived/i.test(output);
+  return /rate limit|too many requests|quota exceeded|usage limit|http 429|status code of 429|NoAudioReceived/i.test(tailOf(output));
 }
 // Crash hạ tầng thoáng qua (ffmpeg/remotion sập do tranh chấp tài nguyên, mạng chập chờn)
 // -> không phải do hết quota, thử lại ngay sau vài chục giây là thường qua.
 function isTransientCrash(output) {
-  return /FFmpeg quit with code|ECONNRESET|ETIMEDOUT|EBUSY|EPERM|ENOENT.*\.wav|503|502|access violation|segmentation fault/i.test(output);
+  return /FFmpeg quit with code|ECONNRESET|ETIMEDOUT|EBUSY|EPERM|ENOENT.*\.wav|status code of 503|status code of 502|access violation|segmentation fault/i.test(tailOf(output));
 }
 
 const CRASH_RETRY_WAIT_SECONDS = 60;

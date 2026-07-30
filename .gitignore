@@ -30,3 +30,8 @@ examples/*/distribute.zip
 **/review-result.json
 **/video-explainer-result.json
 .env
+
+# Thư viện nhạc/SFX dùng chung cho auto-pipeline — CẦN commit (khác với
+# *.mp3/*.wav output tạm bị ignore ở trên), vì GitHub Actions cần có sẵn.
+!remotion/assets-library/**/*.mp3
+!remotion/assets-library/**/*.wav
