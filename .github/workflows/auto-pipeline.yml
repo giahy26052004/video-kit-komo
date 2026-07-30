@@ -3,8 +3,10 @@ name: Auto AI Video Pipeline
 # Cứ 2 tiếng research + render + đăng 1 video AI-trending lên Facebook Page.
 # Chạy trên GitHub-hosted runner, không phụ thuộc máy cá nhân có bật hay không.
 on:
+  # Lệch phút 17 (không phải :00) — GitHub docs khuyến cáo tránh mốc đầu giờ
+  # vì đó là lúc hệ thống Actions nghẽn tải nhiều nhất, dễ delay/bỏ lịch.
   schedule:
-    - cron: "0 */2 * * *"
+    - cron: "17 */2 * * *"
   workflow_dispatch: {}
 
 permissions:
