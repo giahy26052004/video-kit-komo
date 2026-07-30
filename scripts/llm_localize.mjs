@@ -74,7 +74,7 @@ Field nào input là null thì trả về "" cho field tương ứng. KHÔNG b�
       body: JSON.stringify({
         model: LLM_MODEL,
         stream: false,
-        max_tokens: 600,
+        max_tokens: 1200,
         messages: [
           { role: "system", content: "Trả lời CHỈ 1 object JSON hợp lệ, không markdown code fence, không giải thích." },
           { role: "user", content: prompt },
