@@ -1,0 +1,40 @@
+{
+  "query": "ai music generation",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-30T14:34:07.224Z",
+  "github": {
+    "source": "github",
+    "name": "BinWang28/audio-ai-hub",
+    "description": "The hub for audio AI research: papers, open models, benchmarks & datasets across audio LLMs, speech recognition, TTS, music & audio generation.",
+    "url": "https://github.com/BinWang28/audio-ai-hub",
+    "stars": 949,
+    "language": "Python",
+    "homepage": "https://binwang28.github.io/audio-ai-hub/",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/25280416?v=4",
+    "pushedAt": "2026-07-27T07:56:49Z",
+    "readmeExcerpt": "# 🎧 audio-ai-hub\n\n**The hub for audio AI research.** Curated papers, open models, benchmarks and datasets across audio LLMs · speech recognition · speech synthesis · music & audio generation.\n\n`129 entries` · `11 categories` · `latest: 2026-06`\n\n👉 **[Browse the interactive hub →](https://binwang28.github.io/audio-ai-hub/)** · [Contribute](CONTRIBUTING.md) · [Suggest a paper](https://github.com/BinWang28/audio-ai-hub/issues/new?template=add-paper.yml)\n\n> The page below is a quick snapshot. For search, filtering by category and sorting by stars or date, the **[live site](https://binwang28.github.io/audio-ai-hub/)** is much faster than scrolling this README.\n\n---\n\n## ⭐ Featured\n\n_Top 8 by GitHub stars — refreshed weekly by `.github/workflows/refresh-stars.yml`._\n\n| # | Project | Stars | What it does |\n|---|---------|-------|--------------|\n| 1 | **[Whisper](https://arxiv.org/abs/2212.04356)** | ⭐ 105k+ | Whisper is OpenAI's open-source speech recognition model trained on 680K hours of multilingual and multitask supervised data from the web. |\n| 2 | **[VoxCPM2](https://arxiv.org/abs/2606.06928)** | ⭐ 34k+ | VoxCPM2 is a fully open-source 2B-parameter multilingual, controllable speech generation foundation model extending VoxCPM's hierarchical… |\n| 3 | **[MMS](https://arxiv.org/abs/2305.13516)** | ⭐ 32k+ | MMS (Massively Multilingual Speech) extends speech foundation models (wav2vec 2.0) to 1,107 languages for ASR and adds TTS and language i… |\n| 4 | **[MiniCPM-o](https://arxiv.org/abs/2604.27393)** | ⭐ 26k+ | MiniCPM-o 4.5 is OpenBMB's compact (8B-class) full-duplex omni-modal LLM supporting real-time vision, speech, and text interaction with l… |\n| 5 | **[MusicGen](https://arxiv.org/abs/2306.05284)** | ⭐ 23k+ | MusicGen is Meta's single-stage autoregressive transformer for controllable text-conditioned music generation, operating over discrete En… |\n| 6 | **[AudioGen](https://arxiv.org/abs/2209.15352)** | ⭐ 23k+ | AudioGen is a transformer-based autoregressive model for text-to-environmental-sound generation, trained on discrete audio tokens. |\n| 7 | **[CosyVoice 3](https://arxiv.org/abs/2505.17589)** | ⭐ 22k+ | CosyVoice 3 scales the CosyVoice TTS stack with significantly larger pre-training data and a dedicated post-training stage, targeting in-… |\n| 8 | **[CosyVoice 2](https://arxiv.org/abs/2412.10117)** | ⭐ 22k+ | CosyVoice 2 is Alibaba's streaming TTS LLM, combining a unified speech tokenizer with a streaming-friendly LLM backbone to enable bidirec… |\n\n## 🆕 Recently added\n\n_The 10 most recent entries by date. See the [interactive site](https://binwang28.github.io/audio-ai-hub/) for everything else._\n\n- `2026-06` · [ACA-SER](https://arxiv.org/abs/2606.07309) — A probing study testing whether instruction-following audio language models use explicit acoustic concept tokens (six interpretable cues derived from the eGeMAPS feature set: en…\n- `2026-06` · [AVSR-Gen](https://arxiv.org/abs/2606.07259) — Introduces MV2LRS3, a controlled unseen test set subsampled from MultiVSR to strictly match the acoustic, visual, and demographic distribution of LRS3, and shows that five state…\n- `2026-06` · [Audio-Oscar](https://arxiv.org/abs/2606.07397) — Audio-Oscar is a multi-agent framework that coordinates specialist agents (character and voice design, speech generation, fine-grained timeline planning, model selection, non-sp…\n- `2026-06` · [CogAudio-LLM](https://arxiv.org/abs/2606.06940) — CogAudio-LLM is a cognitive affective reasoning framework for audio language models that counters textual semantic dominance over acoustic nuance.\n- `2026-06` · [DSFA](https://arxiv.org/abs/2606.07494) — Proposes Domain-Shift Feature Augmentation (DSFA), which turns deterministic feature statistics into stochastic distributions during fine-tuning to simulate in-the-wild variatio…\n- `2026-06` · [KIT-IWSLT2026](https://arxiv.org/abs/2606.07240) — KIT's cross-lingual voice cloning system for the IWSLT 2026 track, built on the multilingual TTS model FishAudio-S2-Pro.\n- `2026-06` · [VoxCPM2](https://arxiv.org/abs/2606.06928) — VoxCPM2 is a fully open-source 2B-parameter multilingual, controllable speech generation foundation model extending VoxCPM's hierarchical diffusion-autoregressive paradigm.\n- `2026-06` · [dots.tts](https://arxiv.org/abs/2606.07080) — dots.tts is a 2B-parameter continuous autoregressive TTS foundation model that models speech in a continuous latent space, combining an AudioVAE trained with multiple objectives…\n- `2026-05` · [BEA-Dialogue+](https://arxiv.org/abs/2605.31469) — BEA-Dialogue+ is an expanded conversational Hungarian ASR corpus that relaxes the strictly speaker-disjoint split of BEA-Dialogue while preserving separation of the primary spea…\n- `2026-05` · [Chatterbox-Flash](https://arxiv.org/abs/2605.30748) — Chatterbox-Flash is a zero-shot TTS model created by fine-tuning a pretrained autoregressive TTS decoder into a block-diffusion decoder, enabling parallel token generation withi…\n\n## 📚 What's inside\n\n| Category | Entries |\n|----------|--------:|\n| [Model and Methods](https://binwang28.github.io/audio-ai-hub/#cat=Model%20and%20Methods) | 60 |\n| [Speech Recognition](https://binwang28.github.io/audio-ai-hub/#cat=Speech%20Recognition) | 6 |\n| [Speech Synthesis](https://binwang28.github.io/audio-ai-hub/#cat=Speech%20Synthesis) | 13 |\n| [Audio Generation](https://binwang28.github.io/audio-ai-hub/#cat=Audio%20Generation) | 9 |\n| [Benchmark](https://binwang28.github.io/audio-ai-hub/#cat=Benchmark) | 19 |\n| [Dataset Resource](https://binwang28.github.io/audio-ai-hub/#cat=Dataset%20Resource) | 3 |\n| [Multimodal](https://binwang28.github.io/audio-ai-hub/#cat=Multimodal) | 6 |\n| [Survey](https://binwang28.github.io/audio-ai-hub/#cat=Survey) | 4 |\n| [Study](https://binwang28.github.io/audio-ai-hub/#cat=Study) | 3 |\n| [Safety](https://binwang28.github.io/audio-ai-hub/#cat=Safety) | 3 |\n| [Chatbot](https://binwang28.github.io/audio-ai-hub/#cat=Chatbot) | 3 |\n| **Total** | **129** |\n\nEach row links ",
+    "latestRelease": null,
+    "otherCandidates": [
+      {
+        "name": "wildminder/awesome-ai-voice",
+        "stars": 396,
+        "description": "List of open-source TTS, voice cloning, and music generation models"
+      },
+      {
+        "name": "AceDataCloud/Nexior",
+        "stars": 385,
+        "description": "Consumer AI app for chat, image generation, video generation, and music creation powered by Ace Data Cloud APIs."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: Sonauto – A more controllable AI music creator",
+    "url": "https://sonauto.ai/",
+    "hnUrl": "https://news.ycombinator.com/item?id=39992817",
+    "points": 454,
+    "numComments": 235,
+    "createdAt": "2024-04-10T16:48:01Z"
+  }
+}

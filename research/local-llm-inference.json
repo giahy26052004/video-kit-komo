@@ -2,13 +2,13 @@
   "query": "local llm inference",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-30T12:05:43.791Z",
+  "fetchedAt": "2026-07-30T14:34:06.647Z",
   "github": {
     "source": "github",
     "name": "Andyyyy64/whichllm",
     "description": "Find the local LLM that actually runs and performs best on your hardware. Ranked by real, recency-aware benchmarks, not parameter count. One command, run it instantly.",
     "url": "https://github.com/Andyyyy64/whichllm",
-    "stars": 6056,
+    "stars": 6065,
     "language": "Python",
     "homepage": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/105579829?v=4",
@@ -37,7 +37,7 @@
       },
       {
         "name": "EricLBuehler/candle-vllm",
-        "stars": 703,
+        "stars": 704,
         "description": "Efficent platform for inference and serving local LLMs including an OpenAI compatible API server."
       }
     ]

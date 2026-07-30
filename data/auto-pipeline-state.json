@@ -1,5 +1,5 @@
 {
-  "queryIndex": 30,
+  "queryIndex": 33,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -30,6 +30,7 @@
     "easydiffusion/easydiffusion",
     "lucidrains/PaLM-rlhf-pytorch",
     "topoteretes/cognee",
-    "vercel-labs/agent-browser"
+    "vercel-labs/agent-browser",
+    "BinWang28/audio-ai-hub"
   ]
 }
