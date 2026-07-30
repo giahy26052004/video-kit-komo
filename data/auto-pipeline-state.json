@@ -1,5 +1,5 @@
 {
-  "queryIndex": 34,
+  "queryIndex": 35,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -33,6 +33,7 @@
     "vercel-labs/agent-browser",
     "BinWang28/audio-ai-hub",
     "MGdaasLab/WHartTest",
-    "the-open-agent/openagent"
+    "the-open-agent/openagent",
+    "modelcontextprotocol/servers"
   ]
 }
