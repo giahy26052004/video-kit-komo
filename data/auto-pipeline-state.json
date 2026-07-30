@@ -1,5 +1,5 @@
 {
-  "queryIndex": 23,
+  "queryIndex": 24,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -19,6 +19,8 @@
     "Kiln-AI/Kiln",
     "NVIDIA/Model-Optimizer",
     "netdata/netdata",
-    "Blaizzy/mlx-vlm"
+    "Blaizzy/mlx-vlm",
+    "tirth8205/code-review-graph",
+    "crewAIInc/crewAI"
   ]
 }

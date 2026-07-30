@@ -1,0 +1,54 @@
+{
+  "query": "autonomous agents framework",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-30T02:24:06.592Z",
+  "github": {
+    "source": "github",
+    "name": "crewAIInc/crewAI",
+    "description": "Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks.",
+    "url": "https://github.com/crewAIInc/crewAI",
+    "stars": 56343,
+    "language": "Python",
+    "homepage": "https://crewai.com",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/170677839?v=4",
+    "pushedAt": "2026-07-29T21:42:55Z",
+    "readmeExcerpt": "<p align=\"center\">\n  <a href=\"https://github.com/crewAIInc/crewAI\">\n    <img src=\"docs/images/crewai_logo.png\" width=\"600px\" alt=\"Open source Multi-AI Agent orchestration framework\">\n  </a>\n</p>\n<p align=\"center\" style=\"display: flex; justify-content: center; gap: 20px; align-items: center;\">\n  <a href=\"https://trendshift.io/repositories/11239\" target=\"_blank\">\n    <img src=\"https://trendshift.io/api/badge/repositories/11239\" alt=\"crewAIInc%2FcrewAI | Trendshift\" style=\"width: 250px; height: 55px;\" width=\"250\" height=\"55\"/>\n  </a>\n</p>\n\n<p align=\"center\">\n  <a href=\"https://crewai.com\">Homepage</a>\n  ·\n  <a href=\"https://crewai.com/open-source\">Open Source</a>\n  ·\n  <a href=\"https://docs.crewai.com\">Docs</a>\n  ·\n  <a href=\"https://app.crewai.com\">Start Cloud Trial</a>\n  ·\n  <a href=\"https://blog.crewai.com\">Blog</a>\n  ·\n  <a href=\"https://community.crewai.com\">Forum</a>\n</p>\n\n<p align=\"center\">\n  <a href=\"https://github.com/crewAIInc/crewAI\">\n    <img src=\"https://img.shields.io/github/stars/crewAIInc/crewAI\" alt=\"GitHub Repo stars\">\n  </a>\n  <a href=\"https://github.com/crewAIInc/crewAI/network/members\">\n    <img src=\"https://img.shields.io/github/forks/crewAIInc/crewAI\" alt=\"GitHub forks\">\n  </a>\n  <a href=\"https://github.com/crewAIInc/crewAI/issues\">\n    <img src=\"https://img.shields.io/github/issues/crewAIInc/crewAI\" alt=\"GitHub issues\">\n  </a>\n  <a href=\"https://github.com/crewAIInc/crewAI/pulls\">\n    <img src=\"https://img.shields.io/github/issues-pr/crewAIInc/crewAI\" alt=\"GitHub pull requests\">\n  </a>\n  <a href=\"https://opensource.org/licenses/MIT\">\n    <img src=\"https://img.shields.io/badge/License-MIT-green.svg\" alt=\"License: MIT\">\n  </a>\n</p>\n\n<p align=\"center\">\n  <a href=\"https://pypi.org/project/crewai/\">\n    <img src=\"https://img.shields.io/pypi/v/crewai\" alt=\"PyPI version\">\n  </a>\n  <a href=\"https://pypi.org/project/crewai/\">\n    <img src=\"https://img.shields.io/pypi/dm/crewai\" alt=\"PyPI downloads\">\n  </a>\n  <a href=\"https://twitter.com/crewAIInc\">\n    <img src=\"https://img.shields.io/twitter/follow/crewAIInc?style=social\" alt=\"Twitter Follow\">\n  </a>\n</p>\n\n### Fast and Flexible Multi-Agent Automation Framework\n\n> CrewAI is an open-source Python framework with high-level abstractions and low-level APIs for building production-ready multi-agent workflows.\n> It gives developers autonomous agent collaboration through Crews and precise, event-driven control through Flows.\n\n- **CrewAI Crews**: Optimize for autonomy and collaborative intelligence with role-based AI agents.\n- **CrewAI Flows**: Build event-driven automations that combine precise workflow control, single LLM calls, and native support for Crews.\n\nWith over 100,000 developers certified through our community courses at [learn.crewai.com](https://learn.crewai.com), CrewAI is rapidly becoming the\nstandard for production-ready agentic automation.\n\n# CrewAI AMP Suite\n\nFor organizations that need a commercial control plane around CrewAI, [CrewAI AMP Suite](https://www.crewai.com/enterprise) adds managed deployment, observability, governance, security, and enterprise support.\n\nYou can try one part of the suite, the [Crew Control Plane, for free](https://app.crewai.com).\n\n## Crew Control Plane Key Features:\n\n- **Tracing & Observability**: Monitor and track your AI agents and workflows in real-time, including metrics, logs, and traces.\n- **Unified Control Plane**: A centralized platform for managing, monitoring, and scaling your AI agents and workflows.\n- **Seamless Integrations**: Easily connect with existing enterprise systems, data sources, and cloud infrastructure.\n- **Advanced Security**: Built-in robust security and compliance measures ensuring safe deployment and management.\n- **Actionable Insights**: Real-time analytics and reporting to optimize performance and decision-making.\n- **24/7 Support**: Dedicated enterprise support to ensure uninterrupted operation and quick resolution of issues.\n- **On-premise and Cloud Deployment Options**: Deploy CrewAI AMP on-premise or in the cloud, depending on your security and compliance requirements.\n\nCrewAI AMP is designed for enterprises seeking a powerful, reliable solution to transform complex business processes into efficient,\nintelligent automations.\n\n## Table of contents\n\n- [Build with AI](#build-with-ai)\n- [Why CrewAI?](#why-crewai)\n- [Getting Started](#getting-started)\n- [Key Features](#key-features)\n- [Understanding Flows and Crews](#understanding-flows-and-crews)\n- [Examples](#examples)\n  - [Quick Tutorial](#quick-tutorial)\n  - [Write Job Descriptions](#write-job-descriptions)\n  - [Trip Planner](#trip-planner)\n  - [Stock Analysis](#stock-analysis)\n  - [Using Crews and Flows Together](#using-crews-and-flows-together)\n- [Connecting Your Crew to a Model](#connecting-your-crew-to-a-model)\n- [When to Use CrewAI](#when-to-use-crewai)\n- [Contribution](#contribution)\n- [Telemetry](#telemetry)\n- [License](#license)\n- [Frequently Asked Questions (FAQ)](#frequently-asked-questions-faq)\n\n## Build with AI\n\nUsing an AI coding agent? Teach it CrewAI best practices in one command:\n\n**Claude Code:**\n```shell\n/plugin marketplace add crewAIInc/skills\n/plugin install crewai-skills@crewai-plugins\n/reload-plugins\n```\nFour skills that activate automatically when you ask relevant CrewAI questions:\n\n| Skill | When it runs |\n|-------|--------------|\n| `getting-started` | Scaffolding new projects, choosing between `LLM.call()` / `Agent` / `Crew` / `Flow`, wiring `crew.py` / `main.py` |\n| `design-agent` | Configuring agents — role, goal, backstory, tools, LLMs, memory, guardrails |\n| `design-task` | Writing task descriptions, dependencies, structured output (`output_pydantic`, `output_json`), human review |\n| `ask-docs` | Querying the live [CrewAI docs MCP server](https://docs.crewai.com/mcp) for up-to-date API details |\n\n**Cursor, Codex, Windsurf, and others ([skills.sh](https://skills.sh/crewaiinc/skills)):**\n```shell\nnpx skills add crewaiinc/skills\n```\n\nThis installs the official [CrewAI Skills](ht",
+    "latestRelease": {
+      "tag": "1.15.8",
+      "name": "1.15.8",
+      "body": "## What's Changed\n\n### Features\n- Add WaitTool for pausing on long-running jobs.\n\n### Bug Fixes\n- Fix FileWriterTool writes and address rough edges in file tool.\n- Mark E2B_API_KEY as a required env var for E2B tools.\n\n### Documentation\n- Refresh model availability guidance.\n\n## Contributors\n\n@github-actions[bot], @joaomdmoura, @lucasgomide, @oalami, @thiagomoretto"
+    },
+    "otherCandidates": [
+      {
+        "name": "elizaOS/eliza",
+        "stars": 18831,
+        "description": "Open source agentic operating system"
+      },
+      {
+        "name": "agent0ai/agent-zero",
+        "stars": 18634,
+        "description": "Agent Zero AI framework"
+      },
+      {
+        "name": "wanshuiyin/Auto-claude-code-research-in-sleep",
+        "stars": 14009,
+        "description": "ARIS ⚔️ (Auto-Research-In-Sleep) — Lightweight Markdown-only skills for autonomous ML research: cross-model review loops, idea discovery, and experiment automation. No framework, no lock-in — works with Claude Code, Codex, OpenClaw, or any LLM agent."
+      },
+      {
+        "name": "MervinPraison/PraisonAI",
+        "stars": 8521,
+        "description": "PraisonAI 🦞 — Hire a 24/7 AI Workforce. Stop writing boilerplate and start shipping autonomous self-improving agents that research, plan, code, and execute tasks. Deployed in 5 lines of code with built-in memory, RAG, and support for 100+ LLMs."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: Hephaestus – Autonomous Multi-Agent Orchestration Framework",
+    "url": "https://github.com/Ido-Levi/Hephaestus",
+    "hnUrl": "https://news.ycombinator.com/item?id=45796897",
+    "points": 81,
+    "numComments": 14,
+    "createdAt": "2025-11-03T08:14:34Z"
+  }
+}

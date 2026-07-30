@@ -21,6 +21,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { localizeContent, suggestSearchQuery } from "./llm_localize.mjs";
 
 const KIT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const STATE_PATH = path.join(KIT_ROOT, "data", "auto-pipeline-state.json");
@@ -35,6 +36,10 @@ const QUERY_POOL = [
   "reinforcement learning human feedback", "knowledge graph ai", "browser automation agent",
   "local llm inference", "ai note taking", "ai music generation", "test generation ai",
   "model context protocol",
+  // Công nghệ + crypto/blockchain (theo yêu cầu mở rộng phạm vi ngoài AI thuần)
+  "crypto trading bot", "blockchain node", "smart contract security", "defi protocol",
+  "web3 wallet", "solana development", "ethereum layer 2", "crypto data indexer",
+  "developer productivity tool", "open source database", "self hosted app",
 ];
 
 const RETRY_WAIT_SECONDS = 14400; // 4 tiếng — hardcode, không dùng cron ngoài
@@ -68,32 +73,49 @@ function stripMarkdown(text, maxLen) {
   return plain.length > maxLen ? `${plain.slice(0, maxLen).trim()}...` : plain;
 }
 
-function pickTopic(state) {
+function tryQuery(query, state) {
+  console.log(`[pick] thử query: "${query}"`);
+  execFileSync("node", [path.join(KIT_ROOT, "scripts/research_topic.mjs"), query, "--days", "14", "--min-stars", "300"], {
+    cwd: KIT_ROOT,
+    stdio: "inherit",
+  });
+  const researchPath = path.join(KIT_ROOT, "research", `${slugify(query)}.json`);
+  const research = JSON.parse(fs.readFileSync(researchPath, "utf8"));
+  if (!research.github) return null; // không có repo phù hợp
+  if (state.usedRepos.includes(research.github.name)) {
+    console.log(`  repo "${research.github.name}" đã dùng rồi -> bỏ qua query này`);
+    return null;
+  }
+  return research;
+}
+
+async function pickTopic(state) {
+  // Ưu tiên hỏi KomoAPI gợi ý 1 chủ đề mới (đa dạng hơn, tránh chỉ xoay vòng
+  // list cứng, và tự né các mảng đã làm rồi dựa trên usedRepos).
+  const suggested = await suggestSearchQuery(state.usedRepos);
+  if (suggested) {
+    try {
+      const research = tryQuery(suggested, state);
+      if (research) return { query: suggested, research };
+    } catch (e) {
+      console.warn(`  query gợi ý "${suggested}" lỗi (${e.message}) -> fallback QUERY_POOL`);
+    }
+  }
+
   for (let i = 0; i < QUERY_POOL.length; i++) {
     const idx = (state.queryIndex + i) % QUERY_POOL.length;
     const query = QUERY_POOL[idx];
-    console.log(`[pick] thử query: "${query}"`);
-    execFileSync("node", [path.join(KIT_ROOT, "scripts/research_topic.mjs"), query, "--days", "14", "--min-stars", "300"], {
-      cwd: KIT_ROOT,
-      stdio: "inherit",
-    });
-    const researchPath = path.join(KIT_ROOT, "research", `${slugify(query)}.json`);
-    const research = JSON.parse(fs.readFileSync(researchPath, "utf8"));
     state.queryIndex = idx + 1;
-    if (!research.github) continue; // không có repo phù hợp -> thử query tiếp
-    const repoName = research.github.name;
-    if (state.usedRepos.includes(repoName) && i < QUERY_POOL.length - 1) {
-      console.log(`  repo "${repoName}" đã dùng rồi -> thử query khác`);
-      continue;
-    }
-    return { query, research };
+    const research = tryQuery(query, state);
+    if (research) return { query, research };
   }
   throw new Error("không tìm được chủ đề mới sau khi thử hết QUERY_POOL");
 }
 
-function buildScript(research, slug, workspace) {
+async function buildScript(research, slug, workspace) {
   const gh = research.github;
   const hn = research.hackernews;
+  const loc = await localizeContent(gh, hn); // dịch/tóm tắt tiếng Anh -> tiếng Việt (onscreen ngắn + voice đầy đủ)
   const websiteUrl = gh.homepage ? gh.homepage.replace(/^https?:\/\//i, "").replace(/\/$/, "") : null;
   const githubUrlShort = gh.url.replace(/^https?:\/\//i, "");
   const releasesUrlShort = `${githubUrlShort}/releases`;
@@ -136,9 +158,10 @@ function buildScript(research, slug, workspace) {
     imageMode: "screen",
     imageSrc: hookAsset.imageSrc,
     browserUrl: hookAsset.browserUrl,
+    title: `🔥 ${gh.name.split("/").pop()}`,
     voice_text: `Một dự án AI đang gây chú ý với ${gh.stars.toLocaleString("vi-VN")} sao trên GitHub.`,
     sfx: "impact",
-    sfxVolume: 0.14,
+    sfxVolume: 0.1,
   });
 
   const descAsset = assetFor("repo", "website", "releases");
@@ -147,9 +170,10 @@ function buildScript(research, slug, workspace) {
     imageMode: "screen",
     imageSrc: descAsset.imageSrc,
     browserUrl: descAsset.browserUrl,
-    voice_text: `${gh.name}. ${stripMarkdown(gh.description, 200)}`,
+    title: loc.desc_onscreen || gh.name,
+    voice_text: loc.desc_voice || `${gh.name}. ${stripMarkdown(gh.description, 200)}`,
     sfx: "whoosh",
-    sfxVolume: 0.16,
+    sfxVolume: 0.11,
   });
 
   if (hasReleaseShot) {
@@ -159,9 +183,10 @@ function buildScript(research, slug, workspace) {
       imageMode: "screen",
       imageSrc: releaseAsset.imageSrc,
       browserUrl: releaseAsset.browserUrl,
-      voice_text: `Bản cập nhật mới nhất: ${stripMarkdown(gh.latestRelease.name, 80)}. ${stripMarkdown(gh.latestRelease.body, 160)}`,
+      title: loc.release_onscreen || "Bản cập nhật mới nhất",
+      voice_text: loc.release_voice || `Bản cập nhật mới nhất: ${stripMarkdown(gh.latestRelease.name, 80)}. ${stripMarkdown(gh.latestRelease.body, 160)}`,
       sfx: "transition",
-      sfxVolume: 0.3,
+      sfxVolume: 0.2,
     });
   }
   if (hasHn) {
@@ -171,9 +196,10 @@ function buildScript(research, slug, workspace) {
       imageMode: "screen",
       imageSrc: hnAsset.imageSrc,
       browserUrl: hnAsset.browserUrl,
-      voice_text: `Chủ đề "${stripMarkdown(hn.title, 60)}" đang được bàn luận nhiều trên Hacker News với ${hn.points} điểm và ${hn.numComments} bình luận.`,
+      title: loc.hn_onscreen || "Đang hot trên Hacker News",
+      voice_text: loc.hn_voice || `Chủ đề "${stripMarkdown(hn.title, 60)}" đang được bàn luận nhiều trên Hacker News với ${hn.points} điểm và ${hn.numComments} bình luận.`,
       sfx: "ui",
-      sfxVolume: 0.35,
+      sfxVolume: 0.24,
     });
   }
   slides.push({
@@ -183,7 +209,7 @@ function buildScript(research, slug, workspace) {
     endCard: true,
     showWatermark: false,
     sfx: "laser",
-    sfxVolume: 0.13,
+    sfxVolume: 0.09,
     endCardCTAs: [{ label: "GITHUB", value: githubUrlShort }],
   });
 
@@ -195,7 +221,7 @@ function buildScript(research, slug, workspace) {
     height: 1920,
     fps: 30,
     music,
-    musicVolume: 0.08,
+    musicVolume: 0.05,
     slides,
   };
 }
@@ -268,7 +294,7 @@ async function main() {
   const skipPublish = process.argv.includes("--skip-publish");
 
   const state = loadState();
-  const { query, research } = pickTopic(state);
+  const { query, research } = await pickTopic(state);
   const baseSlug = slugify(research.github.name);
   const slug = fs.existsSync(path.join(KIT_ROOT, "out", baseSlug))
     ? `${baseSlug}-${Date.now().toString().slice(-5)}`
@@ -289,7 +315,7 @@ async function main() {
 
   // Build script SAU khi có ảnh thật, để biết chính xác ảnh nào chụp thành công
   // (asset_collector có thể fail 1 vài cái, vd. HN chặn bot).
-  const script = buildScript(research, slug, workspace);
+  const script = await buildScript(research, slug, workspace);
   fs.writeFileSync(path.join(projectDir, "script.json"), JSON.stringify(script, null, 2));
   fs.writeFileSync(path.join(projectDir, "review-input.json"), JSON.stringify(buildReviewInput(slug), null, 2));
 
@@ -321,8 +347,12 @@ async function main() {
   }
   try {
     execFileSync("node", [path.join(KIT_ROOT, "scripts/publish_facebook.mjs"), slug], { cwd: KIT_ROOT, stdio: "inherit" });
+    // Đăng thành công -> video đã an toàn trên Facebook, xoá bản local cho đỡ nặng máy.
+    fs.rmSync(projectDir, { recursive: true, force: true });
+    console.log(`[${slug}] đã xoá thư mục local (video đã đăng Facebook, không cần giữ nữa).`);
+    execFileSync("node", [path.join(KIT_ROOT, "scripts/build_gallery.mjs")], { cwd: KIT_ROOT, stdio: "inherit" });
   } catch (e) {
-    console.error(`[${slug}] đăng Facebook thất bại (token có thể hết hạn) — bỏ qua, video vẫn render xong:`, e.message);
+    console.error(`[${slug}] đăng Facebook thất bại (token có thể hết hạn) — giữ lại video local, bỏ qua:`, e.message);
   }
 }
 

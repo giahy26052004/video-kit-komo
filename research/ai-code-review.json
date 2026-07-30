@@ -1,0 +1,54 @@
+{
+  "query": "ai code review",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-30T02:15:14.417Z",
+  "github": {
+    "source": "github",
+    "name": "tirth8205/code-review-graph",
+    "description": "Local-first code intelligence graph for MCP and CLI. Builds a persistent map of your codebase so AI coding tools read only what matters, with benchmarked context reductions on reviews and large-repo workflows.",
+    "url": "https://github.com/tirth8205/code-review-graph",
+    "stars": 27586,
+    "language": "Python",
+    "homepage": "https://code-review-graph.com",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/68604113?v=4",
+    "pushedAt": "2026-07-27T23:02:07Z",
+    "readmeExcerpt": "<h1 align=\"center\">code-review-graph</h1>\n\n<p align=\"center\">\n  <a href=\"https://trendshift.io/repositories/23329?utm_source=repository-badge&amp;utm_medium=badge&amp;utm_campaign=badge-repository-23329\"\n     target=\"_blank\"\n     rel=\"noopener noreferrer\">\n    <img src=\"https://trendshift.io/api/badge/repositories/23329\"\n         alt=\"tirth8205%2Fcode-review-graph | Trendshift\"\n         width=\"250\"\n         height=\"55\" />\n  </a>\n</p>\n\n<p align=\"center\">\n  <strong>Stop burning tokens. Start reviewing smarter.</strong>\n</p>\n<p align=\"center\">\n  <a href=\"README.md\">English</a> |\n  <a href=\"README.zh-CN.md\">简体中文</a> |\n  <a href=\"README.ja-JP.md\">日本語</a> |\n  <a href=\"README.ko-KR.md\">한국어</a> |\n  <a href=\"README.hi-IN.md\">हिन्दी</a>\n</p>\n\n<p align=\"center\">\n  <a href=\"https://pypi.org/project/code-review-graph/\"><img src=\"https://img.shields.io/pypi/v/code-review-graph?style=flat-square&color=blue\" alt=\"PyPI\"></a>\n  <a href=\"https://pepy.tech/project/code-review-graph\"><img src=\"https://img.shields.io/pepy/dt/code-review-graph?style=flat-square\" alt=\"Downloads\"></a>\n  <a href=\"https://github.com/tirth8205/code-review-graph/stargazers\"><img src=\"https://img.shields.io/github/stars/tirth8205/code-review-graph?style=flat-square\" alt=\"Stars\"></a>\n  <a href=\"https://opensource.org/licenses/MIT\"><img src=\"https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square\" alt=\"MIT Licence\"></a>\n  <a href=\"https://github.com/tirth8205/code-review-graph/actions/workflows/ci.yml\"><img src=\"https://github.com/tirth8205/code-review-graph/actions/workflows/ci.yml/badge.svg\" alt=\"CI\"></a>\n  <a href=\"https://www.python.org/\"><img src=\"https://img.shields.io/badge/python-3.10%2B-blue.svg?style=flat-square\" alt=\"Python 3.10+\"></a>\n  <a href=\"https://modelcontextprotocol.io/\"><img src=\"https://img.shields.io/badge/MCP-compatible-green.svg?style=flat-square\" alt=\"MCP\"></a>\n  <a href=\"https://code-review-graph.com\"><img src=\"https://img.shields.io/badge/website-code--review--graph.com-blue?style=flat-square\" alt=\"Website\"></a>\n  <a href=\"https://discord.gg/3p58KXqGFN\"><img src=\"https://img.shields.io/badge/discord-join-5865F2?style=flat-square&logo=discord&logoColor=white\" alt=\"Discord\"></a>\n</p>\n\n<p align=\"center\">\n  <a href=\"docs/USAGE.md\">Usage</a> ·\n  <a href=\"docs/COMMANDS.md\">Commands</a> ·\n  <a href=\"docs/FAQ.md\">FAQ</a> ·\n  <a href=\"docs/TROUBLESHOOTING.md\">Troubleshooting</a> ·\n  <a href=\"docs/GITHUB_ACTION.md\">GitHub Action</a> ·\n  <a href=\"docs/REPRODUCING.md\">Reproducing the benchmarks</a> ·\n  <a href=\"docs/ROADMAP.md\">Roadmap</a>\n</p>\n\n<br>\n\nAI coding tools can end up re-reading large parts of your codebase on review tasks. `code-review-graph` fixes that. It builds a structural map of your code with [Tree-sitter](https://tree-sitter.github.io/tree-sitter/), tracks changes incrementally, and gives your AI assistant precise context via [MCP](https://modelcontextprotocol.io/) so it reads only what matters.\n\n<p align=\"center\">\n  <img src=\"diagrams/diagram1_before_vs_after.png\" alt=\"The Token Problem: 38x to 528x token reduction across 6 real repositories\" width=\"85%\" />\n</p>\n\n---\n\n## Quick Start\n\n```bash\npip install code-review-graph                     # or: pipx install code-review-graph\ncode-review-graph install          # auto-detects and configures all supported platforms\ncode-review-graph build            # parse your codebase\n```\n\nOne command sets up everything. `install` detects which AI coding tools you have, writes the correct MCP configuration for each one, installs platform-native hooks/skills where supported, and injects graph-aware instructions into your platform rules. It auto-detects whether you installed via `uvx` or `pip`/`pipx` and generates the right config. Restart your editor/tool after installing.\n\n<p align=\"center\">\n  <img src=\"diagrams/diagram8_supported_platforms.png\" alt=\"One Install, Every Platform: auto-detects Codex, Claude Code, CodeBuddy Code, Cursor, Windsurf, Zed, Continue, OpenCode, Antigravity, Gemini CLI, Qwen, Qoder, Kiro, and GitHub Copilot\" width=\"85%\" />\n</p>\n\nTo target a specific platform:\n\n```bash\ncode-review-graph install --platform codex       # configure only Codex\ncode-review-graph install --platform cursor      # configure only Cursor\ncode-review-graph install --platform claude-code  # configure only Claude Code\ncode-review-graph install --platform gemini-cli   # configure only Gemini CLI\ncode-review-graph install --platform kiro         # configure only Kiro\ncode-review-graph install --platform copilot      # configure only GitHub Copilot (VS Code)\ncode-review-graph install --platform copilot-cli  # configure only GitHub Copilot CLI\ncode-review-graph install --platform codebuddy    # configure only CodeBuddy Code\n```\n\nRequires Python 3.10+. For the best experience, install [uv](https://docs.astral.sh/uv/) (the MCP config will use `uvx` if available, otherwise falls back to the `code-review-graph` command directly).\n\nTo remove CRG from a Git or SVN project, use the symmetric uninstall command\nfrom anywhere inside its working tree. The target is normalized to the working\ntree root, and non-repository directories are refused. It removes only\nCRG-owned files and entries; unrelated MCP servers, hooks, skills, and JSONC\ncomments remain untouched. Shared configuration changes use atomic replacement\nso a failed write leaves the original file intact.\n\n```bash\ncode-review-graph uninstall --dry-run    # preview every action; write nothing\ncode-review-graph uninstall              # preview, ask for confirmation, then apply\ncode-review-graph uninstall --yes        # apply without prompting\ncode-review-graph uninstall --all-repos  # also clean every registered repository\ncode-review-graph uninstall --keep-data  # remove integrations but keep graph databases\ncode-review-graph uninstall --keep-user-configs --repo .  # clean this project only\n```\n\nThen open your project and ask your AI assistant:\n\n```\nBuild the code review graph for this project\n```\n\nThe initial build ",
+    "latestRelease": {
+      "tag": "v2.3.7",
+      "name": "v2.3.7",
+      "body": "## code-review-graph 2.3.7\n\nMaintainer-reconciliation release containing the verified work merged since v2.3.6. The four client-validation drafts remain excluded. No breaking changes.\n\n### Highlights\n\n- expanded CLI-first workflows, CommonJS parsing, quiet/JSON output, enrichment, and dead-code analysis\n- broader Terraform, Ansible, VB.NET, SystemVerilog, Rust, PHP/Laravel, Julia, Python, C#, Java, Spring, and WebFlux graph coverage\n- bounded transitive test coverage, churn risk, weighted impact ranking, graph provenance, documentation-aware embeddings, and safe JSON export\n- safer uninstall and platform configuration, including CodeBuddy and official OpenCode contracts\n- hardened MCP concurrency, daemon lifecycle, Windows process handling, Git path parsing, ignore rules, community detection, and visualization layout\n- updated supported dependency and GitHub Action versions, plus secure fork-PR review handling\n- closed all three open high-severity CodeQL alerts\n\n### Validation\n\n- release PR: 15/15 checks passed\n- merged main commit: 13/13 checks passed\n- wheel and source distribution built successfully with version 2.3.7\n\nSee [CHANGELOG.md](https://github.com/tirth8205/code-review-graph/blob/v2.3.7/CHANGELOG.md) for the detailed release notes and PR references.\n"
+    },
+    "otherCandidates": [
+      {
+        "name": "builderz-labs/mission-control",
+        "stars": 5875,
+        "description": "Self-hosted control plane for AI agents: dispatch tasks, review runs, track spend, and operate OpenClaw, Claude Code, Codex, and other runtimes."
+      },
+      {
+        "name": "darrenhinde/OpenAgentsControl",
+        "stars": 4655,
+        "description": "AI agent framework for plan-first development workflows with approval-based execution. Multi-language support (TypeScript, Python, Go, Rust) with automatic testing, code review, and validation built for OpenCode"
+      },
+      {
+        "name": "lowdefy/lowdefy",
+        "stars": 2996,
+        "description": "Build apps that AI can generate, humans can review, and teams can maintain. Config that works between code and natural language."
+      },
+      {
+        "name": "sourcery-ai/sourcery",
+        "stars": 1849,
+        "description": "Instant AI code reviews"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "There is an AI code review bubble",
+    "url": "https://www.greptile.com/blog/ai-code-review-bubble",
+    "hnUrl": "https://news.ycombinator.com/item?id=46766961",
+    "points": 351,
+    "numComments": 249,
+    "createdAt": "2026-01-26T15:38:50Z"
+  }
+}
