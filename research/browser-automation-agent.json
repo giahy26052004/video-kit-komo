@@ -1,0 +1,54 @@
+{
+  "query": "browser automation agent",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-30T12:05:44.340Z",
+  "github": {
+    "source": "github",
+    "name": "vercel-labs/agent-browser",
+    "description": "Browser automation CLI for AI agents",
+    "url": "https://github.com/vercel-labs/agent-browser",
+    "stars": 39544,
+    "language": "Rust",
+    "homepage": "https://agent-browser.dev",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/108547162?v=4",
+    "pushedAt": "2026-07-28T06:17:07Z",
+    "readmeExcerpt": "# agent-browser\n\nBrowser automation CLI for AI agents. Fast native Rust CLI.\n\n[![skills.sh](https://skills.sh/b/vercel-labs/agent-browser)](https://skills.sh/vercel-labs/agent-browser)\n\n## Installation\n\n### Global Installation (recommended)\n\nInstalls the native Rust binary:\n\n```bash\nnpm install -g agent-browser\nagent-browser install  # Download Chrome from Chrome for Testing (first time only)\n```\n\n### Project Installation (local dependency)\n\nFor projects that want to pin the version in `package.json`:\n\n```bash\nnpm install agent-browser\nagent-browser install\n```\n\nThen use via `package.json` scripts or by invoking `agent-browser` directly.\n\n### Homebrew (macOS)\n\n```bash\nbrew install agent-browser\nagent-browser install  # Download Chrome from Chrome for Testing (first time only)\n```\n\n### Cargo (Rust)\n\n```bash\ncargo install agent-browser\nagent-browser install  # Download Chrome from Chrome for Testing (first time only)\n```\n\n### From Source\n\nRequires Node.js 24+, pnpm 11+, and Rust.\n\n```bash\ngit clone https://github.com/vercel-labs/agent-browser\ncd agent-browser\npnpm install\npnpm build\npnpm build:native   # Requires Rust (https://rustup.rs)\npnpm link --global  # Makes agent-browser available globally\nagent-browser install\n```\n\n### Linux Dependencies\n\nOn Linux, install system dependencies:\n\n```bash\nagent-browser install --with-deps\n```\n\nThis exits nonzero if the package manager cannot install every required browser library.\n\n### Updating\n\nUpgrade to the latest version:\n\n```bash\nagent-browser upgrade\n```\n\nDetects your installation method (npm, Homebrew, or Cargo) and runs the appropriate update command automatically.\n\n### Requirements\n\n- **Chrome** - Run `agent-browser install` to download Chrome from [Chrome for Testing](https://developer.chrome.com/blog/chrome-for-testing/) (Google's official automation channel). Existing Chrome, Brave, Playwright, and Puppeteer installations are detected automatically. No Playwright or Node.js required for the daemon.\n- **Node.js 24+ and pnpm 11+** - Only needed when building from source.\n- **Rust** - Only needed when building from source (see From Source above).\n\n## Quick Start\n\n```bash\nagent-browser open example.com\nagent-browser snapshot                    # Get accessibility tree with refs\nagent-browser click @e2                   # Click by ref from snapshot\nagent-browser fill @e3 \"test@example.com\" # Fill by ref\nagent-browser get text @e1                # Get text by ref\nagent-browser screenshot page.png\nagent-browser close\n```\n\nClicks fail early when another element covers the target's click point, for example a consent banner or modal. Dismiss or interact with the reported covering element, then take a fresh snapshot before retrying the original ref.\n\nHeadless Chromium screenshots hide native scrollbars for consistent image output. Pass `--hide-scrollbars false` when launching to keep native scrollbars visible.\n\n### Traditional Selectors (also supported)\n\n```bash\nagent-browser click \"#submit\"\nagent-browser fill \"#email\" \"test@example.com\"\nagent-browser find role button click --name \"Submit\"\n```\n\n## Commands\n\n### Core Commands\n\n```bash\nagent-browser open                    # Launch browser (no navigation); stays on about:blank\nagent-browser open <url>              # Launch + navigate to URL (aliases: goto, navigate)\nagent-browser read [url]              # Fetch agent-readable text, or read rendered active-tab DOM\nagent-browser click <sel>             # Click element (--new-tab to open in new tab)\nagent-browser dblclick <sel>          # Double-click element\nagent-browser focus <sel>             # Focus element\nagent-browser type <sel> <text>       # Type into element\nagent-browser fill <sel> <text>       # Clear and fill\nagent-browser press <key>             # Press key (Enter, Tab, Control+a) (alias: key)\nagent-browser keyboard type <text>    # Type with real keystrokes (no selector, current focus)\nagent-browser keyboard inserttext <text>  # Insert text without key events (no selector)\nagent-browser keydown <key>           # Hold key down\nagent-browser keyup <key>             # Release key\nagent-browser hover <sel>             # Hover element\nagent-browser select <sel> <val>      # Select dropdown option\nagent-browser check <sel>             # Check checkbox\nagent-browser uncheck <sel>           # Uncheck checkbox\nagent-browser scroll <dir> [px]       # Scroll (up/down/left/right, --selector <sel>)\nagent-browser scrollintoview <sel>    # Scroll element into view (alias: scrollinto)\nagent-browser drag <src> <tgt>        # Drag and drop\nagent-browser upload <sel> <files>    # Upload files\nagent-browser screenshot [path]       # Take screenshot (--full for full page, saves to a temporary directory if no path)\nagent-browser screenshot --annotate   # Annotated screenshot with numbered element labels\nagent-browser screenshot --screenshot-dir ./shots    # Save to custom directory\nagent-browser screenshot --screenshot-format jpeg --screenshot-quality 80\nagent-browser pdf <path>              # Save as PDF\nagent-browser snapshot                # Accessibility tree with refs (best for AI)\nagent-browser eval <js>               # Run JavaScript (-b for base64, --stdin for piped input)\nagent-browser connect <port>          # Connect to browser via CDP\nagent-browser stream enable [--port <port>]  # Start runtime WebSocket streaming\nagent-browser stream status           # Show runtime streaming state and bound port\nagent-browser stream disable          # Stop runtime WebSocket streaming\nagent-browser close                   # Close browser (aliases: quit, exit)\nagent-browser close --all             # Close all active sessions\nagent-browser chat \"<instruction>\"    # AI chat: natural language browser control (single-shot)\nagent-browser chat                    # AI chat: interactive REPL mode\n```\n\n### Get Info\n\n```bash\nagent-browser get text <sel>          # Get text content\nagent-browser get html <sel>          # Get innerHTML\nagent-browser get value <sel>         # Ge",
+    "latestRelease": {
+      "tag": "v0.33.1",
+      "name": "v0.33.1",
+      "body": "### Behavior Changes\n\n- The daemon now ships a **default idle timeout of 1 hour**: after an hour with no commands or dashboard input it saves configured restore state, closes the browser, and exits, so integrations that die without calling `close` no longer leak the daemon and its Chrome tree indefinitely. Sessions without `--restore` or another restore key discard transient browser state and open tabs when they shut down. Set `AGENT_BROWSER_IDLE_TIMEOUT_MS=0` to restore the old always-persist behavior, or any other value to tune it. Dashboard mouse, keyboard, and touch input reset the timer. The default never closes headed browsers, including Safari and iOS WebDriver sessions, or user-attached browsers that may be in direct human use. Provider-owned cloud browsers remain eligible for cleanup, and an explicitly configured timeout applies to all browsers, as before (#1605)\n\n### Bug Fixes\n\n- Fixed **tab recovery and selection** to avoid daemon hangs on Memory Saver-discarded tabs by selecting a live renderer on CDP connect, reviving tabs on switch or after close, treating dialog-blocked tabs as live, preserving refs on rejected operations, and surfacing recovery state across CLI, JSON, and MCP output (#1543)\n- Fixed **a11y selector errors** to report invalid CSS selectors cleanly instead of exposing raw browser evaluation stack traces in text and JSON output (#1604)\n\n### Contributors\n\n- @ctate\n- @Railly\n- @joelhooks\n- @jadenfix\n"
+    },
+    "otherCandidates": [
+      {
+        "name": "jo-inc/camofox-browser",
+        "stars": 8191,
+        "description": "Stealth headless browser for AI agents — bypass Cloudflare, bot detection, and anti-scraping. Drop-in Puppeteer/Playwright replacement."
+      },
+      {
+        "name": "citrolabs/ego-lite",
+        "stars": 6285,
+        "description": "The fastest browser for AI agents to run browser automation, built for sharing your logged-in browser state with your AI agents, like Codex or Claude Code, without disturbing you. Zero cost, zero config."
+      },
+      {
+        "name": "browser-act/skills",
+        "stars": 4988,
+        "description": "Browser automation CLI built for AI agents. Break through anti-bot walls, hand off to humans across platforms when stuck. Parallel multi-task execution, independent multi-session operation, isolated multi-account browsing."
+      },
+      {
+        "name": "nottelabs/notte",
+        "stars": 1986,
+        "description": "Best cloud browser infrastructure and web automation platform for your AI (Coding) agents!"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: Webctl – Browser automation for agents based on CLI instead of MCP",
+    "url": "https://github.com/cosinusalpha/webctl",
+    "hnUrl": "https://news.ycombinator.com/item?id=46616481",
+    "points": 134,
+    "numComments": 38,
+    "createdAt": "2026-01-14T14:34:40Z"
+  }
+}

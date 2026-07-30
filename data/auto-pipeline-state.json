@@ -1,5 +1,5 @@
 {
-  "queryIndex": 29,
+  "queryIndex": 30,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -29,6 +29,7 @@
     "Anil-matcha/Open-Generative-AI",
     "easydiffusion/easydiffusion",
     "lucidrains/PaLM-rlhf-pytorch",
-    "topoteretes/cognee"
+    "topoteretes/cognee",
+    "vercel-labs/agent-browser"
   ]
 }
