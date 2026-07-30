@@ -83,6 +83,7 @@ function main() {
     fps,
     ...(script.preset ? { preset: script.preset } : {}),
     ...(script.brand ? { brand: script.brand } : {}),
+    ...(script.music ? { music: script.music } : {}),
     slides,
   };
 

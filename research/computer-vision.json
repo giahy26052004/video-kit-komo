@@ -1,0 +1,53 @@
+{
+  "query": "computer vision",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-29T09:04:29.084Z",
+  "github": {
+    "source": "github",
+    "name": "opencv/opencv",
+    "description": "Open Source Computer Vision Library",
+    "url": "https://github.com/opencv/opencv",
+    "stars": 90188,
+    "language": "C++",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/5009934?v=4",
+    "pushedAt": "2026-07-29T08:01:38Z",
+    "readmeExcerpt": "## OpenCV: Open Source Computer Vision Library\n\n\n### Resources\n\n* Homepage: <https://opencv.org>\n  * Courses: <https://opencv.org/courses>\n* Docs: <https://docs.opencv.org/4.x/>\n* Q&A forum: <https://forum.opencv.org>\n  * previous forum (read only): <https://answers.opencv.org>\n* Issue tracking: <https://github.com/opencv/opencv/issues>\n* Additional OpenCV functionality: <https://github.com/opencv/opencv_contrib>\n* Donate to OpenCV: <https://opencv.org/support/>\n\n\n### Contributing\n\nPlease read the [contribution guidelines](https://github.com/opencv/opencv/wiki/How_to_contribute) before starting work on a pull request.\n\n#### Summary of the guidelines:\n\n* One pull request per issue;\n* Choose the right base branch;\n* Include tests and documentation;\n* Clean up \"oops\" commits before submitting;\n* Follow the [coding style guide](https://github.com/opencv/opencv/wiki/Coding_Style_Guide).\n\n### Additional Resources\n\n* [Submit your OpenCV-based project](https://form.jotform.com/233105358823151) for inclusion in Community Friday on opencv.org\n* [Subscribe to the OpenCV YouTube Channel](https://youtube.com/@opencvofficial) featuring OpenCV Live, an hour-long streaming show\n* [Follow OpenCV on LinkedIn](https://linkedin.com/company/opencv/) for daily posts showing the state-of-the-art in computer vision & AI\n* [Apply to be an OpenCV Volunteer](https://form.jotform.com/232745316792159) to help organize events and online campaigns as well as amplify them\n* [Follow OpenCV on Mastodon](https://mastodon.social/@opencv) in the Fediverse\n* [Follow OpenCV on Twitter](https://twitter.com/opencvlive)\n* [OpenCV.ai](https://opencv.ai): Computer Vision and AI development services from the OpenCV team.\n",
+    "latestRelease": {
+      "tag": "5.0.0",
+      "name": "OpenCV 5.0.0",
+      "body": "OpenCV 5.0.0 released!\r\n\r\nOpenCV 5.0.0 overview: https://opencv.org/opencv-5\r\nOpenCV 4.x -> 5.x migration guide: https://github.com/opencv/opencv/wiki/OpenCV-4-to-5-migration\r\n\r\n**NOTE:** The original Android SDK  was built with old NDK and includes standard C++ library not properly aligned for devices with 16kb pages. Please use the package with \"16kb-page-fix\" suffix for Google Play releases."
+    },
+    "otherCandidates": [
+      {
+        "name": "roboflow/supervision",
+        "stars": 48457,
+        "description": "We write your reusable computer vision tools. 💜"
+      },
+      {
+        "name": "Skyvern-AI/skyvern",
+        "stars": 22616,
+        "description": "Automate browser based workflows with AI"
+      },
+      {
+        "name": "pytorch/vision",
+        "stars": 17842,
+        "description": "Datasets, Transforms and Models specific to Computer Vision"
+      },
+      {
+        "name": "cvat-ai/cvat",
+        "stars": 16411,
+        "description": "Computer Vision Annotation Tool (CVAT) is a leading platform for building high-quality visual datasets for vision AI. It offers open-source, cloud, and enterprise products, as well as labeling services, for image, video, and 3D annotation with AI-assisted labeling, quality assurance, team collaboration, analytics, and developer APIs."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "OpenCV 5 Is Here: The Biggest Leap in Years for Computer Vision",
+    "url": "https://opencv.org/opencv-5/",
+    "hnUrl": "https://news.ycombinator.com/item?id=48421858",
+    "points": 865,
+    "numComments": 148,
+    "createdAt": "2026-06-06T06:02:28Z"
+  }
+}

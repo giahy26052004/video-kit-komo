@@ -1,0 +1,24 @@
+{
+  "queryIndex": 23,
+  "usedRepos": [
+    "obra/superpowers",
+    "huggingface/transformers",
+    "infiniflow/ragflow",
+    "opencv/opencv",
+    "Fission-AI/OpenSpec",
+    "NVIDIA-NeMo/Speech",
+    "redis/redis",
+    "jamiepine/voicebox",
+    "deepset-ai/haystack",
+    "bitsandbytes-foundation/bitsandbytes",
+    "Genesis-Embodied-AI/genesis-world",
+    "alibaba/MNN",
+    "IBM/AssetOpsBench",
+    "cobusgreyling/loop-engineering",
+    "meilisearch/meilisearch",
+    "Kiln-AI/Kiln",
+    "NVIDIA/Model-Optimizer",
+    "netdata/netdata",
+    "Blaizzy/mlx-vlm"
+  ]
+}

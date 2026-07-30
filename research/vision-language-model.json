@@ -1,0 +1,54 @@
+{
+  "query": "vision language model",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-30T01:42:17.183Z",
+  "github": {
+    "source": "github",
+    "name": "Blaizzy/mlx-vlm",
+    "description": "MLX-VLM is a package for inference and fine-tuning of Vision Language Models (VLMs) on your Mac using MLX.",
+    "url": "https://github.com/Blaizzy/mlx-vlm",
+    "stars": 5269,
+    "language": "Python",
+    "homepage": null,
+    "avatarUrl": "https://avatars.githubusercontent.com/u/23445657?v=4",
+    "pushedAt": "2026-07-29T18:23:31Z",
+    "readmeExcerpt": "[![Upload Python Package](https://github.com/Blaizzy/mlx-vlm/actions/workflows/python-publish.yml/badge.svg)](https://github.com/Blaizzy/mlx-vlm/actions/workflows/python-publish.yml)\n# MLX-VLM\n\nMLX-VLM is a package for inference and fine-tuning of Vision Language Models (VLMs) and Omni Models (VLMs with audio and video support) on your Mac using MLX.\n\n## Table of Contents\n- [Installation](#installation)\n- [Usage](#usage)\n  - [Command Line Interface (CLI)](#command-line-interface-cli)\n    - [Thinking Budget](#thinking-budget)\n  - [Speculative Decoding](#speculative-decoding)\n    - [DFlash (Qwen3.5)](#dflash-qwen35)\n    - [Gemma 4 MTP](#gemma-4-mtp)\n    - [Gemma 4 EAGLE-3](#gemma-4-eagle-3)\n    - [MiniMax M3 EAGLE-3](#minimax-m3-eagle-3)\n  - [Chat UI with Gradio](#chat-ui-with-gradio)\n  - [Python Script](#python-script)\n  - [Server (FastAPI)](#server-fastapi)\n    - [Continuous Batching](#continuous-batching)\n    - [Automatic Prefix Caching (APC)](#automatic-prefix-caching-apc)\n    - [KV Cache Quantization](#kv-cache-quantization)\n- [1-bit Affine Inference](#1-bit-affine-inference)\n- [Activation Quantization (CUDA)](#activation-quantization-cuda)\n- [Multi-Image Chat Support](#multi-image-chat-support)\n  - [Supported Models](#supported-models)\n  - [Usage Examples](#usage-examples)\n- [Model-Specific Documentation](#model-specific-documentation)\n- [Vision Feature Caching](#vision-feature-caching)\n- [TurboQuant KV Cache](#turboquant-kv-cache)\n- [Distributed Inference](#distributed-inference)\n- [Fine-tuning](#fine-tuning)\n\n## Model-Specific Documentation\n\nSome models have detailed documentation with prompt formats, examples, and best practices:\n\n| Model | Documentation |\n|-------|---------------|\n| DeepSeek-OCR | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/deepseekocr/README.md) |\n| DeepSeek-OCR-2 | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/deepseekocr_2/README.md) |\n| Unlimited-OCR | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/unlimited_ocr/README.md) |\n| DOTS-OCR | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/dots_ocr/README.md) |\n| DOTS-MOCR | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/dots_ocr/README.md) |\n| ERNIE 4.5 VL | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/ernie4_5_moe_vl/README.md) |\n| GLM-OCR | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/glm_ocr/README.md) |\n| Phi-4 Reasoning Vision | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/phi4_siglip/README.md) |\n| MiniCPM-o | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/minicpmo/README.md) |\n| PaddleOCR-VL | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/paddleocr_vl/README.md) |\n| Phi-4 Multimodal | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/phi4mm/README.md) |\n| MolmoPoint | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/molmo_point/README.md) |\n| LocateAnything | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/locateanything/README.md) |\n| Moondream2 | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/moondream2/README.md) |\n| Moondream3 | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/moondream3/README.md) |\n| Gemma 4 | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/gemma4/README.md) |\n| MiniMax M3 | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/minimax_m3_vl/README.md) |\n| Falcon-OCR | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/falcon_ocr/README.md) |\n| Granite Vision 3.2 | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/granite_vision/README.md) |\n| Granite 4.0 Vision | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/granite4_vision/README.md) |\n| MiniCPM-V 4.6 | [Docs](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/models/minicpmv4_6/README.md) |\n\n## Installation\n\nThe easiest way to get started is to install the `mlx-vlm` package using pip:\n\n```sh\npip install -U mlx-vlm\n```\n\nThe [Gradio chat UI](#chat-ui-with-gradio) needs an extra dependency that is not\npart of the base install:\n\n```sh\npip install -U 'mlx-vlm[ui]'\n```\n\nQuote the package name so that shells which expand square brackets, such as\n`zsh`, do not treat `[ui]` as a glob pattern.\n\n## Usage\n\n### Command Line Interface (CLI)\n\nGenerate output from a model using the CLI:\n\n```sh\n# Text generation\nmlx_vlm.generate --model mlx-community/Qwen2-VL-2B-Instruct-4bit --max-tokens 100 --prompt \"Hello, how are you?\"\n\n# Image generation\nmlx_vlm.generate --model mlx-community/Qwen2-VL-2B-Instruct-4bit --max-tokens 100 --temperature 0.0 --image http://images.cocodataset.org/val2017/000000039769.jpg\n\n# Audio generation (New)\nmlx_vlm.generate --model mlx-community/gemma-3n-E2B-it-4bit --max-tokens 100 --prompt \"Describe what you hear\" --audio /path/to/audio.wav\n\n# Multi-modal generation (Image + Audio)\nmlx_vlm.generate --model mlx-community/gemma-3n-E2B-it-4bit --max-tokens 100 --prompt \"Describe what you see and hear\" --image /path/to/image.jpg --audio /path/to/audio.wav\n```\n\n#### Thinking Budget\n\nFor thinking models (e.g., Qwen3.5), you can limit the number of tokens spent in the thinking block:\n\n```sh\nmlx_vlm.generate --model mlx-community/Qwen3.5-2B-4bit \\\n  --thinking-budget 50 \\\n  --thinking-start-token \"<think>\" \\\n  --thinking-end-token \"</think>\" \\\n  --enable-thinking \\\n  --prompt \"Solve 2+2\"\n```\n\n| Flag | Description |\n|------|-------------|\n| `--enable-thinking` | Activate thinking mode in the chat template |\n| `--thinking-budget` | Max tokens allowed inside the thinking block |\n| `--thinking-start-token` | Token that opens a thinking block (default: `<think>`) |\n| `--thinking-end-token` | Token that closes a thinking block (default: `</think>`) |\n\nWhen the budget is exceeded, the model is forced to emit `\\n</think>` and transition to the answer. If `--",
+    "latestRelease": {
+      "tag": "v0.6.8",
+      "name": "v0.6.8",
+      "body": "## What's Changed\r\n* Vendor standard models by @Lazarus-931 in https://github.com/Blaizzy/mlx-vlm/pull/1702\r\n* Fix Laguna XS NVFP4 sanitizer by @Blaizzy in https://github.com/Blaizzy/mlx-vlm/pull/1667\r\n* Add Mage-Flow image model by @lucasnewman in https://github.com/Blaizzy/mlx-vlm/pull/1708\r\n* Authenticate inference API routes by @Blaizzy in https://github.com/Blaizzy/mlx-vlm/pull/1714\r\n* Awq quant by @Lazarus-931 in https://github.com/Blaizzy/mlx-vlm/pull/1666\r\n* Support mixed-precision compressed-tensors checkpoints (fp8 + NVFP4) by @Lazarus-931 in https://github.com/Blaizzy/mlx-vlm/pull/1711\r\n* Fix Responses instructions for Qwen chat templates by @Blaizzy in https://github.com/Blaizzy/mlx-vlm/pull/1716\r\n* Return model loading failures as bad requests by @Blaizzy in https://github.com/Blaizzy/mlx-vlm/pull/1717\r\n* Allow image editing with FLUX.2-klein-4b by @lucasnewman in https://github.com/Blaizzy/mlx-vlm/pull/1729\r\n* gpt_oss: honor per-layer mixed quantization (mxfp4 experts + 8-bit affine) by @Lazarus-931 in https://github.com/Blaizzy/mlx-vlm/pull/1728\r\n* Support quantized FLUX.2 models by @lucasnewman in https://github.com/Blaizzy/mlx-vlm/pull/1730\r\n* Add PLaMo 2.1 VL (plamo2vl) model support by @takuyaomi in https://github.com/Blaizzy/mlx-vlm/pull/1739\r\n* Add llm-jp-4-vl (llmjpvl) model support by @takuyaomi in https://github.com/Blaizzy/mlx-vlm/pull/1738\r\n* Fix chunked MRoPE positions across Qwen VL models by @Blaizzy in https://github.com/Blaizzy/mlx-vlm/pull/1741\r\n* Fix multi-image SFT grid collation by @Blaizzy in https://github.com/Blaizzy/mlx-vlm/pull/1744\r\n\r\n## New Contributors\r\n* @takuyaomi made their first contribution in https://github.com/Blaizzy/mlx-vlm/pull/1739\r\n\r\n**Full Changelog**: https://github.com/Blaizzy/mlx-vlm/compare/v0.6.7...v0.6.8"
+    },
+    "otherCandidates": [
+      {
+        "name": "jonyzhang2023/awesome-embodied-vla-va-vln",
+        "stars": 3421,
+        "description": "A curated list of state-of-the-art research in embodied AI, focusing on vision-language-action (VLA) models, vision-language navigation (VLN), and related multimodal learning approaches. "
+      },
+      {
+        "name": "starVLA/starVLA",
+        "stars": 3329,
+        "description": "StarVLA: A Lego-like Codebase for Vision-Language-Action Model Developing"
+      },
+      {
+        "name": "SkyworkAI/Skywork-R1V",
+        "stars": 3161,
+        "description": "Skywork-R1V is an advanced multimodal AI model series developed by Skywork AI, specializing in vision-language reasoning."
+      },
+      {
+        "name": "NVIDIA-AI-Blueprints/video-search-and-summarization",
+        "stars": 1756,
+        "description": "NVIDIA AI Blueprint for video search and summarization (VSS) is a GPU-accelerated reference architecture for building video analytics agents with real-time verified alerts, visual Q&A, and automated reporting. The VSS Blueprint uses vision language models (VLMs) such as NVIDIA Cosmos, LLMs such as NVIDIA Nemotron, RAG, and NVIDIA NIMs."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Vision language models are blind",
+    "url": "https://vlmsareblind.github.io/",
+    "hnUrl": "https://news.ycombinator.com/item?id=40926734",
+    "points": 451,
+    "numComments": 191,
+    "createdAt": "2024-07-10T13:35:22Z"
+  }
+}

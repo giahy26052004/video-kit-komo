@@ -1,0 +1,53 @@
+{
+  "query": "text to speech ai",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-29T09:05:02.042Z",
+  "github": {
+    "source": "github",
+    "name": "NVIDIA-NeMo/Speech",
+    "description": "A scalable generative AI framework built for researchers and developers working on Large Language Models, Multimodal, and Speech AI (Automatic Speech Recognition and Text-to-Speech)",
+    "url": "https://github.com/NVIDIA-NeMo/Speech",
+    "stars": 17831,
+    "language": "Python",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/213689629?v=4",
+    "pushedAt": "2026-07-29T06:52:50Z",
+    "readmeExcerpt": "[![Project Status: Active -- The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)\n[![CodeQL](https://github.com/nvidia/nemo/actions/workflows/codeql.yml/badge.svg?branch=main&event=push)](https://github.com/nvidia/nemo/actions/workflows/codeql.yml)\n[![NeMo core license and license for collections in this repo](https://img.shields.io/badge/License-Apache%202.0-brightgreen.svg)](https://github.com/NVIDIA/NeMo/blob/master/LICENSE)\n[![Release version](https://badge.fury.io/py/nemo-toolkit.svg)](https://badge.fury.io/py/nemo-toolkit)\n[![Python version](https://img.shields.io/pypi/pyversions/nemo-toolkit.svg)](https://badge.fury.io/py/nemo-toolkit)\n[![PyPi total downloads](https://static.pepy.tech/personalized-badge/nemo-toolkit?period=total&units=international_system&left_color=grey&right_color=brightgreen&left_text=downloads)](https://pepy.tech/project/nemo-toolkit)\n[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)\n\n# **NVIDIA NeMo Speech**\nCheckout our [HuggingFace🤗 collection](https://huggingface.co/collections/nvidia/nemotron-speech) for the latest open\nweight checkpoints and demos!\n\n## Updates\n\n> The first release of NeMo Speech after NeMo repository split is scheduled for June 2026, as the repo undergoes transformation.\n> For the latest stable released version, please use [the 26.02 NGC container](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/nemo?version=26.02).\n\n- 2026-06: [Nemotron-3.5-ASR-Streaming-0.6B](https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b) has been released with 40 languages supported, controllable latency 80ms-1s, and 240-2400 1xH100 concurrent streams. Built on cache-aware Fastconformer architecture.\n- 2026-04: [Parakeet-unified-en-0.6b](https://huggingface.co/nvidia/parakeet-unified-en-0.6b) has been released with high-quality offline and streaming (with a minimum latency of 160ms) inference in one model for English language with punctuation and capitalization support. \n- 2026-03: [Nemotron 3 VoiceChat](https://build.nvidia.com/nvidia/nemotron-voicechat/modelcard) is now released in Early Access. Built on the Nemotron Nano v2 LLM backbone with Nemotron speech and TTS decoder, VoiceChat delivers full-duplex, natural, interruptible conversations with low latency. Try out [the demo](https://build.nvidia.com/nvidia/nemotron-voicechat) and apply for [early access](https://developer.nvidia.com/nemotron-voicechat-early-access).\n- 2026-03: [Nemotron-Speech-Streaming v2603](https://huggingface.co/nvidia/nemotron-speech-streaming-en-0.6b) has been\n    updated. It has been trained on a larger and more diverse corpus, resulting in lower WER across all latency modes.\n    Try out [the demo](https://huggingface.co/spaces/nvidia/nemotron-speech-streaming-en-0.6b) and check out\n    [the NIM](https://build.nvidia.com/nvidia/nemotron-asr-streaming).\n- 2026-03: [MagpieTTS v2602](https://huggingface.co/nvidia/magpie_tts_multilingual_357m) has been released with support\n    for 9 languages(En, Es, De, Fr, Vi, It, Zh, Hi, Ja). Try out\n    [the demo](https://huggingface.co/nvidia/magpie_tts_multilingual_357m) and check out\n    [the NIM](https://build.nvidia.com/nvidia/magpie-tts-multilingual).\n- 2026-01: Nemotron-Speech-Streaming was released: One checkpoint that enables users to pick their optimal point\n    on the latency-accuracy Pareto curve!\n- 2026-01: MagpieTTS was released.\n- 2026: This repo has pivoted to focus on audio, speech, and multimodal LLM. For the last NeMo release with support for more\n    modalities, see [v2.7.0](https://github.com/NVIDIA-NeMo/NeMo/releases/tag/v2.7.0)\n- 2025-08: [Parakeet V3](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) and\n    [Canary V2](https://huggingface.co/nvidia/canary-1b-v2) have been released with speech recognition and translation\n    support for 25 European languages.\n- 2025-06: [Canary-Qwen-2.5B](https://huggingface.co/nvidia/canary-qwen-2.5b) has been released with record-setting\n    5.63% WER on English Open ASR Leaderboard.\n\n## Introduction\n\nNVIDIA NeMo Speech is built for researchers and PyTorch developers working on Speech models including Automatic Speech\nRecognition (ASR), Text to Speech (TTS), and Speech LLMs. It is designed to help you efficiently create, customize, and\ndeploy new AI models by leveraging existing code and pre-trained model checkpoints.\n\nFor technical documentation, please see the\n[NeMo Framework User Guide](https://docs.nvidia.com/nemo/speech/nightly/).\n\n## Requirements\n\nNeMo Speech works with the **Python, PyTorch, and CUDA versions of your choosing**:\n\n- Python 3.12 or above\n- PyTorch 2.7 or above (CPU, CUDA, etc. — your choice)\n- NVIDIA GPU + CUDA (required for training; recommended for inference)\n\nIf you already have a Python/PyTorch/CUDA stack that satisfies those minimums, NeMo Speech installs on top of it **without replacing it**, so your existing PyTorch build is kept (see the install options below). The versions pinned in `uv.lock` and shipped in the official container — Python 3.13, PyTorch 2.12, CUDA 12.6/13.2 — are simply the combination we actively test and support. They make setup turnkey and reproducible, but they are **not** a hard requirement.\n\nAs of [Pytorch 2.6](https://docs.pytorch.org/docs/stable/notes/serialization.html#torch-load-with-weights-only-true),\n`torch.load` defaults to using `weights_only=True`. Some model checkpoints may require using `weights_only=False`.\nIn this case, you can set the env var `TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD=1` before running code that uses `torch.load`.\nHowever, this should only be done with trusted files. Loading files from untrusted sources with more than weights only\ncan have the risk of arbitrary code execution.\n\n## Developer Documentation\n\n| Version |  Description                                                                                     |\n| ----",
+    "latestRelease": {
+      "tag": "v2.7.3",
+      "name": "NVIDIA Neural Modules 2.7.3",
+      "body": "### Highlights\r\n\r\n- This release addresses known security issues. For the latest NVIDIA Vulnerability Disclosure Information visit <https://www.nvidia.com/en-us/security/>, for acknowledgement please reach out to the NVIDIA PSIRT team at <PSIRT@nvidia.com>\r\n\r\n## Uncategorized:\r\n\r\n<details><summary>Changelog</summary>\r\n\r\n- beep boop 🤖: Bumping nemo to v2.7.3 by @nemo-automation-bot[bot] :: PR: #15552\r\n- remove experimental sclite file by @nithinraok :: PR: #15572\r\n- fix: Remove nemo_class arg in import_hf.py by @chtruong814 :: PR: #15596\r\n- fix: Use RestrictedUnpickler in nemo.lightning.io.mixin by @chtruong814 :: PR: #15597\r\n- cp: `fix: Remove diskcache from requirements (15630)` into `r2.7.0` by @chtruong814 :: PR: #15635\r\n\r\n</details>\r\n"
+    },
+    "otherCandidates": [
+      {
+        "name": "buxuku/SmartSub",
+        "stars": 4373,
+        "description": "视频转字幕、字幕翻译、AI 配音与声音克隆、字幕烧录——免费开源的一站式桌面工具。基于 Whisper / FunASR 等本地模型离线语音转文字，批量处理 + 全平台 GPU 加速，跨 Windows / macOS / Linux。Free, open-source desktop app to generate, translate, dub & burn video subtitles — local Whisper speech-to-text, AI dubbing & voice cloning, offline, GPU-accelerated."
+      },
+      {
+        "name": "off-grid-ai/OGAM",
+        "stars": 2834,
+        "description": "The Swiss Army Knife of Offline AI. Chat, see, speak, and generate images on your phone or Mac — GGUF LLMs, vision, Whisper speech-to-text, Stable Diffusion, tool calling, and local-network servers. Runs on your CPU, GPU, or NPU. No account, no API key, zero data leaves your device."
+      },
+      {
+        "name": "TypeWhisper/typewhisper-mac",
+        "stars": 1646,
+        "description": "Local speech-to-text for macOS  on-device AI, fully private, optional cloud"
+      },
+      {
+        "name": "kubeai-project/kubeai",
+        "stars": 1233,
+        "description": "AI Inference Operator for Kubernetes. The easiest way to serve ML models in production. Supports VLMs, LLMs, embeddings, and speech-to-text."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "The state of modern AI text to speech systems for screen reader users",
+    "url": "https://stuff.interfree.ca/2026/01/05/ai-tts-for-screenreaders.html",
+    "hnUrl": "https://news.ycombinator.com/item?id=46730346",
+    "points": 102,
+    "numComments": 47,
+    "createdAt": "2026-01-23T09:24:27Z"
+  }
+}

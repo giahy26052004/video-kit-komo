@@ -42,6 +42,9 @@ case "${TTS_BACKEND:-fish}" in
     ;;
 esac
 
+echo "▶ Chuẩn bị nhạc nền + hiệu ứng âm thanh (nếu script.json có khai báo)"
+node "$KIT_ROOT/scripts/prepare_media_assets.mjs" "$PROJECT"
+
 if [[ "$ALIGN_MODE" == "script" ]]; then
   echo "▶ [2/4] Script-timed caption align (demo-quality, no Whisper download)"
   "$PYTHON" "$KIT_ROOT/scripts/align.py" "$PROJECT" --legacy-char-ratio

@@ -19,9 +19,16 @@ Usage:
 """
 import argparse
 import json
+import os
 from pathlib import Path
 
 from tts import extract_text
+
+# Project gốc build cho tiếng Trung nên Whisper mặc định ép language="zh". Với nội
+# dung tiếng Việt (hoặc ngôn ngữ khác) phải đổi qua WHISPER_LANGUAGE=vi, nếu không
+# Whisper cố nhận diện audio như tiếng Trung => sai ranh giới từ => phụ đề lệch thời gian.
+WHISPER_LANGUAGE = os.environ.get("WHISPER_LANGUAGE", "zh").strip() or "zh"
+WHISPER_INITIAL_PROMPT = "以下是简体中文的内容。" if WHISPER_LANGUAGE == "zh" else None
 
 
 def caption_source_for_slide(slide: dict) -> str:
@@ -37,11 +44,10 @@ def transcribe(wav_path: Path, model, fps: int, t2s=None):
         word_timestamps=True,
         vad_filter=False,
         # Whisper auto-detects but for short clips it can guess wrong.
-        # Hint Chinese explicitly so we get reliable results on CN content.
-        language="zh",
-        # Bias toward simplified Chinese vocab. Whisper still emits
-        # traditional sometimes; we post-process with opencc below.
-        initial_prompt="以下是简体中文的内容。",
+        # Hint ngôn ngữ thật (mặc định zh cho tương thích ngược) qua WHISPER_LANGUAGE.
+        language=WHISPER_LANGUAGE,
+        # Prompt tiếng Trung chỉ áp dụng khi language=zh; ngôn ngữ khác thì bỏ qua.
+        initial_prompt=WHISPER_INITIAL_PROMPT,
     )
     captions = []
     # Group ~8 words per caption line for readability
@@ -225,8 +231,8 @@ def captions_from_script_whisper_aligned(text: str, wav_path: Path, fps: int, mo
         str(wav_path),
         word_timestamps=True,
         vad_filter=False,
-        language="zh",
-        initial_prompt="以下是简体中文的内容。",
+        language=WHISPER_LANGUAGE,
+        initial_prompt=WHISPER_INITIAL_PROMPT,
     )
     # Build per-character end-time map from whisper words.
     whisper_char_times = []  # list of cumulative end times, one per char
@@ -310,7 +316,7 @@ def main() -> int:
     script_path = project / "script.json"
     script = None
     if script_path.exists() and not args.force_whisper:
-        script = json.loads(script_path.read_text())
+        script = json.loads(script_path.read_text(encoding="utf-8"))
 
     result = {}
     whisper_model = None
@@ -329,12 +335,15 @@ def main() -> int:
             nonlocal whisper_model, t2s
             if whisper_model is None:
                 from faster_whisper import WhisperModel
-                try:
-                    from opencc import OpenCC
-                    t2s = OpenCC("t2s")
-                except ImportError:
-                    print("opencc not installed; captions may contain traditional chars")
-                    t2s = None
+                if WHISPER_LANGUAGE == "zh":
+                    try:
+                        from opencc import OpenCC
+                        t2s = OpenCC("t2s")
+                    except ImportError:
+                        print("opencc not installed; captions may contain traditional chars")
+                        t2s = None
+                else:
+                    t2s = None  # OpenCC chỉ có ý nghĩa với tiếng Trung
                 whisper_model = WhisperModel(args.model, device="auto", compute_type="int8")
             return whisper_model, t2s
 
@@ -351,7 +360,7 @@ def main() -> int:
             result[idx] = transcribe(wav, wm, args.fps, t2s=ts)
 
     out = workspace / "captions.json"
-    out.write_text(json.dumps(result, ensure_ascii=False, indent=2))
+    out.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"→ {out}")
     return 0
 

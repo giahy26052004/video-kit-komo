@@ -1,0 +1,54 @@
+{
+  "query": "vector database",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-29T12:18:16.557Z",
+  "github": {
+    "source": "github",
+    "name": "redis/redis",
+    "description": "For developers, who are building real-time data-driven applications, Redis is the preferred, fastest, and most feature-rich cache, data structure server, and document and vector query engine.",
+    "url": "https://github.com/redis/redis",
+    "stars": 75746,
+    "language": "C",
+    "homepage": "http://redis.io",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/1529926?v=4",
+    "pushedAt": "2026-07-29T08:23:38Z",
+    "readmeExcerpt": "[![codecov](https://codecov.io/github/redis/redis/graph/badge.svg?token=6bVHb5fRuz)](https://codecov.io/github/redis/redis)\n\nThis document serves as both a quick start guide to Redis and a detailed resource for building it from source.\n\n- New to Redis? Start with [What is Redis](#what-is-redis) and [Getting Started](#getting-started)\n- Ready to build from source? Jump to [Build Redis from Source](#build-redis-from-source)\n- Want to contribute? See the [Code contributions](#code-contributions) section\n  and [CONTRIBUTING.md](./CONTRIBUTING.md)\n- Looking for detailed documentation? Navigate to [redis.io/docs](https://redis.io/docs/)\n\n## Table of contents\n\n- [What is Redis?](#what-is-redis)\n  - [Key use cases](#key-use-cases)\n- [Why choose Redis?](#why-choose-redis)\n- [What is Redis Open Source?](#what-is-redis-open-source)\n- [Getting started](#getting-started)\n  - [Redis starter projects](#redis-starter-projects)\n  - [Using Redis with client libraries](#using-redis-with-client-libraries)\n  - [Using Redis with redis-cli](#using-redis-with-redis-cli)\n  - [Using Redis with Redis Insight](#using-redis-with-redis-insight)\n- [Redis data types, processing engines, and capabilities](#redis-data-types-processing-engines-and-capabilities)\n- [Cloud hosted Redis](#cloud-hosted-redis)\n- [Community](#community)\n- [Build Redis from source](#build-redis-from-source)\n  - [Install dependencies and build](#install-dependencies-and-build)\n  - [Building Redis - flags and general notes](#building-redis---flags-and-general-notes)\n  - [Fixing build problems with dependencies or cached build options](#fixing-build-problems-with-dependencies-or-cached-build-options)\n  - [Fixing problems building 32 bit binaries](#fixing-problems-building-32-bit-binaries)\n  - [Allocator](#allocator)\n  - [Monotonic clock](#monotonic-clock)\n  - [Verbose build](#verbose-build)\n  - [Running Redis with TLS](#running-redis-with-tls)\n- [Code contributions](#code-contributions)\n- [Redis Trademarks](#redis-trademarks)\n\n## What is Redis?\n\nFor developers, who are building real-time data-driven applications, Redis is the preferred, fastest, and most feature-rich cache, data structure server, and document and vector query engine.\n\n### Key use cases\n\nRedis excels in various applications, including:\n\n- **Caching:** Supports multiple eviction policies, key expiration, and hash-field expiration.\n- **Distributed Session Store:** Offers flexible session data modeling (string, JSON, hash).\n- **Data Structure Server:** Provides low-level data structures (strings, lists, sets, hashes, sorted sets, JSON, etc.) with high-level semantics (counters, queues, leaderboards, rate limiters) and supports transactions & scripting.\n- **NoSQL Data Store:** Key-value, document, and time series data storage.\n- **Search and Query Engine:** Indexing for hash/JSON documents, supporting vector search, full-text search, geospatial queries, ranking, and aggregations via Redis Search.\n- **Event Store & Message Broker:** Implements queues (lists), priority queues (sorted sets), event deduplication (sets), streams, and pub/sub with probabilistic stream processing capabilities.\n- **Vector Store for GenAI:** Integrates with AI applications (e.g. LangGraph, mem0) for short-term memory, long-term memory, LLM response caching (semantic caching), and retrieval augmented generation (RAG).\n- **Real-Time Analytics:** Powers personalization, recommendations, fraud detection, and risk assessment.\n\n## Why choose Redis?\n\nRedis is a popular choice for developers worldwide due to its combination of speed, flexibility, and rich feature set. Here's why people choose Redis for:\n\n- **Performance:** Because Redis keeps data primarily in memory and uses efficient data structures, it achieves extremely low latency (often sub-millisecond) for both read and write operations. This makes it ideal for applications demanding real-time responsiveness.\n- **Flexibility:** Redis isn't just a key-value store, it provides native support for a wide range of data structures and capabilities listed in [What is Redis?](#what-is-redis)\n- **Extensibility:** Redis is not limited to the built-in data structures, it has a [modules API](https://redis.io/docs/latest/develop/reference/modules/) that makes it possible to extend Redis functionality and rapidly implement new Redis commands\n- **Simplicity:** Redis has a simple, text-based protocol and [well-documented command set](https://redis.io/docs/latest/commands/)\n- **Ubiquity:** Redis is battle tested in production workloads at a massive scale. There is a good chance you indirectly interact with Redis several times daily\n- **Versatility**: Redis is the de facto standard for use cases such as:\n  - **Caching:** quickly access frequently used data without needing to query your primary database\n  - **Session management:** read and write user session data without hurting user experience or slowing down every API call\n  - **Querying, sorting, and analytics:** perform deduplication, full text search, and secondary indexing on in-memory data as fast as possible\n  - **Messaging and interservice communication:** job queues, message brokering, pub/sub, and streams for communicating between services\n  - **Vector operations:** Long-term and short-term LLM memory, RAG content retrieval, semantic caching, semantic routing, and vector similarity search\n\nIn summary, Redis provides a powerful, fast, and flexible toolkit for solving a wide variety of data management challenges. If you want to know more, here is a list of starting points:\n\n- [**Introduction to Redis data types**](https://redis.io/docs/latest/develop/data-types/)\n- [**The full list of Redis commands**](https://redis.io/commands/)\n- [**Redis for AI**](https://redis.io/docs/latest/develop/ai/)\n- [**Redis documentation**](https://redis.io/documentation/)\n\n## What is Redis Open Source?\n\nRedis Community Edition (Redis CE) was renamed Redis Open Source with the v8.0 release.\n\nRedis Ltd. also offers [Redis Software](https://redis.",
+    "latestRelease": {
+      "tag": "8.8.1",
+      "name": "8.8.1",
+      "body": "SECURITY: There is a security fix in the release.\r\n\r\n### Security fixes\r\n\r\n- RedisBloom/RedisBloom#1044 Crafted RESTORE payloads in RedisBloom and TDigest may trigger out-of-bounds writes, potentially leading to remote code execution\r\n"
+    },
+    "otherCandidates": [
+      {
+        "name": "milvus-io/milvus",
+        "stars": 45412,
+        "description": "Milvus is a high-performance, cloud-native vector database built for scalable vector ANN search"
+      },
+      {
+        "name": "pingcap/tidb",
+        "stars": 40353,
+        "description": "TiDB is built for agentic workloads that grow unpredictably, with ACID guarantees and native support for transactions, analytics, and vector search. No data silos. No noisy neighbors. No infrastructure ceiling."
+      },
+      {
+        "name": "qdrant/qdrant",
+        "stars": 33644,
+        "description": "Qdrant - High-performance, massive-scale Vector Database and Vector Search Engine for the next generation of AI. Also available in the cloud https://cloud.qdrant.io/"
+      },
+      {
+        "name": "weaviate/weaviate",
+        "stars": 16657,
+        "description": "Weaviate is an open-source vector database that stores both objects and vectors, allowing for the combination of vector search with structured filtering with the fault tolerance and scalability of a cloud-native database​."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Vector Databases: A Technical Primer [pdf]",
+    "url": "https://tge-data-web.nyc3.digitaloceanspaces.com/docs/Vector%20Databases%20-%20A%20Technical%20Primer.pdf",
+    "hnUrl": "https://news.ycombinator.com/item?id=38971221",
+    "points": 557,
+    "numComments": 105,
+    "createdAt": "2024-01-12T17:38:56Z"
+  }
+}

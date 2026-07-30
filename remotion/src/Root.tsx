@@ -14,6 +14,7 @@ import { TableSlide, TableCell } from "./compositions/TableSlide";
 import { FormulaSlide, FormulaGroup } from "./compositions/FormulaSlide";
 import { TransitionSlide } from "./compositions/TransitionSlide";
 import { NumberHero } from "./compositions/NumberHero";
+import { ImageSlide, ImageMode } from "./compositions/ImageSlide";
 import { CaptionsLayer, CaptionPosition } from "./compositions/CaptionsLayer";
 import { BrandConfig } from "./compositions/BrandedSlideLayout";
 import { Preset, resolvePreset } from "./presets";
@@ -44,12 +45,17 @@ type SlideMeta = {
     | "table"
     | "formula"
     | "transition"
-    | "numberHero";
+    | "numberHero"
+    | "image";
   durationInFrames: number;
   audio?: string;
   captions?: Array<{ from: number; to: number; text: string }>;
   voice_text?: string;
   voice?: string;
+  /** Tên file SFX (không kèm .wav) trong workspace/sfx/ — phát 1 lần lúc slide bắt đầu. */
+  sfx?: string;
+  /** Volume riêng cho SFX của slide này (0-1). Mặc định 0.6. */
+  sfxVolume?: number;
 
   // common
   title?: string;
@@ -96,6 +102,11 @@ type SlideMeta = {
   formulaCaption?: string;
   formulaPrefix?: string;
 
+  // image (background | popup | screen — chèn ảnh thật, xem ImageSlide.tsx)
+  imageSrc?: string;
+  imageMode?: ImageMode;
+  browserUrl?: string;
+
   // numberHero (shorts data-hook slide)
   heroValue?: string | number;
   heroLabel?: string;
@@ -124,6 +135,10 @@ type Metadata = {
    * Without preset, metadata's own width/height/fps are used (legacy mode).
    */
   preset?: Preset;
+  /** Tên file nhạc nền (không kèm .mp3) trong workspace/music/ — phát xuyên suốt video. */
+  music?: string;
+  /** Volume nhạc nền (0-1). Mặc định 0.15 — đủ nghe, không át giọng đọc. */
+  musicVolume?: number;
 };
 
 const DEFAULT_METADATA: Metadata = {
@@ -166,6 +181,14 @@ const Main: React.FC<Metadata> = (meta) => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#0b0b0f" }}>
+      {/* Layer 1 — BGM: phát xuyên suốt, volume thấp để không át giọng đọc */}
+      {meta.music && (
+        <Audio
+          src={staticFile(`music/${meta.music}.mp3`)}
+          volume={meta.musicVolume ?? 0.15}
+        />
+      )}
+
       {meta.slides.map((slide, i) => {
         const from = offset;
         offset += slide.durationInFrames;
@@ -178,6 +201,13 @@ const Main: React.FC<Metadata> = (meta) => {
             durationInFrames={slide.durationInFrames}
           >
             {slide.audio ? <Audio src={staticFile(slide.audio)} /> : null}
+            {/* Layer 2 — SFX: phát 1 lần ngay lúc slide bắt đầu (from=0 trong Sequence này) */}
+            {slide.sfx && (
+              <Audio
+                src={staticFile(`sfx/${slide.sfx}.wav`)}
+                volume={slide.sfxVolume ?? 0.3}
+              />
+            )}
 
             {slide.type === "cover" && (
               <CoverSlide
@@ -258,6 +288,17 @@ const Main: React.FC<Metadata> = (meta) => {
                 brand={meta.brand}
                 title={slide.title ?? ""}
                 bullets={slide.bullets}
+              />
+            )}
+            {slide.type === "image" && slide.imageSrc && (
+              <ImageSlide
+                src={slide.imageSrc}
+                mode={slide.imageMode}
+                title={slide.title}
+                subtitle={slide.subtitle}
+                browserUrl={slide.browserUrl}
+                fontScale={fontScale}
+                accentColor={slide.accentColor ?? meta.brand?.accentColor}
               />
             )}
             {slide.type === "numberHero" && slide.heroValue !== undefined && (

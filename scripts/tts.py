@@ -12,14 +12,17 @@ Writes:
     <project>/workspace/<slide_idx>.wav
 
 Env:
+    TTS_BACKEND          — "fish" (default) or "edge" — chọn engine TTS
     FISH_AUDIO_API_KEY   — required for Fish Audio
     FISH_AUDIO_VOICE_ID  — default voice; per-slide "voice" field overrides
+    EDGE_TTS_VOICE       — giọng Edge TTS (vd vi-VN-HoaiMyNeural, vi-VN-NamMinhNeural)
     SAY_VOICE            — optional macOS `say -v` name for keyless fallback
                            (e.g. Tingting for zh_CN demo quality)
 
 If FISH_AUDIO_API_KEY is missing, falls back to `say` (macOS) / `espeak` for
 local dry-runs so the pipeline still exercises end-to-end.
 """
+import asyncio
 import json
 import os
 import sys
@@ -34,6 +37,26 @@ except ImportError:
     pass
 
 FISH_API = "https://api.fish.audio/v1/tts"
+
+
+def edge_tts_synth(text: str, out_path: Path, voice: str, rate: str = "+0%") -> None:
+    """Miễn phí, không cần API key — dùng giọng Microsoft Edge (có tiếng Việt).
+    rate: "+0%" bình thường, "+50%" nhanh hơn ~1.5x, "-20%" chậm hơn..."""
+    import edge_tts
+
+    mp3_path = out_path.with_suffix(".mp3")
+
+    async def _run() -> None:
+        communicate = edge_tts.Communicate(text, voice, rate=rate)
+        await communicate.save(str(mp3_path))
+
+    asyncio.run(_run())
+    subprocess.run(
+        ["ffmpeg", "-y", "-i", str(mp3_path), str(out_path)],
+        check=True,
+        capture_output=True,
+    )
+    mp3_path.unlink()
 
 
 def fish_tts(text: str, out_path: Path, voice_id: str, api_key: str) -> None:
@@ -99,12 +122,15 @@ def main() -> int:
         print(f"script.json not found at {script_path}", file=sys.stderr)
         return 1
 
-    script = json.loads(script_path.read_text())
+    script = json.loads(script_path.read_text(encoding="utf-8"))
     workspace = project / "workspace"
     workspace.mkdir(exist_ok=True)
 
+    backend = os.environ.get("TTS_BACKEND", "fish").strip().lower()
     api_key = os.environ.get("FISH_AUDIO_API_KEY", "")
     default_voice = os.environ.get("FISH_AUDIO_VOICE_ID", "")
+    edge_voice = os.environ.get("EDGE_TTS_VOICE", "vi-VN-HoaiMyNeural")
+    edge_rate = os.environ.get("EDGE_TTS_RATE", "+0%")
 
     for i, slide in enumerate(script["slides"]):
         text = extract_text(slide)
@@ -113,8 +139,10 @@ def main() -> int:
             continue
         out = workspace / f"{i:02d}.wav"
         voice = slide.get("voice") or default_voice
-        print(f"[{i}] → {out.name}: {text[:40]}...")
-        if api_key and voice:
+        print(f"[{i}] -> {out.name}: {text[:40]}...")
+        if backend == "edge":
+            edge_tts_synth(text, out, slide.get("edge_voice") or edge_voice, slide.get("edge_rate") or edge_rate)
+        elif api_key and voice:
             fish_tts(text, out, voice, api_key)
         else:
             local_fallback(text, out)

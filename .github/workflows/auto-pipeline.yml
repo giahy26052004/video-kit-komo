@@ -1,0 +1,69 @@
+name: Auto AI Video Pipeline
+
+# Cứ 2 tiếng research + render + đăng 1 video AI-trending lên Facebook Page.
+# Chạy trên GitHub-hosted runner, không phụ thuộc máy cá nhân có bật hay không.
+on:
+  schedule:
+    - cron: "0 */2 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: auto-pipeline
+  cancel-in-progress: false
+
+jobs:
+  run-cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install root npm deps
+        run: npm install
+
+      - name: Install Remotion npm deps
+        working-directory: remotion
+        run: npm install
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Python deps
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run 1 auto-pipeline cycle
+        env:
+          FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PYTHONIOENCODING: "utf-8"
+          TTS_BACKEND: "edge"
+          EDGE_TTS_VOICE: "vi-VN-NamMinhNeural"
+          EDGE_TTS_RATE: "+50%"
+          WHISPER_MODEL: "base"
+          WHISPER_LANGUAGE: "vi"
+        run: node scripts/auto_pipeline.mjs
+
+      - name: Commit lại state (tránh trùng chủ đề lần sau)
+        run: |
+          git config user.name "auto-pipeline-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/auto-pipeline-state.json research/ || true
+          git diff --cached --quiet || git commit -m "chore: cap nhat state auto-pipeline [skip ci]"
+          git push

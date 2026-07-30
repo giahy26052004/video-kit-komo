@@ -1,0 +1,54 @@
+{
+  "query": "ai robotics",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-29T14:21:28.775Z",
+  "github": {
+    "source": "github",
+    "name": "Genesis-Embodied-AI/genesis-world",
+    "description": "Simulation platform for general-purpose robotics & embodied AI learning.",
+    "url": "https://github.com/Genesis-Embodied-AI/genesis-world",
+    "stars": 29662,
+    "language": "Python",
+    "homepage": "https://genesis-world.readthedocs.io",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/149333263?v=4",
+    "pushedAt": "2026-07-29T13:26:09Z",
+    "readmeExcerpt": "![Genesis World teaser](https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/HeroShot_Final.png)\n\n# Genesis World\n\n[![PyPI - Version](https://img.shields.io/pypi/v/genesis-world)](https://pypi.org/project/genesis-world/)\n[![PyPI Downloads](https://static.pepy.tech/badge/genesis-world)](https://pepy.tech/projects/genesis-world)\n[![Documentation](https://app.readthedocs.org/projects/genesis-world/badge/?version=latest)](https://genesis-world.readthedocs.io/en/latest/)\n[![GitHub Issues](https://img.shields.io/github/issues/Genesis-Embodied-AI/genesis-world)](https://github.com/Genesis-Embodied-AI/genesis-world/issues)\n[![GitHub Discussions](https://img.shields.io/github/discussions/Genesis-Embodied-AI/genesis-world)](https://github.com/Genesis-Embodied-AI/genesis-world/discussions)\n\n\n\n**Genesis World** is a simulation platform for physical AI developments. It combines a unified multi-physics engine, a photo-realistic renderer ([Nyx](https://github.com/Genesis-Embodied-AI/genesis-nyx)), and a cross-platform compiler ([Quadrants](https://github.com/Genesis-Embodied-AI/quadrants)) behind a Pythonic simulation interface. Genesis World is designed to scale from a single laptop kernel to datacenter-grade GPUs, while remaining easy to read, extend, and embed in research code.\n\nIt was previously named **Genesis** and started as an academic project since Dec 2024, and its development is now officially supported by [Genesis AI](https://www.genesis.ai/).\n\nFor more technical details, refer to our [blog post](https://genesis.ai/blog/the-role-of-simulation-in-scalable-robotics-genesis-world-10-and-the-path-forward).\n\n## Table of Contents\n\n1. [What is Genesis World?](#what-is-genesis-world)\n2. [Catalogue](#catalogue)\n3. [Quick Installation](#quick-installation)\n4. [Docker](#docker)\n5. [Contribution](#contributing-to-genesis)\n6. [Support](#support)\n7. [License and Acknowledgments](#license-and-acknowledgments)\n8. [Citation](#citation)\n\n## What is Genesis World?\n\n![Genesis World stack](https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/diagram_white_lum.png)\n\nGenesis World occupies the four layers inside the dashed box. Above sits whatever you build (robotics environments, ML pipelines, data generation, agentic simulation); below sits whatever compute backend you have.\n\n- **Simulation Interface** — the user-facing API: asset parsing (URDF, MJCF, OBJ, GLB, USD, …), entity accessors, controllers, sensors, parallel and heterogeneous environments, and a built-in GUI.\n- **Physics** — a unified multi-physics engine integrating Rigid, FEM, MPM, Particle (PBD / SPH), [uipc](https://github.com/spiriMirror/libuipc), an explicit coupler, and SAP, all sharing one scene and one state.\n- **Render** — three rendering paths plug in as camera sensors: **[Nyx](https://github.com/Genesis-Embodied-AI/genesis-nyx)** (our in-house renderer designed for robotics), Luisa (DSL ray tracer), and Pyrender (rasterizer).\n- **Compiler** — **[Quadrants](https://github.com/Genesis-Embodied-AI/quadrants)** lowers Python kernel code to CUDA, AMD ROCm, Apple Metal, Vulkan, x86, and ARM64. It carries Genesis's autodiff, GPU graphs, and fastcache machinery.\n\n### Documentation\n- [Genesis World](https://genesis-world.readthedocs.io/en/latest/)\n- [Quadrants](https://genesis-embodied-ai.github.io/quadrants/index.html)\n- [Nyx](https://genesis-embodied-ai.github.io/genesis-nyx/latest/)\n\n## Catalogue\n\nThree sections, mirroring the Genesis layers that ship runnable demos: **Physics** (solvers and multi-solver coupling), **Rendering** (in-repo camera setups plus the Nyx walkthroughs hosted in [genesis-nyx](https://github.com/Genesis-Embodied-AI/genesis-nyx)), and **Simulation Interface** (sensors, GUI, controllers, parallel/heterogeneous envs, and tutorials). Most scripts run end-to-end after `pip install -e \".[dev]\"`; demos that depend on optional backends (e.g. the IPC and Nyx examples) need the extras listed in [Optional extras](#optional-extras).\n\n### Physics\n\n| | | |\n|---|---|---|\n| [Rigid: franka cube](./examples/rigid/franka_cube.py) | [Rigid: collision tower](./examples/collision/tower.py) | [Rigid: contype](./examples/collision/contype.py) |\n| <img src=\"https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/rigid_franka_cube.webp\" width=\"240\"> | <img src=\"https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/collision_tower.webp\" width=\"240\"> | <img src=\"https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/collision_contype.webp\" width=\"240\"> |\n| [FEM: hard & soft constraint](./examples/fem_hard_and_soft_constraint.py) | [MPM: tutorial](./examples/tutorials/mpm.py) | [MPM: sand wheel](./examples/coupling/sand_wheel.py) |\n| <img src=\"https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/fem_hard_and_soft_constraint.webp\" width=\"240\"> | <img src=\"https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/tutorials_mpm.webp\" width=\"240\"> | <img src=\"https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/coupling_sand_wheel.webp\" width=\"240\"> |\n| [SPH: rigid](./examples/coupling/sph_rigid.py) | [SPH: + MPM](./examples/coupling/sph_mpm.py) | [PBD: liquid](./examples/pbd_liquid.py) |\n| <img src=\"https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/coupling_sph_rigid.webp\" width=\"240\"> | <img src=\"https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/coupling_sph_mpm.webp\" width=\"240\"> | <img src=\"https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/pbd_liquid.webp\" width=\"240\"> |\n| [PBD: cloth](./examples/tutorials/pbd_cloth.py) | [Stable Fluid: smoke](./examples/smoke.py) | [IPC: robot cloth teleop](./examples/IPC_Solver/ipc_robot_cloth_teleop.py) |\n| <img src=\"https://raw.githubusercontent.com/YilingQiao/Genesis/readme-assets/videos/tutorials_pbd_cloth.webp\" width=\"240\"> | <img src=\"https://raw.githubusercontent.com/YilingQiao/Genes",
+    "latestRelease": {
+      "tag": "v1.3.0",
+      "name": "v1.3.0",
+      "body": "This release extends differentiable rigid body simulation, which is no longer considered experimental. Moreover, torsional and rolling friction have been added, as part of a broader ongoing effort to bridge the sim2real gap.\r\n\r\n| `friction_breakaway.py` (pyramidal left, elliptic right) | `torsional_grasp.py` | `rolling_coast.py` |\r\n| :---: | :---: | :---: |\r\n| ![friction breakaway](https://raw.githubusercontent.com/duburcqa/Genesis/4ca9426c46cfa577cc9f87b3b62e4d324e457423/breakaway.gif) | ![torsional grasp](https://raw.githubusercontent.com/duburcqa/Genesis/4ca9426c46cfa577cc9f87b3b62e4d324e457423/torsional_grasp.gif) | ![rolling coast](https://raw.githubusercontent.com/duburcqa/Genesis/4ca9426c46cfa577cc9f87b3b62e4d324e457423/rolling_coast.gif) |\r\n\r\n### Breaking\r\n\r\n* [BUG FIX] Record camera videos of any length at a chosen framerate. (@duburcqa) (#3107, #3120)\r\n\r\n### New Features\r\n\r\n* Add torsional and rolling friction to the rigid solver. (@duburcqa) (#3069)\r\n* Add explicit mounting transform in RigidEntity.attach. (@Kashu7100) (#3041)\r\n* Add link filtering to contact sensors. (@jsw7460) (#2772)\r\n* Add torque visualization for tactile sensor examples. (@Milotrince) (#3085)\r\n* Extend differentiable rigid body simulation. (@SonSang, @duburcqa) (#2842, #3087, #3089)\r\n\r\n### Bug Fixes\r\n\r\n* Fix missing buoyancy on rigid bodies submerged in SPH fluid. (@yeezhouyi) (#2857)\r\n* Fix rendering assets pairing base color with emissive map. (@duburcqa) (#3088)\r\n* Fix camera sensor not being refreshed after scene reset. (@thanyu-hub) (#3100)\r\n* Fix transparency not deterministic in Rasterizer. (@duburcqa) (#3108)\r\n* Fix per-environment queries of link inertial properties and energies. (@duburcqa) (#3114)\r\n* Fix wrong mechanical energy and speed up computations. (@duburcqa) (#3121)\r\n* Fix handling of negative index for rigid accessor filter 'envs_idx'. (@jeetrex17) (#3117)"
+    },
+    "otherCandidates": [
+      {
+        "name": "huggingface/lerobot",
+        "stars": 26230,
+        "description": "🤗 LeRobot: Making AI for Robotics more accessible with end-to-end learning"
+      },
+      {
+        "name": "kornia/kornia",
+        "stars": 11294,
+        "description": "🐍 Geometric Computer Vision Library for Spatial AI"
+      },
+      {
+        "name": "NVIDIA/cosmos",
+        "stars": 11291,
+        "description": "NVIDIA Cosmos is an open platform of world models, datasets, and tools that enables developers to build Physical AI for robots, autonomous vehicles, smart infrastructure, and more."
+      },
+      {
+        "name": "cactus-compute/cactus",
+        "stars": 5545,
+        "description": "Quantization, kernels, runtime and inference engine for mobiles, wearables, smart home and robots. "
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Autonomous Weapons: An Open Letter from AI and Robotics Researchers",
+    "url": "http://futureoflife.org/AI/open_letter_autonomous_weapons#",
+    "hnUrl": "https://news.ycombinator.com/item?id=9955435",
+    "points": 305,
+    "numComments": 288,
+    "createdAt": "2015-07-27T14:41:56Z"
+  }
+}

@@ -42,12 +42,13 @@ export function evaluateDoctor(observations) {
 
   let ttsMode = 'unavailable'
   const warnings = []
-  if (observations.fishAudio?.ok) ttsMode = 'fish-audio'
+  if (observations.edgeTts?.ok) ttsMode = 'edge-tts'
+  else if (observations.fishAudio?.ok) ttsMode = 'fish-audio'
   else if (observations.platform === 'darwin' && observations.say?.ok) {
     ttsMode = 'say-demo'
     warnings.push('macOS say is a demo-quality fallback, not publication-quality narration.')
   } else {
-    actions.push('Set Fish Audio credentials, or run the demo on macOS with the built-in say command.')
+    actions.push('Set Fish Audio credentials, TTS_BACKEND=edge (free, no key), or run the demo on macOS with the built-in say command.')
   }
 
   return {
@@ -114,6 +115,11 @@ export async function collectDoctorObservations(outputDir = resolve(KIT_ROOT, 'o
     fishAudio: {
       ok: Boolean(process.env.FISH_AUDIO_API_KEY && process.env.FISH_AUDIO_VOICE_ID),
       version: process.env.FISH_AUDIO_API_KEY && process.env.FISH_AUDIO_VOICE_ID ? 'configured' : '',
+    },
+    // Miễn phí, không cần API key — bật bằng TTS_BACKEND=edge (xem scripts/tts.py).
+    edgeTts: {
+      ok: process.env.TTS_BACKEND?.trim().toLowerCase() === 'edge',
+      version: process.env.EDGE_TTS_VOICE || 'vi-VN-HoaiMyNeural',
     },
     outputWritable: { ok: outputWritable, version: outputWritable ? outputPath : '' },
   }
