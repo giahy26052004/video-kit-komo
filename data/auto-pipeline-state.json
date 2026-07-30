@@ -34,6 +34,7 @@
     "BinWang28/audio-ai-hub",
     "MGdaasLab/WHartTest",
     "the-open-agent/openagent",
-    "modelcontextprotocol/servers"
+    "modelcontextprotocol/servers",
+    "medusajs/medusa"
   ]
 }

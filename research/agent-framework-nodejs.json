@@ -1,0 +1,49 @@
+{
+  "query": "agent framework nodejs",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-30T23:19:37.451Z",
+  "github": {
+    "source": "github",
+    "name": "medusajs/medusa",
+    "description": "The world's most flexible commerce platform for agents and developers",
+    "url": "https://github.com/medusajs/medusa",
+    "stars": 35481,
+    "language": "TypeScript",
+    "homepage": "https://medusajs.com",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/62591822?v=4",
+    "pushedAt": "2026-07-30T14:28:42Z",
+    "readmeExcerpt": "<p align=\"center\">\n  <a href=\"https://www.medusajs.com\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://user-images.githubusercontent.com/59018053/229103275-b5e482bb-4601-46e6-8142-244f531cebdb.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg\">\n    <img alt=\"Medusa logo\" src=\"https://user-images.githubusercontent.com/59018053/229103726-e5b529a3-9b3f-4970-8a1f-c6af37f087bf.svg\">\n    </picture>\n  </a>\n</p>\n<h1 align=\"center\">\n  Medusa\n</h1>\n\n<h4 align=\"center\">\n  <a href=\"https://docs.medusajs.com\">Documentation</a> |\n  <a href=\"https://www.medusajs.com\">Website</a>\n</h4>\n\n<p align=\"center\">\n  Building blocks for digital commerce\n</p>\n<p align=\"center\">\n  <a href=\"https://github.com/medusajs/medusa/blob/develop/LICENSE\">\n    <img src=\"https://img.shields.io/badge/license-MIT-blue.svg\" alt=\"Medusa is released under the MIT license.\" />\n  </a>\n  <a href=\"https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md\">\n    <img src=\"https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat\" alt=\"PRs welcome!\" />\n  </a>\n <p align=\"center\">\n  <a href=\"https://twitter.com/intent/follow?screen_name=medusajs\">\n    <img src=\"https://img.shields.io/twitter/follow/medusajs.svg?label=Follow%20@medusajs\" alt=\"Follow @medusajs\" />\n  <a href=\"https://discord.gg/medusajs\">\n    <img src=\"https://img.shields.io/badge/chat-on%20discord-7289DA.svg\" alt=\"Discord Chat\" />\n  </a>\n</p>\n\n## Getting Started\n\nThe fastest way to get started is with [Medusa Cloud](https://medusajs.com/cloud/). It provides a managed environment optimized for Medusa applications, with automated deployments, scaling, and maintenance. [Get started on Medusa Cloud](https://cloud.medusajs.com)\n\nTo set up a Medusa application locally, visit the [Documentation](https://docs.medusajs.com/learn).\n\n## About Medusa\n\nMedusa is a commerce platform with a built-in framework for customization that allows you to build custom commerce applications without reinventing core commerce logic. The framework and modules can be used to support advanced B2B or DTC commerce stores, marketplaces, distributor platforms, PoS systems, service businesses, or similar solutions that need foundational commerce primitives. All commerce modules are open-source and freely available on npm.\n\nLearn more about [Medusa’s architecture](https://docs.medusajs.com/learn/advanced-development/architecture/overview) and [commerce modules](https://docs.medusajs.com/resources/commerce-modules) in the Docs.\n\n## Upgrades & Integrations\n\nFollow the [Release Notes](https://github.com/medusajs/medusa/releases) to keep your Medusa project up-to-date.\n\nCheck out all [available Medusa integrations](https://medusajs.com/integrations/).\n\n## Community & Contributions\n\nThe core team is available in [GitHub Discussions](https://github.com/medusajs/medusa/discussions), where you can create issues, share ideas, and discuss roadmap.\n\nOur [Contribution Guide](https://github.com/medusajs/medusa/blob/develop/CONTRIBUTING.md) describes how to contribute to the codebase and Docs.\n\nJoin our [Discord server](https://discord.gg/medusajs) to meet and discuss with more than 14,000 other community members.\n\n## Other channels\n\n- [GitHub Issues](https://github.com/medusajs/medusa/issues)\n- [Community Discord](https://discord.gg/medusajs)\n- [Twitter](https://twitter.com/medusajs)\n- [LinkedIn](https://www.linkedin.com/company/medusajs)\n- [Medusa Blog](https://medusajs.com/blog/)\n\n## License\n\nLicensed under the [MIT License](https://github.com/medusajs/medusa/blob/develop/LICENSE).\n",
+    "latestRelease": {
+      "tag": "v2.18.0",
+      "name": "v2.18.0",
+      "body": "## Highlights\r\n\r\nThis release comes with new features, bug fixes, and dependency updates for better security.\r\n\r\nMedusa MCP users can update their project using the following prompt:\r\n\r\n```bash\r\nUpdate my Medusa project to v2.18.0\r\n```\r\n\r\n### Balanced Query Load Strategy by Default\r\n\r\n🚧 Breaking change\r\n\r\nThe default database load strategy has changed from `SELECT_IN` to `BALANCED`, matching MikroORM v7's intended default. MikroORM picks between a joined and a select-in approach per relation, which improves query performance in most cases. Because it changes how relations are loaded, review query-heavy paths and any snapshot or query-count assertions in your tests after upgrading.\r\n\r\n---\r\n\r\n### Return Value of Generated Internal Service's delete Method Changed\r\n\r\n🚧 Breaking change\r\n\r\n> This affects usages of [generated internal services](https://docs.medusajs.com/learn/fundamentals/modules/service-factory#generated-internal-services). They do not impact methods generated by `MedusaService` such as `deletePosts`.\r\n\r\nThe return value of the `delete` method of a generated internal service has been changed to cater for composite primary keys:\r\n\r\n```ts\r\n// before\r\ndelete(idOrSelector: string, sharedContext?: Context): Promise<string[]>\r\ndelete(idOrSelector: string[], sharedContext?: Context): Promise<string[]>\r\ndelete(idOrSelector: object, sharedContext?: Context): Promise<string[]>\r\ndelete(idOrSelector: object[], sharedContext?: Context): Promise<string[]>\r\ndelete(\r\n  idOrSelector: {\r\n    selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>\r\n  },\r\n  sharedContext?: Context\r\n): Promise<string[]>\r\n\r\n// after\r\ndelete(\r\n  idOrSelector: string,\r\n  sharedContext?: Context\r\n): Promise<string[] | Record<string, any>[]>\r\ndelete(\r\n  idOrSelector: string[],\r\n  sharedContext?: Context\r\n): Promise<string[] | Record<string, any>[]>\r\ndelete(\r\n  idOrSelector: object,\r\n  sharedContext?: Context\r\n): Promise<string[] | Record<string, any>[]>\r\ndelete(\r\n  idOrSelector: object[],\r\n  sharedContext?: Context\r\n): Promise<string[] | Record<string, any>[]>\r\ndelete(\r\n  idOrSelector: {\r\n    selector: FilterQuery<any> | BaseFilterable<FilterQuery<any>>\r\n  },\r\n  sharedContext?: Context\r\n): Promise<string[] | Record<string, any>[]>\r\n```\r\n\r\nThe method now either returns an array of deleted IDs if the primary key is an `id` field, or an array of objects, each object's keys are the composite primary key's name, and value is the primary key's value. For example, `[{ foo: \"foo-1\", var: \"bar-1\" }]`.\r\n\r\nIf you use generated internal services in your module, make sure to update their usages to handle the new return value. For example:\r\n\r\n```ts\r\n// before\r\nconst deletedIds = await postService.delete(idsOrObject) // type was string\r\n\r\n// after\r\n// type could be an array of string IDs or objects.\r\nconst deletedData = await postService.delete(idsOrObject)\r\nconst isStringIds = deletedData.some((data) => typeof data === \"string\")\r\n```\r\n\r\n---\r\n\r\n### Improved Configurable Data Tables in"
+    },
+    "otherCandidates": [
+      {
+        "name": "mastra-ai/mastra",
+        "stars": 26750,
+        "description": "Mastra is the modern TypeScript framework for AI-powered applications and agents."
+      },
+      {
+        "name": "open-multi-agent/open-multi-agent",
+        "stars": 6685,
+        "description": "TypeScript AI agent orchestration framework with dynamic workflows. Describe the goal, not the graph: a coordinator plans the task DAG at runtime and runs it on any LLM (Claude, ChatGPT, Gemini, DeepSeek, or local models)."
+      },
+      {
+        "name": "growthxai/output",
+        "stars": 426,
+        "description": "The open-source TypeScript framework for building AI workflows and agents. Designed for Claude Code describe what you want, Claude builds it, with all the best practices already in place."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: Sim Studio – Open-Source Agent Workflow GUI",
+    "url": "https://github.com/simstudioai/sim",
+    "hnUrl": "https://news.ycombinator.com/item?id=43823096",
+    "points": 196,
+    "numComments": 58,
+    "createdAt": "2025-04-28T16:14:31Z"
+  }
+}
