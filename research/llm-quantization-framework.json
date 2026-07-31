@@ -1,0 +1,48 @@
+{
+  "query": "llm quantization framework",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-31T21:29:30.164Z",
+  "github": {
+    "source": "github",
+    "name": "cactus-compute/cactus",
+    "description": "Quantization, kernels, runtime and inference engine for mobiles, wearables, smart home and robots. ",
+    "url": "https://github.com/cactus-compute/cactus",
+    "stars": 5553,
+    "language": "C++",
+    "homepage": "https://cactuscompute.com",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/196640840?v=4",
+    "pushedAt": "2026-07-31T14:15:41Z",
+    "readmeExcerpt": "# Cactus\n\n<img src=\"assets/banner.jpg\" alt=\"Logo\" style=\"border-radius: 30px; width: 100%;\">\n\n[![Docs][docs-shield]][docs-url]\n[![Website][website-shield]][website-url]\n[![GitHub][github-shield]][github-url]\n[![HuggingFace][hf-shield]][hf-url]\n[![Reddit][reddit-shield]][reddit-url]\n[![Blog][blog-shield]][blog-url]\n\nA hybrid edge-cloud AI engine for mobile devices & wearables.\n\n```\n┌─────────────────┐\n│  Cactus Engine  │ ←── OpenAI-compatible APIs for text, speech, and vision.\n└─────────────────┘     \n         │\n┌─────────────────┐\n│  Cactus Graph   │ ←── Zero-copy computation graph \n└─────────────────┘     \n         │\n┌─────────────────┐\n│ Cactus Kernels  │ ←── CPU/GPU kernels for (Apple, Samsung, Pixel, etc.)\n└─────────────────┘     \n         │\n┌─────────────────┐\n│ Cactus Quants   │ ←── Custom rotation-based quantization technique \n└─────────────────┘  \n         │\n┌─────────────────┐\n│Cactus Transpiler│ ←── Transpiles custom PyTorch model to Cactus.\n└─────────────────┘\n```\n\n## Quick Demo (Mac)\n\n- Step 1: `brew install cactus-compute/cactus/cactus`\n- Step 2: `cactus run`\n\n## Cactus Engine\n\n```cpp\n#include \"cactus_engine.h\"\n\ncactus_model_t model = cactus_init(\n    \"path/to/weight/folder\",\n    \"path to txt or dir of txts for auto-rag\",\n    false\n);\n\nconst char* messages = R\"([\n    {\"role\": \"system\", \"content\": \"You are a helpful assistant.\"},\n    {\"role\": \"user\", \"content\": \"My name is Henry Ndubuaku\"}\n])\";\n\nconst char* options = R\"({\n    \"max_tokens\": 50,\n    \"stop_sequences\": [\"<|im_end|>\"]\n})\";\n\nchar response[4096];\nint result = cactus_complete(\n    model,            // model handle\n    messages,         // JSON chat messages\n    response,         // response buffer\n    sizeof(response), // buffer size\n    options,          // generation options\n    nullptr,          // tools JSON\n    nullptr,          // streaming callback\n    nullptr,          // user data\n    nullptr,          // pcm audio buffer\n    0                 // pcm buffer size\n);\n```\nExample response from Gemma4-E2B\n```json\n{\n    \"success\": true,        // generation succeeded\n    \"error\": null,          // error details if failed\n    \"cloud_handoff\": false, // true if cloud model used\n    \"response\": \"Hi there!\",\n    \"function_calls\": [],   // parsed tool calls\n    \"segments\": [],         // transcription segments (empty for chat)\n    \"confidence\": 0.8193,   // model confidence\n    \"confidence_threshold\": 0.7, // resolved handoff threshold (model-dependent)\n    \"time_to_first_token_ms\": 45.23,\n    \"total_time_ms\": 163.67,\n    \"prefill_tps\": 1621.89,\n    \"decode_tps\": 168.42,\n    \"ram_usage_mb\": 245.67,\n    \"prefill_tokens\": 28,\n    \"decode_tokens\": 50,\n    \"total_tokens\": 78\n}\n```\n\n## Cactus Graph\n\n```cpp\n#include \"cactus_graph.h\"\n\nCactusGraph graph;\nauto a = graph.input({2, 3}, Precision::FP16);\nauto b = graph.input({3, 4}, Precision::INT8);\n\nauto x1 = graph.matmul(a, b, false);\nauto x2 = graph.transpose(x1);\nauto result = graph.matmul(b, x2, true);\n\nfloat a_data[6] = {1.1f, 2.3f, 3.4f, 4.2f, 5.7f, 6.8f};\nfloat b_data[12] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};\n\ngraph.set_input(a, a_data, Precision::FP16);\ngraph.set_input(b, b_data, Precision::INT8);\n\ngraph.execute();\nvoid* output_data = graph.get_output(result);\n\ngraph.hard_reset(); \n```\n\n## Inference Speed\n\n- LLM: Gemma-4-E2B-CQ4 (1k-context prefill / decode for 100 tokens)\n- VLM: Gemma-4-E2B-CQ4 (256px image encode time / decode)\n- Transcribe: Parakeet-TDT-0.6B-CQ4 (20s audio end-to-end transcribe time)\n- 1k-Context RAM: peak MB during the LLM benchmark\n- No speculative decode or MTP, pure decode \n\nCommand: `cactus benchmark` [optional `--ios` or `--android`]\n\n| Device | LLM | VLM | Transcribe | RAM |\n|--------|-----|-----|------------|---------------|\n| Mac M5 Max | 2964tps / 154tps | 0.09s / 168tps | 0.15s | 1348MB |\n| Mac M4 Pro | 1963tps / 101tps | 0.25s / 112tps | 0.21s | 1225MB |\n| Mac M3 Pro | 1294tps / 64tps | 0.40s / 72tps | 0.37s | 735MB |\n| iPad/Vision Pro M5 | 1336tps / 71tps | 0.25s / 80tps | 0.27s | 703MB |\n| iPhone 17 Pro | 729tps / 37tps | 0.5s / 39tps | 0.51s | 644MB |\n| iPhone 15 Pro | 517tps / 26tps | 1.15s / 27tps | 0.82s | 633MB |\n\nN/B: With 1k-context prefill and decode for 100 runs on M5 Max\n- `LFM2.5-VL-1.6B` = 289toks/sec\n- `Qwen3-1.7B` = 155toks/sec \n- `LFM2.5-VL-450m` = 472toks/sec, image encodes in 43ms\n- `LFM22.5-VL-230m` = 555toks/sec\n\n## Output Quality \n\n- Gemma-4-E2B-it accuracy across bit widths, averaged over 3 seeds. \n- CQ3.26 and CQ2.54 are mixed-precision, CQ2/CQ3/CQ4 are uniformly quantized. \n- Full results in [docs/cactus_quants.md](/docs/cactus_quants.md):\n\n| Task | F16 (Original) | CQ4 | CQ3.26 | CQ2.54 | CQ2 |\n|-----------|-----|-----|--------|--------|-----|\n| ARC-E | 73.80 | 73.73 | 74.20 | 68.20 | 50.80 |\n| ARC-C | 56.47 | 52.47 | 51.53 | 37.20 | 24.73 |\n| HellaSwag | 46.93 | 47.07 | 45.20 | 40.73 | 35.87 |\n| WinoGrande | 61.00 | 61.13 | 59.60 | 60.13 | 51.27 |\n| MMLU | 62.33 | 59.45 | 57.63 | 47.19 | 33.18 |\n| GPQA | 34.34 | 34.34 | 31.82 | 30.81 | 23.23 |\n| GSM8K | 73.67 | 71.20 | 66.20 | 22.00 | 0.40 |\n| HumanEval | 54.88 | 57.11 | 53.66 | 15.24 | 1.02 |\n| BFCL Simple | 92.00 | 92.42 | 91.50 | 82.25 | 18.75 |\n| BFCL Multi | 89.00 | 88.33 | 89.00 | 52.50 | 13.67 |\n| BFCL Parallel | 84.00 | 83.67 | 82.50 | 30.00 | 3.33 |\n| BFCL Parallel-Multi | 78.00 | 83.33 | 82.00 | 37.00 | 1.33 |\n\n## Supported Models\n\n- Any HuggingFace model can be converted using `cactus convert [HF-Name]`, though experimental. \n- Liquid, Gemma. whisper. parakeet and Qwen model families are especially tested. \n- Some models have been pre-uploaded [here](https://huggingface.co/Cactus-Compute), just run `cactus download [HF-Name]`.\n- `cactus run [HF-Name]` albeit first downloads or convert the model if not found. \n\n## Needle\n\n[Needle](https://github.com/cactus-compute/needle) is a 26m parameter model for on-device tool calling:\n\n```bash\ncactus run Cactus-Compute/needle [--tools my_tools.json]  # OpenAI function-calling format; demo toolset by default\n",
+    "latestRelease": {
+      "tag": "v2.0.1",
+      "name": "v2.0.1",
+      "body": "## What's Changed\r\n* Remove coreml by @jakmro in https://github.com/cactus-compute/cactus/pull/754\r\n* fix brew by @jakmro in https://github.com/cactus-compute/cactus/pull/755\r\n* fix brew by @jakmro in https://github.com/cactus-compute/cactus/pull/758\r\n\r\n\r\n**Full Changelog**: https://github.com/cactus-compute/cactus/compare/v2.0...v2.0.1"
+    },
+    "otherCandidates": [
+      {
+        "name": "NVIDIA/Model-Optimizer",
+        "stars": 3357,
+        "description": "A unified library of SOTA model optimization techniques like quantization, distillation, pruning, neural architecture search, speculative decoding, etc. It compresses deep learning models for downstream deployment frameworks like TensorRT-LLM, TensorRT, vLLM, etc. to optimize inference speed."
+      },
+      {
+        "name": "openvinotoolkit/nncf",
+        "stars": 1183,
+        "description": "Neural Network Compression Framework for enhanced OpenVINO™ inference"
+      },
+      {
+        "name": "MAC-AutoML/MindPipe",
+        "stars": 1012,
+        "description": "A powerful model compression framework for LLMs and LVLMs, adapted for NVIDIA GPUs and Huawei Ascend NPUs."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Launch HN: Deepsilicon (YC S24) – Software and hardware for ternary transformers",
+    "hnUrl": "https://news.ycombinator.com/item?id=41490196",
+    "points": 189,
+    "numComments": 79,
+    "createdAt": "2024-09-09T16:30:46Z"
+  }
+}
