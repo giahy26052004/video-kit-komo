@@ -38,6 +38,7 @@
     "medusajs/medusa",
     "freqtrade/freqtrade",
     "FuelLabs/fuel-core",
-    "OpenZeppelin/openzeppelin-contracts"
+    "OpenZeppelin/openzeppelin-contracts",
+    "jonyzhang2023/awesome-embodied-vla-va-vln"
   ]
 }

@@ -1,0 +1,45 @@
+{
+  "query": "multimodal vision language",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-31T11:00:26.575Z",
+  "github": {
+    "source": "github",
+    "name": "jonyzhang2023/awesome-embodied-vla-va-vln",
+    "description": "A curated list of state-of-the-art research in embodied AI, focusing on vision-language-action (VLA) models, vision-language navigation (VLN), and related multimodal learning approaches. ",
+    "url": "https://github.com/jonyzhang2023/awesome-embodied-vla-va-vln",
+    "stars": 3426,
+    "language": null,
+    "homepage": null,
+    "avatarUrl": "https://avatars.githubusercontent.com/u/50441823?v=4",
+    "pushedAt": "2026-07-26T12:48:13Z",
+    "readmeExcerpt": "<div align=\"center\">\n\n# 🤖 Awesome Embodied VLA / VA / VLN\n\n**A Curated Collection of Cutting-Edge Research in Embodied AI**\n\n[![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)\n[![Papers](https://img.shields.io/badge/Papers-700%2B-0984e3?style=for-the-badge&logo=google-scholar&logoColor=white)](README.md)\n[![Last Commit](https://img.shields.io/github/last-commit/jonyzhang2023/awesome-embodied-vla-va-vln?style=for-the-badge&color=00b894)](https://github.com/jonyzhang2023/awesome-embodied-vla-va-vln/commits)\n[![Stars](https://img.shields.io/github/stars/jonyzhang2023/awesome-embodied-vla-va-vln?style=for-the-badge&color=fdcb6e&logo=github)](https://github.com/jonyzhang2023/awesome-embodied-vla-va-vln/stargazers)\n[![Forks](https://img.shields.io/github/forks/jonyzhang2023/awesome-embodied-vla-va-vln?style=for-the-badge&color=e17055&logo=github)](https://github.com/jonyzhang2023/awesome-embodied-vla-va-vln/network/members)\n\n<br>\n\n*Organizing and showcasing state-of-the-art technologies in robot learning —*\n*Vision-Language-Action (VLA), World-Action-Model (WAM), Vision-Language-Navigation (VLN), Vision-Action (VA),*\n*and MLLM-based Embodied Learning.*\n\n**We believe robotics will experience its own \"LLM moment.\"**\n\n<br>\n\n\n---\n\n</div>\n\n## 📋 Table of Contents\n\n| | Section | Description |\n|:---:|:---|:---|\n| 📚 | [Survey](#-survey) | Comprehensive surveys and reviews |\n| 💥 | [VLA & WAM Models](#-vision-language-action-vla-models--world-action-models-wam) | Vision-Language-Action & World Action Models |\n| 🚶 | [VLN Models](#-vision-language-navigation-vln-models) | Vision-Language Navigation Models |\n| 🎬 | [VA Models](#-vision-action-va-models) | Vision-Action Models & Diffusion Policies |\n| 🧠 | [MLLM-based Embodied Learning](#-other-multimodal-large-language-model-mllm-basedrelated-embodied-learning) | LLM/VLM-driven robotic reasoning & planning |\n| ⚡ | [Physics-aware Policy](#physics-aware-policy) | Physics-informed policy learning |\n| 🔄 | [Sim-to-Real Transfer](#sim-to-real-transfer) | Bridging simulation and reality |\n| 📊 | [Benchmark](#benchmark) | Evaluation benchmarks & datasets |\n| 🎮 | [Simulator](#simulator) | Simulation platforms & engines |\n| 🔗 | [Related Works](#related-works) | Other awesome lists & resources |\n\n<br>\n\n> [!NOTE]\n> **Paper Ordering** — Within each year, papers are generally listed in reverse chronological order (newer papers appear lower). Particularly influential or representative works may be highlighted at the top regardless of date.\n\n> [!TIP]\n> **Contributing** — This repository is continuously updated! If you have papers, projects, or resources not yet included, please submit a **Pull Request** or open an **Issue**. Let's build a comprehensive resource for the robotics and AI community!\n\n<br>\n\n---\n\n## 📚 Survey\n\n> *Comprehensive surveys and review papers covering the landscape of embodied AI.*\n\n\n- [2026] World Model for Robot Learning: A Comprehensive Survey [[paper](https://arxiv.org/pdf/2605.00080)] \n- [2025] [**Science Robotics**] A Review of Learning-based Dynamics Models for Robotic Manipulation [[paper](https://albertboai.com/assets/pdf/2025_scirobotics.adt1497.pdf)] \n- [2025] An Anatomy of Vision-Language-Action Models: From Modules to Milestones and Challenges [[paper](https://arxiv.org/pdf/2512.11362)] [[project](https://suyuz1.github.io/Survery/)]\n- [2025] A Comprehensive Survey on World Models for Embodied AI [[paper](https://www.arxiv.org/pdf/2510.16732)] [[project](https://github.com/Li-Zn-H/AwesomeWorldModels)]  \n- [2025] State of VLA Research at ICLR 2026 [[blog](https://mbreuss.github.io/blog_post_iclr_26_vla.html)]\n- [2025] Vision-Language-Action Models for Robotics: A Review Towards Real-World Applications [[paper](https://arxiv.org/pdf/2510.07077)]\n- [2025] Pure Vision Language Action (VLA) Models: A Comprehensive Survey [[paper](https://arxiv.org/pdf/2509.19012)]\n- [2025] Large VLM-based Vision-Language-Action Models for Robotic Manipulation: A Survey [[paper](https://arxiv.org/pdf/2508.13073)] [[project](https://github.com/JiuTian-VL/Large-VLM-based-VLA-for-Robotic-Manipulation)]  \n- [2025] Large Model Empowered Embodied AI: A Survey on Decision-Making and Embodied Learning [[paper](https://arxiv.org/pdf/2508.10399)]\n- [2025] Foundation Model Driven Robotics: A Comprehensive Review [[paper](https://arxiv.org/pdf/2507.10087)]\n- [2025] [**PKU-PsiBot**] A Survey on Vision-Language-Action Models: An Action Tokenization Perspective [[paper](https://arxiv.org/pdf/2507.01925)]\n- [2025] A Survey on Vision-Language-Action Models for Autonomous Driving [[paper](https://arxiv.org/pdf/2506.24044)] [[project](https://github.com/JohnsonJiang1996/Awesome-VLA4AD)]  \n- [2025] Parallels Between VLA Model Post-Training and Human Motor Learning: Progress, Challenges, and Trends [[paper](https://arxiv.org/pdf/2506.20966)] [[project](https://github.com/AoqunJin/Awesome-VLA-Post-Training)]  \n- [2025] [**IJRR 25**] Foundation Models in Robotics: Applications, Challenges, and the Future [[paper](https://arxiv.org/pdf/2312.07843)] [[project](https://github.com/robotics-survey/Awesome-Robotics-Foundation-Models)]\n- [2025] Deep Reinforcement Learning for Robotics: A Survey of Real-World Successes [[paper](https://www.arxiv.org/abs/2408.03539)]\n- [2025] A Survey on Diffusion Policy for Robotic Manipulation: Taxonomy, Analysis, and Future Directions [[paper](https://doi.org/10.36227/techrxiv.174378343.39356214/v1)] [[project](https://github.com/HITSZ-Robotics/DiffusionPolicy-Robotics)]  \n- [2025] Embodied Intelligent Industrial Robotics: Concepts and Techniques [[paper](https://arxiv.org/pdf/2505.09305)] [[project](https://github.com/jackeyzengl/Embodied_Intelligent_Industrial_Robotics_Paper_List)] \n- [2025] Neural Brain: A Neuroscience-inspired Framework for Embodied Agents [[paper](https://arxiv.org/pdf/2505.07634)] [[project](https://github.com/CNJianLiu/Neur",
+    "latestRelease": null,
+    "otherCandidates": [
+      {
+        "name": "SkyworkAI/Skywork-R1V",
+        "stars": 3159,
+        "description": "Skywork-R1V is an advanced multimodal AI model series developed by Skywork AI, specializing in vision-language reasoning."
+      },
+      {
+        "name": "waybarrios/vllm-mlx",
+        "stars": 1472,
+        "description": "OpenAI and Anthropic compatible server for Apple Silicon. Run LLMs and vision-language models (Llama, Qwen-VL, LLaVA) with continuous batching, MCP tool calling, and multimodal support. Native MLX backend, 400+ tok/s. Works with Claude Code."
+      },
+      {
+        "name": "EvolvingLMMs-Lab/NEO",
+        "stars": 878,
+        "description": "NEO Series: Native Vision-Language Models from First Principles"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: Skyvern – Browser automation using LLMs and computer vision",
+    "url": "https://github.com/Skyvern-AI/skyvern",
+    "hnUrl": "https://news.ycombinator.com/item?id=39706004",
+    "points": 422,
+    "numComments": 139,
+    "createdAt": "2024-03-14T16:31:34Z"
+  }
+}
