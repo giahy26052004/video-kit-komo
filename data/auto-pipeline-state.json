@@ -1,5 +1,5 @@
 {
-  "queryIndex": 35,
+  "queryIndex": 36,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -35,6 +35,7 @@
     "MGdaasLab/WHartTest",
     "the-open-agent/openagent",
     "modelcontextprotocol/servers",
-    "medusajs/medusa"
+    "medusajs/medusa",
+    "freqtrade/freqtrade"
   ]
 }

@@ -1,0 +1,54 @@
+{
+  "query": "code generation ai",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-31T03:52:51.877Z",
+  "github": {
+    "source": "github",
+    "name": "the-open-agent/openagent",
+    "description": "⚡️next-generation personal AI assistant powered by LLM, RAG and agent loops, supporting computer-use, browser-use and coding agent, demo: https://demo.openagentai.org",
+    "url": "https://github.com/the-open-agent/openagent",
+    "stars": 5473,
+    "language": "Go",
+    "homepage": "https://www.openagentai.org/",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/277180808?v=4",
+    "pushedAt": "2026-07-25T16:24:22Z",
+    "readmeExcerpt": "<div align=\"center\">\n\n<img src=\"https://cdn.openagentai.org/img/openagent-logo_1900x450.png\" alt=\"OpenAgent\" width=\"480\">\n\n<br/>\n<br/>\n\n**Next-generation personal AI assistant powered by LLM, RAG and agent loops — ships as a single binary, no installation needed**\n\n*Supporting computer-use, browser-use and coding agent*\n\n<br/>\n\n[![Build](https://github.com/the-open-agent/openagent/workflows/Build/badge.svg?style=flat-square)](https://github.com/the-open-agent/openagent/actions/workflows/build.yml)\n[![Release](https://img.shields.io/github/v/release/the-open-agent/openagent?style=flat-square&color=4f46e5)](https://github.com/the-open-agent/openagent/releases/latest)\n[![Docker Pulls](https://img.shields.io/docker/pulls/casbin/openagent?style=flat-square&color=0ea5e9)](https://hub.docker.com/r/casbin/openagent)\n[![Go Report](https://goreportcard.com/badge/github.com/the-open-agent/openagent?style=flat-square)](https://goreportcard.com/report/github.com/the-open-agent/openagent)\n[![License](https://img.shields.io/github/license/the-open-agent/openagent?style=flat-square&color=22c55e)](https://github.com/the-open-agent/openagent/blob/master/LICENSE)\n[![Discord](https://img.shields.io/discord/1022748306096537660?logo=discord&label=discord&color=5865F2&style=flat-square)](https://discord.gg/5rPsrAzK7S)\n\n<br/>\n\n[**Live Demo**](https://demo.openagentai.org) · [**Playground**](https://try.openagentai.org) · [**Docs**](https://www.openagentai.org) · [**Discord**](https://discord.gg/5rPsrAzK7S)\n\n</div>\n\n---\n\nEnglish | [中文](./README_zh.md)\n\n---\n\n## What is OpenAgent?\n\nOpenAgent is an open-source personal AI assistant that brings together powerful LLMs, your own knowledge base, and autonomous agent loops — all in one self-hostable platform. Connect any model provider, build a RAG knowledge base from your documents, and let agents browse the web, run code, and call any MCP-compatible tool on your behalf.\n\n<div align=\"center\">\n<br/>\n\n|                                               Usage Analytics                                                |                                                 Activity Monitoring                                                  |\n|:------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------:|\n| ![Usage Analytics](https://raw.githubusercontent.com/the-open-agent/static/master/img/screenshot-usages.png) | ![Activity Monitoring](https://raw.githubusercontent.com/the-open-agent/static/master/img/screenshot-activities.png) |\n|                                             **Tool Management**                                              |                                                  **Detailed Logs**                                                   |\n| ![Tool Management](https://raw.githubusercontent.com/the-open-agent/static/master/img/screenshot-tools.png)  |       ![Detailed Logs](https://raw.githubusercontent.com/the-open-agent/static/master/img/screenshot-logs.png)       |\n\n<br/>\n</div>\n\n---\n\n## Quick Start\n\nPre-built binaries for **Linux**, **macOS**, and **Windows** (`amd64` / `arm64`). The installer downloads the latest release and starts OpenAgent on **port 14000**.\n\n**macOS / Linux / WSL**\n```bash\ncurl -fsSL https://raw.githubusercontent.com/the-open-agent/openagent/master/scripts/install.sh | bash\n```\n\n**Windows (PowerShell)**\n```powershell\nirm https://raw.githubusercontent.com/the-open-agent/openagent/master/scripts/install.ps1 | iex\n```\n\n> **Windows runs natively** — no WSL, no Docker required.\n\nOpen [http://localhost:14000](http://localhost:14000) and you're in.\n\n> Optional env vars: `OPENAGENT_VERSION`, `INSTALL_DIR`, `BIN_DIR`\n\n**Build from source**\n\nPrerequisites:\n- **Backend**: [Go](https://golang.org/dl/) 1.25.0+\n- **Frontend**: [Node.js](https://nodejs.org/) 20+ and [Yarn](https://classic.yarnpkg.com/) 1.x\n\n```bash\n# Backend\ngo build\n\n# Frontend\ncd web && yarn install && yarn start\n```\n\n**Docker**\n```bash\ndocker-compose up\n```\n\nOpen [http://localhost:14000](http://localhost:14000) once the containers are running.\n\n---\n\n## Features\n\n### 🤖 30+ Model Providers\n\nConnect every major LLM provider and switch between them per conversation — no code changes required.\n\n<div align=\"center\">\n\n`OpenAI` · `Azure OpenAI` · `Anthropic Claude` · `Google Gemini` · `DeepSeek` · `Mistral` · `Grok` · `Qwen` · `Doubao` · `Moonshot` · `ChatGLM` · `Baichuan` · `Ernie` · `iFlytek` · `HuggingFace` · `Cohere` · `Amazon Bedrock` · `OpenRouter` · `Ollama` · `and more`\n\n</div>\n\n---\n\n### 🔄 Autonomous Agent Loops\n\n| Capability                 | Description                                                                                        |\n|:---------------------------|:---------------------------------------------------------------------------------------------------|\n| **Browser-Use**            | Drive a real browser — navigate, click, fill forms, scrape, and screenshot pages                   |\n| **Web Search & Fetch**     | Search the web and pull live page content into the agent's context                                 |\n| **Shell Execution**        | Run shell commands and scripts directly from the agent loop                                        |\n| **Office Automation**      | Read and write Word, Excel, and PowerPoint files                                                   |\n| **MCP Integration**        | Plug in any MCP-compatible server (SSE / Stdio / StreamableHTTP) and expose its tools to the agent |\n| **Transparent Tool Calls** | See every tool invocation, its arguments, and its return value — step by step                      |\n\n---\n\n### 📚 RAG & Knowledge Base\n\n| Capability               | Description                                                                                   |\n|:-------------------------|:--------------------------------------------------------------------------------------",
+    "latestRelease": {
+      "tag": "v2.85.0",
+      "name": "v2.85.0",
+      "body": "## Changelog\n* d5ef6f4c63efbe7358ea4d8888322351fe1d4fdc feat: add tool permission policy management (#2464)\n* b6b282d1ece08dea4429576c0625007778234e58 fix: ignore stale file preview fetch responses\n\n"
+    },
+    "otherCandidates": [
+      {
+        "name": "shuvonsec/claude-bug-bounty",
+        "stars": 4075,
+        "description": "AI-powered bug bounty hunting from your terminal - recon, 20 vuln classes,   autonomous hunting, and report generation. All inside Claude Code."
+      },
+      {
+        "name": "SamurAIGPT/Generative-Media-Skills",
+        "stars": 3943,
+        "description": "Multi-modal Generative Media Skills for AI Agents (Claude Code, Cursor, Gemini CLI). High-quality image, video, and audio generation powered by muapi.ai."
+      },
+      {
+        "name": "leofan90/Awesome-World-Models",
+        "stars": 1936,
+        "description": "A comprehensive list of papers for the definition of World Models and using World Models for General Video Generation, Embodied AI, and Autonomous Driving, including papers, codes, and related websites."
+      },
+      {
+        "name": "Agents365-ai/video-podcast-maker",
+        "stars": 1504,
+        "description": "Topic → 4K narrated video for coding agents. v4.0: all TTS via the ttsCN engine component (11 platforms incl. MiniMax voice clone, native word-level subtitle sync), manifest-based Asset Engine, Remotion composition, cost-gated AI generation"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Launch HN: Haystack (YC S24) – Visualize and edit code on an infinite canvas",
+    "url": "https://github.com/haystackeditor/haystack-editor",
+    "hnUrl": "https://news.ycombinator.com/item?id=41648564",
+    "points": 328,
+    "numComments": 173,
+    "createdAt": "2024-09-25T15:31:00Z"
+  }
+}
