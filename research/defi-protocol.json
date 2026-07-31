@@ -1,0 +1,54 @@
+{
+  "query": "defi protocol",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-31T14:37:51.815Z",
+  "github": {
+    "source": "github",
+    "name": "iotexproject/iotex-core",
+    "description": "Official implementation of IoTeX blockchain protocol in Go. An ultra-efficient EVM blockchain offering 1000 TPS with instant 1-block finality. Perfect for DeFi, DePIN tokenomics, Identities, and any trusted logic requiring Web3 composability",
+    "url": "https://github.com/iotexproject/iotex-core",
+    "stars": 1611,
+    "language": "Go",
+    "homepage": "https://iotex.io",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/34317526?v=4",
+    "pushedAt": "2026-07-31T07:25:05Z",
+    "readmeExcerpt": "# iotex-core \n\nOfficial Golang implementation of the IoTeX protocol, the modular DePIN Layer-1 network.\n\n[![Join the forum](https://img.shields.io/badge/Discuss-IoTeX%20Community-blue)](https://community.iotex.io/c/research-development/protocol)\n[![Go version](https://img.shields.io/badge/go-1.18.5-blue.svg)](https://github.com/moovweb/gvm)\n[![Go Report Card](https://goreportcard.com/badge/github.com/iotexproject/iotex-core)](https://goreportcard.com/report/github.com/iotexproject/iotex-core)\n[![Coverage](https://codecov.io/gh/iotexproject/iotex-core/branch/master/graph/badge.svg)](https://codecov.io/gh/iotexproject/iotex-core)\n[![Godoc](http://img.shields.io/badge/go-documentation-blue.svg?style=flat-square)](https://godoc.org/github.com/iotexproject/iotex-core)\n[![Releases](https://img.shields.io/github/release/iotexproject/iotex-core/all.svg?style=flat-square)](https://github.com/iotexproject/iotex-core/releases)\n[![LICENSE](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)\n\n<a href=\"https://iotex.io/\"><img src=\"logo/IoTeX.png\" height=\"200px\"/></a>\n\n<a href=\"https://iotex.io/devdiscord\" target=\"_blank\">\n  <img src=\"https://github.com/iotexproject/halogrants/blob/880eea4af074b082a75608c7376bd7a8eaa1ac21/img/btn-discord.svg\" height=\"36px\">\n</a>\n\n## What is IoTeX?\n\nIoTeX is the modular infrastructure for DePIN projects to deploy in full or integrate modules into existing frameworks. Please visit [IoTeX homepage](https://iotex.io) official website to learn more about IoTeX network.\n\n## What is DePIN?\n\nDePIN stands for Decentralized Physical Infrastructure Networks, a new approach to building and maintaining physical world infrastructure. This infrastructure can range from WiFi hotspots in wireless networks to solar-powered home batteries in energy networks. DePINs are developed in a decentralized manner by individuals and companies globally, making them accessible to everyone. In return, contributors receive financial compensation and an ownership stake in the network they’re building and the services they provide through token incentives. DePINs are enabled by widespread internet connectivity and advancements in blockchain infrastructure and cryptography. To learn more about DePIN, please visit [What is DePIN?](https://iotex.io/blog/what-are-decentralized-physical-infrastructure-networks-depin/).\n\n### Explore DePIN Projects?\n\n[DePIN Scan](https://depinscan.io/)  is the go-to explorer for DePIN projects. DePIN Scan tracks crypto token prices, real-time device data, and offers a variety of views for DePIN projects.\n\n## Run a delegate?\n\nPlease visit [IoTeX Delegate Manual](https://github.com/iotexproject/iotex-bootstrap) for detailed setup process.\n\n## Building the source code\n\n### Minimum requirements\n\n| Components | Version | Description |\n|----------|-------------|-------------|\n| [Golang](https://golang.org) | &ge; 1.22.12 | Go programming language |\n| [Protoc](https://developers.google.com/protocol-buffers/) | &ge; 3.6.0 | Protocol buffers, required only when you rebuild protobuf messages |\n\n### Compile\n\nDownload the code to your desired local location (doesn't have to be under `$GOPATH/src`)\n```\ngit clone git@github.com:iotexproject/iotex-core.git\ncd iotex-core\n```\n\nIf you put the project code under your `$GOPATH\\src`, you will need to set up an environment variable\n```\nexport GO111MODULE=on\nset GO111MODULE=on (for windows)\n```\n\nBuild the project for general purpose (server, ioctl) by\n\n```\nmake\n```\n\nBuild the project for broader purpose (server, ioctl, injector...) by\n```\nmake all \n```\n\nIf the dependency needs to be updated, run\n\n```\ngo get -u\ngo mod tidy\n```\nIf you want to learn more advanced usage about `go mod`, you can find out [here](https://github.com/golang/go/wiki/Modules).\n\nRun unit tests only by\n\n```\nmake test\n```\n\nBuild the docker image by\n\n```\nmake docker\n```\n\n### Run iotex-core\n\nStart (or resume) a standalone server to operate on a blockchain by\n\n```\nmake run\n```\n\nRestart the server from a clean state by\n\n```\nmake reboot\n```\n\nIf \"make run\" fails due to corrupted or missing state database while block database is in normal condition, e.g.,\nfailing to get factory's height from underlying DB, please try to recover state database by\n\n```\nmake recover\n```\n\nThen, \"make run\" again.\n\n### Use CLI\n\nUsers could interact with iotex blockchain by\n\n```\nioctl [command]\n```\n\nRefer to the [ioctl CLI documentation](https://docs.iotex.io/blockchain/build/web3-development/ioctl-cli) for more details.\n\n## IOSwarm: Distributed Transaction Validation\n\n> **Branch:** `ioswarm-v2.3.5` | **Docker:** `raullen/iotex-core:ioswarm-v14`\n\nIOSwarm adds an optional coordinator to iotex-core that dispatches pending transaction validation tasks to external agents over gRPC. It runs in **shadow mode** — observational only, with zero impact on consensus or block production. Supports L1–L4 validation levels, including full EVM re-execution (L3) and stateful local validation (L4).\n\n### How it works\n\n```\nDelegate Node (iotex-core + IOSwarm coordinator)\n  ├── actpool → pending txs\n  ├── stateDB → account state prefetch + SimulateAccessList (L3)\n  ├── gRPC :14689 → dispatch tasks to agents\n  ├── HTTP :14690 → monitoring API (/api/stats, /swarm/shadow)\n  └── StateDiff stream → real-time state sync for L4 agents\n\nAgent Swarm (external processes)\n  ├── L1: signature verify\n  ├── L2: + nonce/balance checks\n  ├── L3: + full EVM execution (100% shadow accuracy)\n  ├── L4: + local state (BoltDB), independent validation\n  └── Earn IOTX rewards per epoch (on-chain settlement)\n```\n\n### Quick Deploy (existing delegate)\n\nSee [ioswarm/README.md](ioswarm/README.md) for the full delegate onboarding guide.\n\n**1. Pull the image:**\n```bash\ndocker pull raullen/iotex-core:ioswarm-v14\n```\n\n**2. Add IOSwarm config to your `config.yaml`:**\n```yaml\nioswarm:\n  enabled: true\n  grpcPort: 14689\n  swarmApiPort: 14690\n  maxAgents: 100\n  taskLevel: \"L4\"\n  shadowMode: true\n  pollIntervalMs: 1000\n  masterSecret: \"<your-secret>\"\n ",
+    "latestRelease": {
+      "tag": "v2.4.4",
+      "name": "",
+      "body": "Please refer to https://github.com/iotexproject/iotex-bootstrap/blob/v2.4.4/changelog/v2.4.4-release-note.md"
+    },
+    "otherCandidates": [
+      {
+        "name": "tradingstrategy-ai/web3-ethereum-defi",
+        "stars": 823,
+        "description": "A Python library for trading automation on DeFi, data research and integration. Supporting Uniswap, Aave, Chainlink, USDC and other protocols."
+      },
+      {
+        "name": "onflow/flow-go",
+        "stars": 571,
+        "description": "Reference implementation of the Flow network in Go. Layer 1 proof-of-stake protocol built for consumer apps, AI Agents, and DeFi at scale"
+      },
+      {
+        "name": "UMAprotocol/protocol",
+        "stars": 480,
+        "description": "UMA Protocol Running on Ethereum"
+      },
+      {
+        "name": "ScopeLift/umbra-protocol",
+        "stars": 402,
+        "description": "🌕🌑 Privacy Preserving Shielded Payments On The Ethereum Blockchain"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "DeFi protocol BadgerDAO exploited for $120M in front-end attack",
+    "url": "https://www.theblockcrypto.com/post/126072/defi-protocol-badgerdao-exploited-for-120-million-in-front-end-attack",
+    "hnUrl": "https://news.ycombinator.com/item?id=29414651",
+    "points": 128,
+    "numComments": 143,
+    "createdAt": "2021-12-02T10:56:09Z"
+  }
+}

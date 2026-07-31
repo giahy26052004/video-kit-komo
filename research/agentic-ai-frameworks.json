@@ -2,13 +2,13 @@
   "query": "agentic ai frameworks",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-31T03:31:26.759Z",
+  "fetchedAt": "2026-07-31T14:37:51.162Z",
   "github": {
     "source": "github",
     "name": "obra/superpowers",
     "description": "An agentic skills framework & software development methodology that works.",
     "url": "https://github.com/obra/superpowers",
-    "stars": 264035,
+    "stars": 264312,
     "language": "Shell",
     "homepage": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/45416?v=4",
@@ -22,22 +22,22 @@
     "otherCandidates": [
       {
         "name": "crewAIInc/crewAI",
-        "stars": 56405,
+        "stars": 56430,
         "description": "Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks."
       },
       {
         "name": "HKUDS/nanobot",
-        "stars": 46449,
+        "stars": 46471,
         "description": "Ultra-lightweight, open-source, self-hosted personal AI agent framework in Python with WebUI, tools, memory, MCP, multi-agent workflows, automation, and chat apps"
       },
       {
         "name": "AstrBotDevs/AstrBot",
-        "stars": 38367,
+        "stars": 38395,
         "description": "AI Agent Assistant & development framework that integrates lots of IM platforms, LLMs, plugins and AI feature, and can be your openclaw alternative. ✨"
       },
       {
         "name": "openai/openai-agents-python",
-        "stars": 28301,
+        "stars": 28316,
         "description": "A lightweight, powerful framework for multi-agent workflows"
       }
     ]
