@@ -1,4 +1,5 @@
 import React from "react";
+import { interpolate, useCurrentFrame } from "remotion";
 import { BRAND, FLOAT_SHADOW, FONT, SURFACE, TEXT } from "./theme";
 
 interface FakeBrowserProps {
@@ -41,6 +42,17 @@ export const FakeBrowser: React.FC<FakeBrowserProps> = ({
   style,
 }) => {
   const positioned = x !== undefined || y !== undefined;
+  const frame = useCurrentFrame();
+  // "Loading bar" chạy ngang thanh địa chỉ trong ~12 frame đầu rồi biến mất —
+  // cảm giác trang vừa load xong, thay vì browser hiện sẵn tĩnh từ đầu.
+  const loadingWidth = interpolate(frame, [0, 12], [0, 100], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const loadingOpacity = interpolate(frame, [10, 16], [1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
   return (
     <div
@@ -51,6 +63,7 @@ export const FakeBrowser: React.FC<FakeBrowserProps> = ({
         overflow: "hidden",
         background: SURFACE.panel,
         boxShadow: FLOAT_SHADOW,
+        position: "relative",
         // 1px inner ring reads crisper than a solid border on dark.
         outline: "1px solid rgba(255,255,255,0.06)",
         outlineOffset: -1,
@@ -139,6 +152,20 @@ export const FakeBrowser: React.FC<FakeBrowserProps> = ({
           </span>
         )}
       </div>
+
+      {/* Loading bar — chạy ngang rồi biến mất, cho cảm giác trang vừa tải xong */}
+      <div
+        style={{
+          position: "absolute",
+          top: 52,
+          left: 0,
+          height: 2,
+          width: `${loadingWidth}%`,
+          background: accentColor,
+          opacity: loadingOpacity,
+          boxShadow: `0 0 8px ${accentColor}`,
+        }}
+      />
 
       {/* Viewport */}
       <div

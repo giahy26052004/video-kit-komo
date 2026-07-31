@@ -2,7 +2,7 @@
   "query": "crypto trading bot",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-31T03:52:52.633Z",
+  "fetchedAt": "2026-07-31T03:31:28.368Z",
   "github": {
     "source": "github",
     "name": "freqtrade/freqtrade",
@@ -22,7 +22,7 @@
     "otherCandidates": [
       {
         "name": "ccxt/ccxt",
-        "stars": 43451,
+        "stars": 43450,
         "description": "A unified trading API with more than 100 crypto exchanges and prediction markets in JavaScript / TypeScript / Python / C# / PHP / Go / Java "
       },
       {

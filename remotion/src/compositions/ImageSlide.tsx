@@ -56,9 +56,18 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
     extrapolateRight: "clamp",
   });
   const imgSrc = staticFile(src);
-  // Zoom nhẹ liên tục trong suốt slide (KenBurns) — cho cảm giác "sống", không
-  // phải ảnh tĩnh cứng đờ. Áp cho khung screenshot/browser mockup.
-  const kenBurns = interpolate(frame, [0, durationInFrames], [1, 1.035], {
+  // Zoom + pan liên tục trong suốt slide (KenBurns rõ hơn bản cũ) — cho cảm
+  // giác "sống", không phải ảnh tĩnh cứng đờ. Áp cho khung screenshot/browser mockup.
+  const kenBurns = interpolate(frame, [0, durationInFrames], [1, 1.08], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const kenBurnsPanX = interpolate(frame, [0, durationInFrames], [0, -14], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  // Tilt 3D nhẹ, trôi chậm suốt slide — cho khung browser cảm giác "nổi khối".
+  const tiltY = interpolate(frame, [0, durationInFrames], [-3, 3], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -158,10 +167,10 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
         )}
         <div
           style={{
-            transform: `scale(${scale})`,
+            transform: `perspective(1400px) rotateY(${tiltY}deg) scale(${scale})`,
             borderRadius: 20,
             overflow: "hidden",
-            boxShadow: "0 40px 100px rgba(0,0,0,0.6)",
+            boxShadow: `0 30px 90px -15px ${accentColor}66, 0 40px 100px rgba(0,0,0,0.6)`,
             outline: `1px solid ${accentColor}44`,
             maxWidth: width * 0.86,
           }}
@@ -219,23 +228,43 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
           {title}
         </div>
       )}
-      <div style={{ transform: `scale(${scale})` }}>
-        <FakeBrowser
-          url={browserUrl}
-          width={browserWidth}
-          height={browserHeight}
-          accentColor={accentColor}
+      {/* Glass panel — nền kính mờ phía sau browser mockup, cho cảm giác "đắt tiền"
+          thay vì browser trôi nổi trực tiếp trên nền. */}
+      <div
+        style={{
+          position: "relative",
+          padding: 28,
+          borderRadius: 28,
+          background: "rgba(255,255,255,0.04)",
+          backdropFilter: "blur(20px)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          transform: `translateX(${kenBurnsPanX}px)`,
+        }}
+      >
+        <div
+          style={{
+            transform: `perspective(1400px) rotateY(${tiltY}deg) scale(${scale})`,
+            borderRadius: 18,
+            boxShadow: `0 30px 90px -20px ${accentColor}55, 0 0 0 1px rgba(255,255,255,0.06)`,
+          }}
         >
-          <Img
-            src={imgSrc}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              objectPosition: "top",
-            }}
-          />
-        </FakeBrowser>
+          <FakeBrowser
+            url={browserUrl}
+            width={browserWidth}
+            height={browserHeight}
+            accentColor={accentColor}
+          >
+            <Img
+              src={imgSrc}
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                objectPosition: "top",
+              }}
+            />
+          </FakeBrowser>
+        </div>
       </div>
       {subtitle && (
         <div

@@ -1,5 +1,5 @@
 {
-  "queryIndex": 36,
+  "queryIndex": 37,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -36,6 +36,7 @@
     "the-open-agent/openagent",
     "modelcontextprotocol/servers",
     "medusajs/medusa",
-    "freqtrade/freqtrade"
+    "freqtrade/freqtrade",
+    "FuelLabs/fuel-core"
   ]
 }

@@ -1,0 +1,54 @@
+{
+  "query": "blockchain node",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-31T03:47:07.659Z",
+  "github": {
+    "source": "github",
+    "name": "FuelLabs/fuel-core",
+    "description": "Rust full node implementation of the Fuel v2 protocol.",
+    "url": "https://github.com/FuelLabs/fuel-core",
+    "stars": 56939,
+    "language": "Rust",
+    "homepage": null,
+    "avatarUrl": "https://avatars.githubusercontent.com/u/55993183?v=4",
+    "pushedAt": "2026-07-28T05:45:16Z",
+    "readmeExcerpt": "# Fuel Client\n\n[![build](https://github.com/FuelLabs/fuel-core/actions/workflows/ci.yml/badge.svg)](https://github.com/FuelLabs/fuel-core/actions/workflows/ci.yml)\n[![deepwiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/FuelLabs/fuel-core)\n[![crates.io](https://img.shields.io/crates/v/fuel-core?label=latest)](https://crates.io/crates/fuel-core)\n[![docs](https://docs.rs/fuel-core/badge.svg)](https://docs.rs/fuel-core/)\n[![discord](https://img.shields.io/badge/chat%20on-discord-orange?&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/xfpK4Pe)\n[![twitter](https://img.shields.io/twitter/follow/fuel_network)](https://x.com/fuel_network)\n\nFuel client implementation.\n\n## Versions currently used in networks\n\n| Network  | Version |\n|----------|---------|\n| Fuel Ignition | 0.48.1 |\n| Testnet | 0.48.1 |\n| Devnet | 0.48.1 |\n\n## Contributing\n\nIf you are interested in contributing to Fuel, see our [CONTRIBUTING.md](CONTRIBUTING.md) guidelines for coding standards and review process.\n\nBefore pushing any changes or creating pull request please run `source ci_checks.sh`.\n\n## Building\n\nIf you plan to use already pre-compiled binaries you can directly go to [Running a Ignition node](#running-a-ignition-node).\n\n### System Requirements\n\nThere are several system requirements including clang.\n\n#### MacOS\n\n```bash\nbrew update\nbrew install cmake\n```\n\n#### Debian\n\n```bash\napt update\napt install -y cmake pkg-config build-essential git clang libclang-dev\n```\n\n#### Arch\n\n```bash\npacman -Syu --needed --noconfirm cmake gcc pkgconf git clang\n```\n\n### Rust setup\n\nYou'll need `wasm32-unknown-unknown` target installed.\n\n```bash\nrustup target add wasm32-unknown-unknown\n```\n\n\n## Running a Ignition node\n\nIf you want to participate in the Ignition network with your own node you can launch it following these simple commands.\n\n### From pre-compiled binaries\n\nFollow : https://docs.fuel.network/docs/node-operator/fuel-ignition/mainnet-node/\n\n### From source\n\nClone the `fuel-core` repository : \n```\ngit clone https://github.com/FuelLabs/fuel-core.git\n```\n\nGo to the latest release tag for ignition on the `fuel-core` repository :\n```\ngit checkout v0.45.1\n```\n\nBuild your node binary:\n```bash\nmake build\n```\n\nTo run the node follow : https://docs.fuel.network/docs/node-operator/fuel-ignition/mainnet-node/\n\n## Running a Local network from source\n\nClone the `fuel-core` repository : \n```\ngit clone https://github.com/FuelLabs/fuel-core.git\n```\n\nBuild your node binary:\n```bash\nmake build\n```\n\nTo run the node follow : https://docs.fuel.network/docs/node-operator/fuel-ignition/local-node/\n\n## Setup to make contributions\n\n### Compiling\n\nWe recommend using `xtask` to build fuel-core for development:\n\n```sh\ncargo xtask build\n```\n\nThis will run `cargo build` as well as any other custom build processes we have such as re-generating a GraphQL schema for the client.\n\n### Testing\n\nThe [ci_checks.sh](ci_checks.sh) script file can be used to run all CI checks,\nincluding the running of tests.\n\n```shell\nsource ci_checks.sh\n```\n\nThe script requires pre-installed tools. For more information run:\n\n```shell\ncat ci_checks.sh\n```\n\n## Running\n\nThe service can be launched by executing `fuel-core run`. The list of options for running can be accessed via the `help` option:\n\n```console\n$ ./target/debug/fuel-core run --help\n\nUSAGE:\n    fuel-core run [OPTIONS]\n\nOPTIONS:\n        --snapshot <SNAPSHOT>\n          Snapshot from which to do (re)genesis. Defaults to local testnet configuration\n\n          [env: SNAPSHOT=]\n        ...\n```\n\nFor many development purposes it is useful to have a state that won't persist and the `db-type` option can be set to `in-memory` as in the following example.\n\n### Example\n\n```console\n$ ./target/debug/fuel-core run --db-type in-memory\n2023-06-13T12:45:22.860536Z  INFO fuel_core::cli::run: 230: Block production mode: Instant\n2023-06-13T12:38:47.059783Z  INFO fuel_core::cli::run: 310: Fuel Core version v0.18.1\n2023-06-13T12:38:47.078969Z  INFO new{name=fuel-core}:_commit_result{block_id=b1807ca9f2eec7e459b866ecf69b68679fc6b205a9a85c16bd4943d1bfc6fb2a height=0 tx_status=[]}: fuel_core_importer::importer: 231: Committed block\n2023-06-13T12:38:47.097777Z  INFO new{name=fuel-core}: fuel_core::graphql_api::service: 208: Binding GraphQL provider to 127.0.0.1:4000\n```\n\nTo disable block production on your local node, set `--poa-instant=false`\n\n### Example\n\n```console\n$ ./target/debug/fuel-core run --poa-instant=false\n2023-06-13T12:44:12.857763Z  INFO fuel_core::cli::run: 232: Block production disabled\n```\n\n### Troubleshooting\n\n#### Publishing\n\nWe use [`publish-crates`](https://github.com/katyo/publish-crates) action for automatic publishing of all crates.\n\nIf you have problems with publishing, you can troubleshoot it locally with [`act`](https://github.com/nektos/act).\n\n```shell\nact release -s GITHUB_TOKEN=<YOUR_GITHUB_TOKEN> -j publish-crates-check --container-architecture linux/amd64 --reuse\n```\n\nIt requires GitHubToken to do request to the GitHub. You can create it \nwith [this](https://docs.github.com/en/enterprise-server@3.4/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) instruction.\n\n#### Outdated database\n\nIf you encounter an error such as\n\n```console\nthread 'main' panicked at 'unable to open database: DatabaseError(Error { message: \"Invalid argument: Column families not opened: column-11, column-10, column-9, column-8, column-7, column-6, column-5, column-4, column-3, column-2, column-1, column-0\" })', fuel-core/src/main.rs:23:66\n```\n\nClear your local database using: `rm -rf ~/.fuel/db`\n\n#### File descriptor limits\n\nOn some macOS versions the default file descriptor limit is quite low, which can lead to IO errors with messages like `Too many open files` or even `fatal runtime error: Rust cannot catch foreign exceptions` when RocksDB encounters these issues. Use the following command to increase the open file limit. Note that this only affects the current shell ses",
+    "latestRelease": {
+      "tag": "v0.48.2",
+      "name": "v0.48.2",
+      "body": "## Version v0.48.2\r\n\r\n### Fixed\r\n- [3289](https://github.com/FuelLabs/fuel-core/pull/3289): shutdown services in parallel to stop poa promptly\r\n- [3290](https://github.com/FuelLabs/fuel-core/pull/3290): Use semantic JSON comparison in QuorumTransport\r\n- [3301](https://github.com/FuelLabs/fuel-core/pull/3301): disable coredumps in the fuel-core binary so the rocksdb atexit SIGABRT does not block pod restart for tens of seconds; set `FUEL_CORE_ENABLE_COREDUMP=1` to opt back in.\r\n\r\n## What's Changed\r\n* Fix a typo in changelog by @Dentosal in https://github.com/FuelLabs/fuel-core/pull/3291\r\n* Ignore audits blocking CI by @Dentosal in https://github.com/FuelLabs/fuel-core/pull/3297\r\n* Use semantic JSON comparison in QuorumTransport by @Dentosal in https://github.com/FuelLabs/fuel-core/pull/3290\r\n* Update network versions on README by @github-actions[bot] in https://github.com/FuelLabs/fuel-core/pull/3299\r\n* bugfix: improve shutdown and stop PoA sooner by @MitchTurner in https://github.com/FuelLabs/fuel-core/pull/3289\r\n* disable coredumps in fuel-core-bin to keep pod restarts fast by @xgreenx in https://github.com/FuelLabs/fuel-core/pull/3301\r\n* Release v0.48.2 by @xgreenx in https://github.com/FuelLabs/fuel-core/pull/3302\r\n\r\n\r\n**Full Changelog**: https://github.com/FuelLabs/fuel-core/compare/v0.48.1...v0.48.2"
+    },
+    "otherCandidates": [
+      {
+        "name": "Chia-Network/chia-blockchain",
+        "stars": 10800,
+        "description": "Chia blockchain python implementation (full node, farmer, harvester, timelord, and wallet)"
+      },
+      {
+        "name": "smartcontractkit/chainlink",
+        "stars": 8230,
+        "description": "node of the decentralized oracle network, bridging on and off-chain computation"
+      },
+      {
+        "name": "nanocurrency/nano-node",
+        "stars": 3521,
+        "description": "Nano is digital currency. Its ticker is: XNO and its currency symbol is: Ӿ"
+      },
+      {
+        "name": "IntersectMBO/cardano-node",
+        "stars": 3178,
+        "description": "The core component that is used to participate in a Cardano decentralised blockchain."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "BrewChain – NodeJS blockchain implementation",
+    "url": "http://www.darrenbeck.co.uk/blockchain/nodejs/nodejscrypto/",
+    "hnUrl": "https://news.ycombinator.com/item?id=15882877",
+    "points": 123,
+    "numComments": 12,
+    "createdAt": "2017-12-08T23:00:56Z"
+  }
+}

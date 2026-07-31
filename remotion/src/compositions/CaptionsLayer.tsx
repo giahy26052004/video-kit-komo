@@ -85,38 +85,47 @@ function wrapText(text: string, maxChars: number): string[] {
 }
 
 /**
- * Render a string with substring matches in `highlight` styled with accent
- * color + bold. Returns React fragments suitable for direct rendering.
+ * Render 1 dòng caption với từng từ xuất hiện tuần tự (word-by-word) thay vì
+ * cả dòng hiện cùng lúc — giống caption TikTok. `progress` = 0..1 theo % thời
+ * gian đã trôi qua của caption hiện tại; mỗi từ mờ dần + nhích lên khi tới lượt.
  */
-function renderWithHighlight(
+function renderWordByWord(
   text: string,
+  progress: number,
   highlight: string[] | undefined,
   accentColor: string,
 ): React.ReactNode {
-  if (!highlight || highlight.length === 0) return text;
+  const words = text.split(/(\s+)/); // giữ lại khoảng trắng làm token riêng
+  const visibleTokens = words.filter((w) => w.trim().length > 0);
+  const totalWords = visibleTokens.length || 1;
+  let wordIndex = 0;
 
-  // Build regex from highlight terms (escape special chars).
-  const escaped = highlight.map((h) =>
-    h.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
-  );
-  const re = new RegExp(`(${escaped.join("|")})`, "g");
-  const parts = text.split(re);
-
-  return parts.map((part, i) =>
-    highlight.includes(part) ? (
+  return words.map((token, i) => {
+    if (token.trim().length === 0) return <React.Fragment key={i}>{token}</React.Fragment>;
+    const idx = wordIndex++;
+    // Từ thứ idx "tới lượt" khi progress vượt idx/totalWords — mỗi từ có 1
+    // khoảng đệm ~0.5 từ để mờ dần mượt thay vì bật/tắt cứng.
+    const wordStart = idx / totalWords;
+    const wordEnd = wordStart + 0.5 / totalWords;
+    const localT = Math.max(0, Math.min(1, (progress - wordStart) / Math.max(wordEnd - wordStart, 0.001)));
+    const opacity = interpolate(localT, [0, 1], [0.25, 1]);
+    const translateY = interpolate(localT, [0, 1], [10, 0]);
+    const isHighlighted = highlight?.includes(token);
+    return (
       <span
         key={i}
         style={{
-          color: accentColor,
-          fontWeight: 900,
+          display: "inline-block",
+          opacity,
+          transform: `translateY(${translateY}px)`,
+          color: isHighlighted ? accentColor : undefined,
+          fontWeight: isHighlighted ? 900 : undefined,
         }}
       >
-        {part}
+        {token}
       </span>
-    ) : (
-      <React.Fragment key={i}>{part}</React.Fragment>
-    ),
-  );
+    );
+  });
 }
 
 /**
@@ -154,6 +163,12 @@ export const CaptionsLayer: React.FC<CaptionsLayerProps> = ({
     fps,
     config: { damping: 8, stiffness: 180, mass: 0.4 },
   });
+  // % thời gian đã trôi qua trong caption hiện tại — dùng để hiện từng từ
+  // (word-by-word) thay vì cả câu bật cùng lúc.
+  const wordProgress = interpolate(frame, [active.from, active.to], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
   // Vertical position mapping.
   const positionStyle: React.CSSProperties =
@@ -190,6 +205,18 @@ export const CaptionsLayer: React.FC<CaptionsLayerProps> = ({
         pointerEvents: "none",
       }}
     >
+      {/* Glass panel phía sau chữ — dễ đọc hơn trên nền động (neon/particles)
+          mà vẫn nhẹ nhàng, không che hết ảnh phía sau. */}
+      <div
+        style={{
+          position: "absolute",
+          inset: "-16px -24px",
+          background: "rgba(0,0,0,0.28)",
+          backdropFilter: "blur(10px)",
+          borderRadius: 20,
+          zIndex: -1,
+        }}
+      />
       {lines.map((line, i) => (
         <div
           key={i}
@@ -203,7 +230,7 @@ export const CaptionsLayer: React.FC<CaptionsLayerProps> = ({
             letterSpacing: "0.02em",
           }}
         >
-          {renderWithHighlight(line, highlight, accentColor)}
+          {renderWordByWord(line, wordProgress, highlight, accentColor)}
         </div>
       ))}
     </div>

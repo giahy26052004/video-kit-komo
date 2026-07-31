@@ -16,7 +16,7 @@ import { TransitionSlide } from "./compositions/TransitionSlide";
 import { NumberHero } from "./compositions/NumberHero";
 import { ImageSlide, ImageMode } from "./compositions/ImageSlide";
 import { VideoTheme } from "./ui-kit/AnimatedBackground";
-import { SlideTransition } from "./ui-kit/SlideTransition";
+import { SlideTransition, TRANSITION_VARIANTS } from "./ui-kit/SlideTransition";
 import { CaptionsLayer, CaptionPosition } from "./compositions/CaptionsLayer";
 import { BrandConfig } from "./compositions/BrandedSlideLayout";
 import { Preset, resolvePreset } from "./presets";
@@ -205,6 +205,11 @@ const Main: React.FC<Metadata> = (meta) => {
         const from = offset;
         offset += slide.durationInFrames;
         const slideNumber = i + 1;
+        // Xoay vòng kiểu transition theo index slide — deterministic (không
+        // Math.random(), component re-render mỗi frame nên random thật sẽ nhảy
+        // liên tục). Lệch theo độ dài title để 2 video khác nhau đổi thứ tự.
+        const transitionSeed = meta.title?.length ?? 0;
+        const transitionVariant = TRANSITION_VARIANTS[(transitionSeed + i) % TRANSITION_VARIANTS.length];
 
         return (
           <Sequence
@@ -222,7 +227,7 @@ const Main: React.FC<Metadata> = (meta) => {
             )}
 
             {slide.type === "cover" && (
-              <SlideTransition durationInFrames={slide.durationInFrames}>
+              <SlideTransition durationInFrames={slide.durationInFrames} variant={transitionVariant}>
                 <CoverSlide
                   title={slide.title ?? ""}
                   subtitle={slide.subtitle}
@@ -239,7 +244,7 @@ const Main: React.FC<Metadata> = (meta) => {
               </SlideTransition>
             )}
             {slide.type === "text" && (
-              <SlideTransition durationInFrames={slide.durationInFrames}>
+              <SlideTransition durationInFrames={slide.durationInFrames} variant={transitionVariant}>
                 <TextSlide
                   text={slide.text ?? ""}
                   captions={slide.captions}
@@ -308,7 +313,7 @@ const Main: React.FC<Metadata> = (meta) => {
               />
             )}
             {slide.type === "image" && slide.imageSrc && (
-              <SlideTransition durationInFrames={slide.durationInFrames}>
+              <SlideTransition durationInFrames={slide.durationInFrames} variant={transitionVariant}>
                 <ImageSlide
                   src={slide.imageSrc}
                   mode={slide.imageMode}

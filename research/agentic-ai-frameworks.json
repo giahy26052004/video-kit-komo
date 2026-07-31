@@ -1,14 +1,14 @@
 {
-  "query": "ai agents framework",
+  "query": "agentic ai frameworks",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-31T03:47:06.050Z",
+  "fetchedAt": "2026-07-31T03:31:26.759Z",
   "github": {
     "source": "github",
     "name": "obra/superpowers",
     "description": "An agentic skills framework & software development methodology that works.",
     "url": "https://github.com/obra/superpowers",
-    "stars": 264040,
+    "stars": 264035,
     "language": "Shell",
     "homepage": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/45416?v=4",
@@ -21,34 +21,33 @@
     },
     "otherCandidates": [
       {
-        "name": "langchain-ai/langchain",
-        "stars": 143052,
-        "description": "The agent engineering platform."
-      },
-      {
         "name": "crewAIInc/crewAI",
         "stars": 56405,
         "description": "Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks."
       },
       {
         "name": "HKUDS/nanobot",
-        "stars": 46451,
+        "stars": 46449,
         "description": "Ultra-lightweight, open-source, self-hosted personal AI agent framework in Python with WebUI, tools, memory, MCP, multi-agent workflows, automation, and chat apps"
       },
       {
-        "name": "heygen-com/hyperframes",
-        "stars": 38840,
-        "description": "Write HTML. Render video. Built for agents."
+        "name": "AstrBotDevs/AstrBot",
+        "stars": 38367,
+        "description": "AI Agent Assistant & development framework that integrates lots of IM platforms, LLMs, plugins and AI feature, and can be your openclaw alternative. ✨"
+      },
+      {
+        "name": "openai/openai-agents-python",
+        "stars": 28301,
+        "description": "A lightweight, powerful framework for multi-agent workflows"
       }
     ]
   },
   "hackernews": {
     "source": "hackernews",
-    "title": "Serpent.AI – Game Agent Framework in Python",
-    "url": "https://github.com/SerpentAI/SerpentAI",
-    "hnUrl": "https://news.ycombinator.com/item?id=15318958",
-    "points": 86,
-    "numComments": 3,
-    "createdAt": "2017-09-23T09:35:46Z"
+    "title": "Launch HN: Human Layer (YC F24) – Human-in-the-Loop API for AI Systems",
+    "hnUrl": "https://news.ycombinator.com/item?id=42247368",
+    "points": 354,
+    "numComments": 196,
+    "createdAt": "2024-11-26T16:57:12Z"
   }
 }
