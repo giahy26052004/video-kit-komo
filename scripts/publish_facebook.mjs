@@ -28,6 +28,41 @@ function arg(name, def) {
   return i >= 0 ? process.argv[i + 1] : def;
 }
 
+/**
+ * Comment quảng bá KomoAPI tự động thêm dưới MỌI video đăng (dù nội dung video
+ * là chủ đề AI/trading gì cũng vậy) — tận dụng lượt xem để dẫn về sản phẩm riêng.
+ */
+function buildPromoComment() {
+  return [
+    "🚀 Tò mò mấy công cụ AI trong video chạy bằng model nào không?",
+    "Dùng KomoAPI — 1 API key xài được GPT, Claude, Grok và nhiều model AI mạnh nhất, khỏi cần đăng ký nhiều nơi.",
+    "💸 Gói ngày chỉ 30.000đ — xài thả ga cả ngày.",
+    "👉 https://komoapi.site",
+  ].join("\n");
+}
+
+/** Comment vào 1 bài/video đã đăng — lỗi thì chỉ log warning, KHÔNG làm hỏng việc đăng video (đã thành công). */
+async function postComment(objectId, token, message) {
+  try {
+    const url = `https://graph.facebook.com/${GRAPH_VERSION}/${objectId}/comments`;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message, access_token: token }),
+    });
+    const data = await res.json();
+    if (!res.ok || data.error) {
+      console.warn("  comment quảng bá THẤT BẠI (bỏ qua, video vẫn đăng ok):", JSON.stringify(data));
+      return null;
+    }
+    console.log(`  đã thêm comment quảng bá (id ${data.id})`);
+    return data.id;
+  } catch (e) {
+    console.warn("  comment quảng bá lỗi (bỏ qua):", e.message);
+    return null;
+  }
+}
+
 function buildDefaultCaption(script) {
   const cover = script.slides.find((s) => s.type === "cover" && s.endCard);
   const cta = cover?.endCardCTAs?.[0]?.value;
@@ -92,9 +127,19 @@ async function main() {
     : await publishAsReel({ pageId, token, videoBuffer, caption });
 
   console.log("đăng thành công:", JSON.stringify(result, null, 2));
+
+  // Comment quảng bá KomoAPI dưới video vừa đăng — không chặn/không làm hỏng
+  // kết quả publish nếu comment lỗi (video đã đăng ok là quan trọng nhất).
+  const commentTargetId = result.videoId ?? result.postId;
+  const commentId = commentTargetId ? await postComment(commentTargetId, token, buildPromoComment()) : null;
+
   fs.writeFileSync(
     publishedPath,
-    JSON.stringify({ publishedAt: new Date().toISOString(), pageId, mode: useLegacy ? "video" : "reel", ...result }, null, 2)
+    JSON.stringify(
+      { publishedAt: new Date().toISOString(), pageId, mode: useLegacy ? "video" : "reel", ...result, promoCommentId: commentId },
+      null,
+      2
+    )
   );
 }
 
