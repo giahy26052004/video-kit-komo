@@ -1,5 +1,5 @@
 {
-  "queryIndex": 40,
+  "queryIndex": 41,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -41,6 +41,7 @@
     "OpenZeppelin/openzeppelin-contracts",
     "jonyzhang2023/awesome-embodied-vla-va-vln",
     "iotexproject/iotex-core",
-    "unicity-sphere/sphere"
+    "unicity-sphere/sphere",
+    "solana-foundation/solana-dev-skill"
   ]
 }

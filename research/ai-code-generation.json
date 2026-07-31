@@ -2,13 +2,13 @@
   "query": "ai code generation",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-30T19:54:29.150Z",
+  "fetchedAt": "2026-07-31T19:54:13.946Z",
   "github": {
     "source": "github",
     "name": "the-open-agent/openagent",
     "description": "⚡️next-generation personal AI assistant powered by LLM, RAG and agent loops, supporting computer-use, browser-use and coding agent, demo: https://demo.openagentai.org",
     "url": "https://github.com/the-open-agent/openagent",
-    "stars": 5470,
+    "stars": 5476,
     "language": "Go",
     "homepage": "https://www.openagentai.org/",
     "avatarUrl": "https://avatars.githubusercontent.com/u/277180808?v=4",
@@ -22,22 +22,22 @@
     "otherCandidates": [
       {
         "name": "shuvonsec/claude-bug-bounty",
-        "stars": 4072,
+        "stars": 4085,
         "description": "AI-powered bug bounty hunting from your terminal - recon, 20 vuln classes,   autonomous hunting, and report generation. All inside Claude Code."
       },
       {
         "name": "SamurAIGPT/Generative-Media-Skills",
-        "stars": 3941,
+        "stars": 3947,
         "description": "Multi-modal Generative Media Skills for AI Agents (Claude Code, Cursor, Gemini CLI). High-quality image, video, and audio generation powered by muapi.ai."
       },
       {
         "name": "leofan90/Awesome-World-Models",
-        "stars": 1936,
+        "stars": 1937,
         "description": "A comprehensive list of papers for the definition of World Models and using World Models for General Video Generation, Embodied AI, and Autonomous Driving, including papers, codes, and related websites."
       },
       {
         "name": "Agents365-ai/video-podcast-maker",
-        "stars": 1504,
+        "stars": 1506,
         "description": "Topic → 4K narrated video for coding agents. v4.0: all TTS via the ttsCN engine component (11 platforms incl. MiniMax voice clone, native word-level subtitle sync), manifest-based Asset Engine, Remotion composition, cost-gated AI generation"
       }
     ]
