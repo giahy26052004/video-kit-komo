@@ -1,0 +1,29 @@
+{
+  "query": "ethereum layer 2",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-07-31T23:17:24.330Z",
+  "github": {
+    "source": "github",
+    "name": "l2beat/l2beat",
+    "description": "L2BEAT is an analytics and research website about Ethereum layer two (L2) scaling solutions.",
+    "url": "https://github.com/l2beat/l2beat",
+    "stars": 656,
+    "language": "TypeScript",
+    "homepage": "https://l2beat.com",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/85550152?v=4",
+    "pushedAt": "2026-07-31T19:47:59Z",
+    "readmeExcerpt": "# L2BEAT 💓\n\nL2BEAT (Layer 2 Beat) is a website dedicated to providing research and statistics about the very exciting layer 2 technology on Ethereum.\n\nYou can visit the site yourself at https://www.l2beat.com/.\n\n## Contributing\n\nWe welcome and encourage contributions. To learn about the project structure and contributions please read [`CONTRIBUTING.md`](https://github.com/l2beat/l2beat/blob/main/CONTRIBUTING.md).\n\n🔍 Here is also a visual step-by-step guide for creating a Pull Request - [link](https://www.notion.so/l2beat/How-to-add-milestones-0e8684a83c3c48ce8bc7b605d9c9a1bf)\n\n## License\n\nWe believe in knowledge sharing and open access. Our code is and will remain open source with the permissive MIT license.\n",
+    "latestRelease": null,
+    "otherCandidates": []
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Why should you care about Ethereum Layer-2?",
+    "url": "https://thecryptojournal.substack.com/p/what-is-ethereum-layer-2-and-why",
+    "hnUrl": "https://news.ycombinator.com/item?id=30044054",
+    "points": 59,
+    "numComments": 66,
+    "createdAt": "2022-01-23T06:21:18Z"
+  }
+}
