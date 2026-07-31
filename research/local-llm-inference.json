@@ -2,13 +2,13 @@
   "query": "local llm inference",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-31T01:03:43.441Z",
+  "fetchedAt": "2026-07-31T07:15:44.496Z",
   "github": {
     "source": "github",
     "name": "Andyyyy64/whichllm",
     "description": "Find the local LLM that actually runs and performs best on your hardware. Ranked by real, recency-aware benchmarks, not parameter count. One command, run it instantly.",
     "url": "https://github.com/Andyyyy64/whichllm",
-    "stars": 6068,
+    "stars": 6069,
     "language": "Python",
     "homepage": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/105579829?v=4",
@@ -22,7 +22,7 @@
     "otherCandidates": [
       {
         "name": "raullenchai/Rapid-MLX",
-        "stars": 3458,
+        "stars": 3459,
         "description": "The fastest local AI engine for Apple Silicon. 4.2x faster than Ollama, 0.08s cached TTFT, 100% tool calling. 17 tool parsers, prompt cache, reasoning separation, cloud routing. Drop-in OpenAI replacement. Works with Claude Code, Cursor, Aider."
       },
       {
@@ -32,13 +32,13 @@
       },
       {
         "name": "AtomicBot-ai/Atomic-Chat",
-        "stars": 1194,
+        "stars": 1196,
         "description": "Local AI app and inference engine for agents. Run open-weight LLMs locally — private, 100% offline on your computer."
       },
       {
-        "name": "EricLBuehler/candle-vllm",
-        "stars": 704,
-        "description": "Efficent platform for inference and serving local LLMs including an OpenAI compatible API server."
+        "name": "Pangu-Immortal/MagicWX",
+        "stars": 843,
+        "description": "Android 17 local LLM prototype with Jetpack Compose and ONNX Runtime for offline AI inference experiments."
       }
     ]
   },

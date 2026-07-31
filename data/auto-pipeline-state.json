@@ -1,5 +1,5 @@
 {
-  "queryIndex": 37,
+  "queryIndex": 38,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -37,6 +37,7 @@
     "modelcontextprotocol/servers",
     "medusajs/medusa",
     "freqtrade/freqtrade",
-    "FuelLabs/fuel-core"
+    "FuelLabs/fuel-core",
+    "OpenZeppelin/openzeppelin-contracts"
   ]
 }
