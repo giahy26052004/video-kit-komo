@@ -112,9 +112,16 @@ async function pickTopic(state) {
   throw new Error("không tìm được chủ đề mới sau khi thử hết QUERY_POOL");
 }
 
+// Icon bullet đổi theo theme để video "nhìn khác hẳn" nhau, không chỉ đổi nền.
+const THEME_BULLET_ICON = { default: "✅", neon: "⚡", particles: "🔹" };
+const THEME_HOOK_ICON = { default: "🔥", neon: "💜", particles: "🌐" };
+
 async function buildScript(research, slug, workspace) {
   const gh = research.github;
   const hn = research.hackernews;
+  // Random 1/3 theme nền động mỗi video (không cố định 1 loại) — cho video đỡ nhàm.
+  const theme = ["default", "neon", "particles"][Math.floor(Math.random() * 3) % 3];
+  const bulletIcon = THEME_BULLET_ICON[theme];
   const loc = await localizeContent(gh, hn); // dịch/tóm tắt tiếng Anh -> tiếng Việt (onscreen ngắn + voice đầy đủ)
   const websiteUrl = gh.homepage ? gh.homepage.replace(/^https?:\/\//i, "").replace(/\/$/, "") : null;
   const githubUrlShort = gh.url.replace(/^https?:\/\//i, "");
@@ -157,7 +164,7 @@ async function buildScript(research, slug, workspace) {
     imageMode: "screen",
     imageSrc: hookAsset.imageSrc,
     browserUrl: hookAsset.browserUrl,
-    title: `🔥 ${gh.name.split("/").pop()}`,
+    title: `${THEME_HOOK_ICON[theme]} ${gh.name.split("/").pop()}`,
     voice_text: `Một dự án AI đang gây chú ý với ${gh.stars.toLocaleString("vi-VN")} sao trên GitHub.`,
     sfx: "impact",
     sfxVolume: 0.1,
@@ -181,7 +188,7 @@ async function buildScript(research, slug, workspace) {
     const highlights = (loc.release_highlights?.length ? loc.release_highlights : [stripMarkdown(gh.latestRelease.name, 40)]).slice(0, 3);
     slides.push({
       type: "text",
-      text: [loc.release_onscreen || "🚀 Có gì mới?", ...highlights.map((h) => `✅ ${h}`)].join("\n"),
+      text: [loc.release_onscreen || "🚀 Có gì mới?", ...highlights.map((h) => `${bulletIcon} ${h}`)].join("\n"),
       voice_text: loc.release_voice || `Bản cập nhật mới nhất: ${stripMarkdown(gh.latestRelease.name, 80)}. ${stripMarkdown(gh.latestRelease.body, 160)}`,
       sfx: "transition",
       sfxVolume: 0.2,
@@ -212,8 +219,6 @@ async function buildScript(research, slug, workspace) {
   });
 
   const music = ["night", "chill", "lounge", "festive"][Math.floor(Math.random() * 4) % 4];
-  // Random 1/3 theme nền động mỗi video (không cố định 1 loại) — cho video đỡ nhàm.
-  const theme = ["default", "neon", "particles"][Math.floor(Math.random() * 3) % 3];
   return {
     title: `${gh.name} - ${gh.stars.toLocaleString("vi-VN")} sao trên GitHub`,
     // Caption tự nhiên dùng khi đăng Facebook — KHÔNG phải "title" kỹ thuật ở trên

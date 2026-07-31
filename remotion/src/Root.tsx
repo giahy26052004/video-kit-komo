@@ -16,6 +16,7 @@ import { TransitionSlide } from "./compositions/TransitionSlide";
 import { NumberHero } from "./compositions/NumberHero";
 import { ImageSlide, ImageMode } from "./compositions/ImageSlide";
 import { VideoTheme } from "./ui-kit/AnimatedBackground";
+import { SlideTransition } from "./ui-kit/SlideTransition";
 import { CaptionsLayer, CaptionPosition } from "./compositions/CaptionsLayer";
 import { BrandConfig } from "./compositions/BrandedSlideLayout";
 import { Preset, resolvePreset } from "./presets";
@@ -170,6 +171,13 @@ const DEFAULT_METADATA: Metadata = {
   ],
 };
 
+// Màu accent mặc định theo theme — để video "nhìn khác hẳn" thay vì chỉ đổi nền.
+const THEME_ACCENT: Record<string, string> = {
+  default: "#22d3ee",
+  neon: "#e879f9",
+  particles: "#38bdf8",
+};
+
 const Main: React.FC<Metadata> = (meta) => {
   const total = meta.slides.length;
   const presetCfg = meta.preset
@@ -180,6 +188,7 @@ const Main: React.FC<Metadata> = (meta) => {
       }).config
     : undefined;
   const fontScale = presetCfg?.fontScale ?? 1;
+  const themeAccentColor = THEME_ACCENT[meta.theme ?? "default"];
   let offset = 0;
 
   return (
@@ -213,30 +222,34 @@ const Main: React.FC<Metadata> = (meta) => {
             )}
 
             {slide.type === "cover" && (
-              <CoverSlide
-                title={slide.title ?? ""}
-                subtitle={slide.subtitle}
-                fontScale={fontScale}
-                eyebrow={slide.eyebrow}
-                accentColor={slide.accentColor ?? meta.brand?.accentColor}
-                showWatermark={slide.showWatermark ?? true}
-                watermarkHandle={slide.watermarkHandle ?? meta.brand?.handle}
-                watermarkUrl={slide.watermarkUrl ?? meta.brand?.url}
-                logoSrc={slide.logoSrc ?? meta.brand?.logoSrc}
-                endCard={slide.endCard}
-                endCardCTAs={slide.endCardCTAs}
-              />
+              <SlideTransition durationInFrames={slide.durationInFrames}>
+                <CoverSlide
+                  title={slide.title ?? ""}
+                  subtitle={slide.subtitle}
+                  fontScale={fontScale}
+                  eyebrow={slide.eyebrow}
+                  accentColor={slide.accentColor ?? meta.brand?.accentColor ?? themeAccentColor}
+                  showWatermark={slide.showWatermark ?? true}
+                  watermarkHandle={slide.watermarkHandle ?? meta.brand?.handle}
+                  watermarkUrl={slide.watermarkUrl ?? meta.brand?.url}
+                  logoSrc={slide.logoSrc ?? meta.brand?.logoSrc}
+                  endCard={slide.endCard}
+                  endCardCTAs={slide.endCardCTAs}
+                />
+              </SlideTransition>
             )}
             {slide.type === "text" && (
-              <TextSlide
-                text={slide.text ?? ""}
-                captions={slide.captions}
-                mode={slide.textMode}
-                reveal={slide.textReveal}
-                accentColor={slide.accentColor}
-                fontScale={fontScale}
-                theme={meta.theme}
-              />
+              <SlideTransition durationInFrames={slide.durationInFrames}>
+                <TextSlide
+                  text={slide.text ?? ""}
+                  captions={slide.captions}
+                  mode={slide.textMode}
+                  reveal={slide.textReveal}
+                  accentColor={slide.accentColor ?? themeAccentColor}
+                  fontScale={fontScale}
+                  theme={meta.theme}
+                />
+              </SlideTransition>
             )}
             {slide.type === "code" && (
               <CodeSlide
@@ -295,16 +308,18 @@ const Main: React.FC<Metadata> = (meta) => {
               />
             )}
             {slide.type === "image" && slide.imageSrc && (
-              <ImageSlide
-                src={slide.imageSrc}
-                mode={slide.imageMode}
-                title={slide.title}
-                subtitle={slide.subtitle}
-                browserUrl={slide.browserUrl}
-                fontScale={fontScale}
-                accentColor={slide.accentColor ?? meta.brand?.accentColor}
-                theme={meta.theme}
-              />
+              <SlideTransition durationInFrames={slide.durationInFrames}>
+                <ImageSlide
+                  src={slide.imageSrc}
+                  mode={slide.imageMode}
+                  title={slide.title}
+                  subtitle={slide.subtitle}
+                  browserUrl={slide.browserUrl}
+                  fontScale={fontScale}
+                  accentColor={slide.accentColor ?? meta.brand?.accentColor ?? themeAccentColor}
+                  theme={meta.theme}
+                />
+              </SlideTransition>
             )}
             {slide.type === "numberHero" && slide.heroValue !== undefined && (
               <NumberHero
