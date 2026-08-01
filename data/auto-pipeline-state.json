@@ -48,6 +48,7 @@
     "coollabsio/coolify",
     "HKUDS/nanobot",
     "bojieli/ai-agent-book",
-    "perspective-dev/perspective"
+    "perspective-dev/perspective",
+    "n8n-io/n8n"
   ]
 }
