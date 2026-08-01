@@ -1,5 +1,5 @@
 {
-  "queryIndex": 32,
+  "queryIndex": 7,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -51,6 +51,7 @@
     "perspective-dev/perspective",
     "n8n-io/n8n",
     "hiyouga/LlamaFactory",
-    "AgriciDaniel/claude-obsidian"
+    "AgriciDaniel/claude-obsidian",
+    "Comfy-Org/ComfyUI"
   ]
 }

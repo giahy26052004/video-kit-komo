@@ -2,13 +2,13 @@
   "query": "ai music generation",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-30T14:34:07.224Z",
+  "fetchedAt": "2026-08-01T19:37:33.300Z",
   "github": {
     "source": "github",
     "name": "BinWang28/audio-ai-hub",
     "description": "The hub for audio AI research: papers, open models, benchmarks & datasets across audio LLMs, speech recognition, TTS, music & audio generation.",
     "url": "https://github.com/BinWang28/audio-ai-hub",
-    "stars": 949,
+    "stars": 948,
     "language": "Python",
     "homepage": "https://binwang28.github.io/audio-ai-hub/",
     "avatarUrl": "https://avatars.githubusercontent.com/u/25280416?v=4",
@@ -18,7 +18,7 @@
     "otherCandidates": [
       {
         "name": "wildminder/awesome-ai-voice",
-        "stars": 396,
+        "stars": 397,
         "description": "List of open-source TTS, voice cloning, and music generation models"
       },
       {
