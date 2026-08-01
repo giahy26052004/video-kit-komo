@@ -2,17 +2,17 @@
   "query": "ai agent",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-29T10:13:16.120Z",
+  "fetchedAt": "2026-08-01T10:11:52.255Z",
   "github": {
     "source": "github",
     "name": "obra/superpowers",
     "description": "An agentic skills framework & software development methodology that works.",
     "url": "https://github.com/obra/superpowers",
-    "stars": 262992,
+    "stars": 264598,
     "language": "Shell",
     "homepage": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/45416?v=4",
-    "pushedAt": "2026-07-28T19:25:36Z",
+    "pushedAt": "2026-07-31T17:52:07Z",
     "readmeExcerpt": "# Superpowers\n\nSuperpowers is a complete software development methodology for your coding agents, built on top of a set of composable skills and some initial instructions that make sure your agent uses them.\n\n\n## Quickstart\n\nGive your agent Superpowers: [Claude Code](#claude-code), [Antigravity](#antigravity), [Codex App](#codex-app), [Codex CLI](#codex-cli), [Cursor](#cursor), [Factory Droid](#factory-droid), [Gemini CLI](#gemini-cli), [GitHub Copilot CLI](#github-copilot-cli), [Kimi Code](#kimi-code), [OpenCode](#opencode), [Pi](#pi).\n\n## How it works\n\nIt starts from the moment you fire up your coding agent. As soon as it sees that you're building something, it *doesn't* just jump into trying to write code. Instead, it steps back and asks you what you're really trying to do. \n\nOnce it's teased a spec out of the conversation, it shows it to you in chunks short enough to actually read and digest. \n\nAfter you've signed off on the design, your agent puts together an implementation plan that's clear enough for an enthusiastic junior engineer with poor taste, no judgement, no project context, and an aversion to testing to follow. It emphasizes true red/green TDD, YAGNI (You Aren't Gonna Need It), and DRY. \n\nNext up, once you say \"go\", it launches a *subagent-driven-development* process, having agents work through each engineering task, inspecting and reviewing their work, and continuing forward. It's not uncommon for your agent to work autonomously for a couple hours at a time without deviating from the plan you put together.\n\nThere's a bunch more to it, but that's the core of the system. And because the skills trigger automatically, you don't need to do anything special. Your coding agent just has Superpowers.\n\n## Commercial Services\n\nIf you're using Superpowers in enterprise and could benefit from commercial support, additional tooling, or managed spending, please don't hesitate to drop us a line at sales@primeradiant.com.\n\n## Installation\n\nInstallation differs by harness. If you use more than one, install Superpowers separately for each one.\n\n### Claude Code\n\nSuperpowers is available via the [official Claude plugin marketplace](https://claude.com/plugins/superpowers)\n\n#### Official Marketplace\n\n- Install the plugin from Anthropic's official marketplace:\n\n  ```bash\n  /plugin install superpowers@claude-plugins-official\n  ```\n\n#### Superpowers Marketplace\n\nThe Superpowers marketplace provides Superpowers and some other related plugins for Claude Code.\n\n- Register the marketplace:\n\n  ```bash\n  /plugin marketplace add obra/superpowers-marketplace\n  ```\n\n- Install the plugin from this marketplace:\n\n  ```bash\n  /plugin install superpowers@superpowers-marketplace\n  ```\n\n### Antigravity\n\nInstall Superpowers as a plugin from this repository:\n\n```bash\nagy plugin install https://github.com/obra/superpowers\n```\n\nAntigravity runs the plugin's session-start hook, so Superpowers is active from\nthe first message. Reinstall with the same command to update.\n\n### Codex App\n\nSuperpowers is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).\n\n- In the Codex app, click on Plugins in the sidebar.\n- You should see `Superpowers` in the Coding section.\n- Click the `+` next to Superpowers and follow the prompts.\n\n### Codex CLI\n\nSuperpowers is available via the [official Codex plugin marketplace](https://github.com/openai/plugins).\n\n- Open the plugin search interface:\n\n  ```bash\n  /plugins\n  ```\n\n- Search for Superpowers:\n\n  ```bash\n  superpowers\n  ```\n\n- Select `Install Plugin`.\n\n### Cursor\n\n- In Cursor Agent chat, install from marketplace:\n\n  ```text\n  /add-plugin superpowers\n  ```\n\n- Or search for \"superpowers\" in the plugin marketplace.\n\n### Factory Droid\n\n- Register the marketplace:\n\n  ```bash\n  droid plugin marketplace add https://github.com/obra/superpowers\n  ```\n\n- Install the plugin:\n\n  ```bash\n  droid plugin install superpowers@superpowers\n  ```\n\n### Gemini CLI\n\n- Install the extension:\n\n  ```bash\n  gemini extensions install https://github.com/obra/superpowers\n  ```\n\n- Update later:\n\n  ```bash\n  gemini extensions update superpowers\n  ```\n\n### GitHub Copilot CLI\n\n- Register the marketplace:\n\n  ```bash\n  copilot plugin marketplace add obra/superpowers-marketplace\n  ```\n\n- Install the plugin:\n\n  ```bash\n  copilot plugin install superpowers@superpowers-marketplace\n  ```\n\n### Kimi Code\n\nSuperpowers is available in Kimi Code's plugin marketplace.\n\n- Open Kimi Code's plugin manager:\n\n  ```text\n  /plugins\n  ```\n\n- Go to `Marketplace` > `Superpowers` and install it.\n\n- Or install directly from this repository:\n\n  ```text\n  /plugins install https://github.com/obra/superpowers\n  ```\n\n- Detailed docs: [docs/README.kimi.md](docs/README.kimi.md)\n\n### OpenCode\n\nOpenCode uses its own plugin install; install Superpowers separately even if you\nalready use it in another harness.\n\n- Tell OpenCode:\n\n  ```\n  Fetch and follow instructions from https://raw.githubusercontent.com/obra/superpowers/refs/heads/main/.opencode/INSTALL.md\n  ```\n\n- Detailed docs: [docs/README.opencode.md](docs/README.opencode.md)\n\n### Pi\n\nInstall Superpowers as a Pi package from this repository:\n\n```bash\npi install git:github.com/obra/superpowers\n```\n\nFor local development, run Pi with this checkout loaded as a temporary package:\n\n```bash\npi -e /path/to/superpowers\n```\n\nThe Pi package loads the Superpowers skills and a small extension that injects the `using-superpowers` bootstrap at session startup and again after compaction. Pi has native skills, so no compatibility `Skill` tool is required. Subagent and task-list tools remain optional Pi companion packages.\n\n## The Basic Workflow\n\n1. **brainstorming** - Activates before writing code. Refines rough ideas through questions, explores alternatives, presents design in sections for validation. Saves design document.\n\n2. **using-git-worktrees** - Activates after design approval. Creates isolated workspace on new branch, runs project setup, verifies clean test baseline.\n\n3.",
     "latestRelease": {
       "tag": "v6.2.0",
@@ -22,22 +22,22 @@
     "otherCandidates": [
       {
         "name": "NousResearch/hermes-agent",
-        "stars": 222116,
+        "stars": 223607,
         "description": "The agent that grows with you"
       },
       {
         "name": "Snailclimb/JavaGuide",
-        "stars": 157383,
+        "stars": 157422,
         "description": "Java 面试 & 后端通用面试指南，覆盖计算机基础、数据库、分布式、高并发、系统设计与 AI 应用开发"
       },
       {
         "name": "langflow-ai/langflow",
-        "stars": 152561,
+        "stars": 152699,
         "description": "Langflow is a powerful tool for building and deploying AI-powered agents and workflows."
       },
       {
         "name": "langgenius/dify",
-        "stars": 150682,
+        "stars": 150968,
         "description": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack."
       }
     ]

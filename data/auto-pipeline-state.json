@@ -1,5 +1,5 @@
 {
-  "queryIndex": 46,
+  "queryIndex": 10,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -46,6 +46,7 @@
     "cactus-compute/cactus",
     "l2beat/l2beat",
     "coollabsio/coolify",
-    "HKUDS/nanobot"
+    "HKUDS/nanobot",
+    "bojieli/ai-agent-book"
   ]
 }

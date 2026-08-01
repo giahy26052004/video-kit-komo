@@ -2,13 +2,13 @@
   "query": "local llm inference",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-31T07:15:44.496Z",
+  "fetchedAt": "2026-08-01T10:11:51.657Z",
   "github": {
     "source": "github",
     "name": "Andyyyy64/whichllm",
     "description": "Find the local LLM that actually runs and performs best on your hardware. Ranked by real, recency-aware benchmarks, not parameter count. One command, run it instantly.",
     "url": "https://github.com/Andyyyy64/whichllm",
-    "stars": 6069,
+    "stars": 6088,
     "language": "Python",
     "homepage": null,
     "avatarUrl": "https://avatars.githubusercontent.com/u/105579829?v=4",
@@ -22,17 +22,17 @@
     "otherCandidates": [
       {
         "name": "raullenchai/Rapid-MLX",
-        "stars": 3459,
+        "stars": 3390,
         "description": "The fastest local AI engine for Apple Silicon. 4.2x faster than Ollama, 0.08s cached TTFT, 100% tool calling. 17 tool parsers, prompt cache, reasoning separation, cloud routing. Drop-in OpenAI replacement. Works with Claude Code, Cursor, Aider."
       },
       {
         "name": "containers/ramalama",
-        "stars": 2981,
+        "stars": 2983,
         "description": "RamaLama is an open-source developer tool that simplifies the local serving of AI models from any source and facilitates their use for inference in production, all through the familiar language of containers."
       },
       {
         "name": "AtomicBot-ai/Atomic-Chat",
-        "stars": 1196,
+        "stars": 1200,
         "description": "Local AI app and inference engine for agents. Run open-weight LLMs locally — private, 100% offline on your computer."
       },
       {
