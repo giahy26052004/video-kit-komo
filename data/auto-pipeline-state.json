@@ -1,5 +1,5 @@
 {
-  "queryIndex": 11,
+  "queryIndex": 32,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -50,6 +50,7 @@
     "bojieli/ai-agent-book",
     "perspective-dev/perspective",
     "n8n-io/n8n",
-    "hiyouga/LlamaFactory"
+    "hiyouga/LlamaFactory",
+    "AgriciDaniel/claude-obsidian"
   ]
 }

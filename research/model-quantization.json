@@ -2,17 +2,17 @@
   "query": "model quantization",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-29T12:18:18.146Z",
+  "fetchedAt": "2026-08-01T17:17:36.699Z",
   "github": {
     "source": "github",
     "name": "bitsandbytes-foundation/bitsandbytes",
     "description": "Accessible large language models via k-bit quantization for PyTorch.",
     "url": "https://github.com/bitsandbytes-foundation/bitsandbytes",
-    "stars": 8367,
+    "stars": 8377,
     "language": "Python",
     "homepage": "https://huggingface.co/docs/bitsandbytes/main/en/index",
     "avatarUrl": "https://avatars.githubusercontent.com/u/175231607?v=4",
-    "pushedAt": "2026-07-28T18:55:00Z",
+    "pushedAt": "2026-07-29T18:27:51Z",
     "readmeExcerpt": "<p align=\"center\"><img src=\"https://avatars.githubusercontent.com/u/175231607?s=200&v=4\" alt=\"\"></p>\n<h1 align=\"center\">bitsandbytes</h1>\n<p align=\"center\">\n    <a href=\"https://github.com/bitsandbytes-foundation/bitsandbytes/main/LICENSE\"><img alt=\"License\" src=\"https://img.shields.io/github/license/bitsandbytes-foundation/bitsandbytes.svg?color=blue\"></a>\n    <a href=\"https://pepy.tech/project/bitsandbytes\"><img alt=\"Downloads\" src=\"https://static.pepy.tech/badge/bitsandbytes/month\"></a>\n    <a href=\"https://github.com/bitsandbytes-foundation/bitsandbytes/actions/workflows/tests-nightly.yml\"><img alt=\"Nightly Unit Tests\" src=\"https://img.shields.io/github/actions/workflow/status/bitsandbytes-foundation/bitsandbytes/tests-nightly.yml?logo=github&label=Nightly%20Tests\"></a>\n    <a href=\"https://github.com/bitsandbytes-foundation/bitsandbytes/releases\"><img alt=\"GitHub Release\" src=\"https://img.shields.io/github/v/release/bitsandbytes-foundation/bitsandbytes\"></a>\n    <a href=\"https://pypi.org/project/bitsandbytes/\"><img alt=\"PyPI - Python Version\" src=\"https://img.shields.io/pypi/pyversions/bitsandbytes\"></a>\n</p>\n\n`bitsandbytes` enables accessible large language models via k-bit quantization for PyTorch. We provide three main features for dramatically reducing memory consumption for inference and training:\n\n* 8-bit optimizers uses block-wise quantization to maintain 32-bit performance at a small fraction of the memory cost.\n* LLM.int8() or 8-bit quantization enables large language model inference with only half the required memory and without any performance degradation. This method is based on vector-wise quantization to quantize most features to 8-bits and separately treating outliers with 16-bit matrix multiplication.\n* QLoRA or 4-bit quantization enables large language model training with several memory-saving techniques that don't compromise performance. This method quantizes a model to 4-bits and inserts a small set of trainable low-rank adaptation (LoRA) weights to allow training.\n\nThe library includes quantization primitives for 8-bit & 4-bit operations, through `bitsandbytes.nn.Linear8bitLt` and `bitsandbytes.nn.Linear4bit` and 8-bit optimizers through `bitsandbytes.optim` module.\n\n## System Requirements\nbitsandbytes has the following minimum requirements for all platforms:\n\n* Python 3.10+\n* [PyTorch](https://pytorch.org/get-started/locally/) 2.4+\n  * _Note: While we aim to provide wide backwards compatibility, we recommend using the latest version of PyTorch for the best experience._\n\n#### Accelerator support:\n\n<small>Note: this table reflects the status of the current development branch. For the latest stable release, see the\n[document in the 0.50.0 tag](https://github.com/bitsandbytes-foundation/bitsandbytes/blob/0.50.0/README.md#accelerator-support).\n</small>\n\n##### Legend:\n🚧 = Planned |\n〰️ = Partially Supported |\n✅ = Supported |\n❌ = Not Supported\n\n<table>\n  <thead>\n    <tr>\n      <th>Platform</th>\n      <th>Accelerator</th>\n      <th>Hardware Requirements</th>\n      <th>LLM.int8()</th>\n      <th>QLoRA 4-bit</th>\n      <th>8-bit Optimizers</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td colspan=\"6\">🐧 <strong>Linux, glibc >= 2.24</strong></td>\n    </tr>\n    <tr>\n      <td align=\"right\">x86-64</td>\n      <td>◻️ CPU</td>\n      <td>Minimum: AVX2<br>Optimized: AVX512F, AVX512BF16</td>\n      <td>✅</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td></td>\n      <td>🟩 NVIDIA GPU <br><code>cuda</code></td>\n      <td>SM60+ minimum<br>SM75+ recommended</td>\n      <td>✅</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td></td>\n      <td>🟥 AMD GPU <br><code>cuda</code></td>\n      <td>\n        CDNA: gfx908, gfx90a, gfx942, gfx950, gfx1250<br>\n        RDNA: gfx103X, gfx110X, gfx115X, gfx120X\n      </td>\n      <td>✅</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td></td>\n      <td>🟦 Intel GPU <br><code>xpu</code></td>\n      <td>\n        Data Center GPU Max Series<br>\n        Arc A-Series (Alchemist)<br>\n        Arc B-Series (Battlemage)\n      </td>\n      <td>✅</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td></td>\n      <td>🟪 Intel Gaudi <br><code>hpu</code></td>\n      <td>Gaudi2, Gaudi3</td>\n      <td>✅</td>\n      <td>〰️</td>\n      <td>❌</td>\n    </tr>\n    <tr>\n      <td align=\"right\">aarch64</td>\n      <td>◻️ CPU</td>\n      <td></td>\n      <td>✅ *</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td></td>\n      <td>🟩 NVIDIA GPU <br><code>cuda</code></td>\n      <td>SM75+</td>\n      <td>✅</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td colspan=\"6\">🪟 <strong>Windows 11 / Windows Server 2022+</strong></td>\n    </tr>\n    <tr>\n      <td align=\"right\">x86-64</td>\n      <td>◻️ CPU</td>\n      <td>AVX2</td>\n      <td>✅</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td></td>\n      <td>🟩 NVIDIA GPU <br><code>cuda</code></td>\n      <td>SM60+ minimum<br>SM75+ recommended</td>\n      <td>✅</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td></td>\n      <td>🟥 AMD GPU <br><code>cuda</code></td>\n      <td>\n        RDNA: gfx103X, gfx110X, gfx115X, gfx120X\n      </td>\n      <td>✅</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td></td>\n      <td>🟦 Intel GPU <br><code>xpu</code></td>\n      <td>\n        Arc A-Series (Alchemist) <br>\n        Arc B-Series (Battlemage)\n      </td>\n      <td>✅</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td align=\"right\">arm64</td>\n      <td>◻️ CPU</td>\n      <td></td>\n      <td>✅</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td colspan=\"6\">🍎 <strong>macOS 14+</strong></td>\n    </tr>\n    <tr>\n      <td align=\"right\">arm64</td>\n      <td>◻️ CPU</td>\n      <td>Apple M1+</td>\n      <td>✅ *</td>\n      <td>✅</td>\n      <td>✅</td>\n    </tr>\n    <tr>\n      <td></td>\n      <td>⬜ Metal <br><code>mps</code></td>\n      <td>Apple M1+</td>\n      <td>✅ *</td>\n      <td>✅</td>\n      <td",
     "latestRelease": {
       "tag": "0.50.0",
@@ -22,22 +22,22 @@
     "otherCandidates": [
       {
         "name": "NVIDIA/Model-Optimizer",
-        "stars": 3340,
+        "stars": 3363,
         "description": "A unified library of SOTA model optimization techniques like quantization, distillation, pruning, neural architecture search, speculative decoding, etc. It compresses deep learning models for downstream deployment frameworks like TensorRT-LLM, TensorRT, vLLM, etc. to optimize inference speed."
       },
       {
         "name": "intel/neural-compressor",
-        "stars": 2689,
+        "stars": 2692,
         "description": "SOTA low-bit LLM quantization (INT8/FP8/MXFP8/INT4/MXFP4/NVFP4) & sparsity; leading model compression techniques on PyTorch, TensorFlow, and ONNX Runtime"
       },
       {
         "name": "qualcomm/aimet",
-        "stars": 2673,
+        "stars": 2672,
         "description": "AIMET is a library that provides advanced quantization and compression techniques for trained neural network models."
       },
       {
         "name": "microsoft/Olive",
-        "stars": 2365,
+        "stars": 2367,
         "description": "Olive: Simplify ML Model Finetuning, Conversion, Quantization, and Optimization for CPUs, GPUs and NPUs."
       }
     ]
