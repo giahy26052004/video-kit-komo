@@ -1,5 +1,5 @@
 {
-  "queryIndex": 45,
+  "queryIndex": 46,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -45,6 +45,7 @@
     "solana-foundation/solana-dev-skill",
     "cactus-compute/cactus",
     "l2beat/l2beat",
-    "coollabsio/coolify"
+    "coollabsio/coolify",
+    "HKUDS/nanobot"
   ]
 }
