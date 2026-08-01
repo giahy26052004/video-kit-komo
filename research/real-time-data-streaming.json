@@ -1,0 +1,54 @@
+{
+  "query": "real-time data streaming",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-01T11:37:49.067Z",
+  "github": {
+    "source": "github",
+    "name": "perspective-dev/perspective",
+    "description": "A data visualization and analytics component, especially well-suited for large and/or streaming datasets.",
+    "url": "https://github.com/perspective-dev/perspective",
+    "stars": 11063,
+    "language": "Rust",
+    "homepage": "http://perspective-dev.github.io/",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/195977497?v=4",
+    "pushedAt": "2026-07-28T03:08:21Z",
+    "readmeExcerpt": "<br />\n\n<a href=\"https://perspective-dev.github.io\">\n<picture>\n<source media=\"(prefers-color-scheme: dark)\" srcset=\"https://github.com/perspective-dev/perspective/raw/master/docs/static/svg/perspective-logo-dark.svg?raw=true\">\n<img width=\"260\" src=\"https://github.com/perspective-dev/perspective/raw/master/docs/static/svg/perspective-logo-light.svg?raw=true\" />\n</picture>\n</a>\n<br/><br/>\n\n[![Build Status](https://img.shields.io/github/actions/workflow/status/perspective-dev/perspective/build.yaml?event=push&style=for-the-badge)](https://github.com/perspective-dev/perspective/actions/workflows/build.yaml)\n[![npm](https://img.shields.io/npm/v/@perspective-dev/client.svg?style=for-the-badge)](https://www.npmjs.com/package/@perspective-dev/client)\n[![PyPI](https://img.shields.io/pypi/v/perspective-python.svg?style=for-the-badge)](https://pypi.python.org/pypi/perspective-python)\n[![crates.io](https://img.shields.io/crates/v/perspective?style=for-the-badge)](https://crates.io/crates/perspective)\n\n<br/>\n\nPerspective is an interactive analytics and data visualization component for\nlarge and streaming datasets. Build user-configurable reports, dashboards,\nnotebooks, and applications with a high-performance query engine compiled to\nWebAssembly, Python, and Rust.\n\n## Features\n\n- A framework-agnostic user interface packaged as a\n  [Custom Element](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements),\n  which connects to a Data Model in-browser (via WebAssembly) or remotely (via\n  WebSocket, with integration in Python, Node.js and Rust). Includes a data\n  grid, 10+ chart types line, bar, area, scatter, heatmap, treemap, sunburst,\n  candlestick, and more.\n\n- A Data Model API for pluggable engines, enabling Perspective's UI to query\n  external data sources like [DuckDB](https://duckdb.org/) while translating\n  view configurations into native queries.\n\n- A fast, memory-efficient streaming Data Model built-in, written in C++ and\n  compiled for [WebAssembly](https://webassembly.org/),\n  [Python](https://www.python.org/), and [Rust](https://www.rust-lang.org/).\n  Supports read/write/streaming for [Apache Arrow](https://arrow.apache.org/),\n  with a columnar expression language based on\n  [ExprTK](https://github.com/ArashPartow/exprtk).\n\n- A [JupyterLab](https://jupyter.org/) widget and Python client library for\n  interactive data analysis in notebooks.\n\n## Documentation\n\n- [Project Site](https://perspective-dev.github.io/)\n- [User Guide](https://perspective-dev.github.io/guide/)\n- JavaScript API\n    - [`@perspective-dev/client` Browser](https://perspective-dev.github.io/browser/modules/src_ts_perspective.browser.ts.html)\n    - [`@perspective-dev/client` Node.js](https://perspective-dev.github.io/node/modules/src_ts_perspective.node.ts.html)\n    - [`@perspective-dev/client` Clickhouse Virtual Server](https://perspective-dev.github.io/browser/modules/dist_esm_virtual_servers_clickhouse.js.html)\n    - [`@perspective-dev/client` DuckDB Virtual Server](https://perspective-dev.github.io/browser/modules/dist_esm_virtual_servers_duckdb.js.html)\n    - [`@perspective-dev/viewer` Web Component](https://perspective-dev.github.io/viewer/modules/perspective-viewer.html)\n- Python API\n    - [`perspective`](https://perspective-dev.github.io/python/index.html)\n    - [`perspective.widget`](https://perspective-dev.github.io/python/perspective/widget.html)\n    - [`perspective.handlers.aiohttp`](https://perspective-dev.github.io/python/perspective/handlers/aiohttp.html)\n    - [`perspective.handlers.starlette`](https://perspective-dev.github.io/python/perspective/handlers/starlett.html)\n    - [`perspective.handlers.tornado`](https://perspective-dev.github.io/python/perspective/handlers/tornado.html)\n    - [`perspective.virtual_servers.clickhouse`](https://perspective-dev.github.io/python/perspective/virtual_servers/clickhouse.html)\n    - [`perspective.virtual_servers.duckdb`](https://perspective-dev.github.io/python/perspective/virtual_servers/duckdb.html)\n- Rust API\n    - [`perspective`](https://docs.rs/perspective/latest/perspective/)\n    - [`perspective-client`](https://docs.rs/perspective-client/latest/perspective_client/)\n    - [`perspective-server`](https://docs.rs/perspective-server/latest/perspective_server/)\n    - [`perspective-python`](https://docs.rs/perspective-python/latest/perspective_python/)\n    - [`perspective-js`](https://docs.rs/perspective-js/latest/perspective_js/)\n    - [`perspective-viewer`](https://docs.rs/perspective-viewer/latest/perspective_viewer/)\n\n## Examples\n\n<!-- Examples -->\n<table><tbody><tr><td>editable</td><td>file</td><td>duckdb</td></tr><tr><td><a href=\"https://perspective-dev.github.io/block?example=editable\"><img height=\"125\" src=\"https://perspective-dev.github.io/blocks/editable/preview.png?\" /></a></td><td><a href=\"https://perspective-dev.github.io/block?example=file\"><img height=\"125\" src=\"https://perspective-dev.github.io/blocks/file/preview.png?\" /></a></td><td><a href=\"https://perspective-dev.github.io/block?example=duckdb\"><img height=\"125\" src=\"https://perspective-dev.github.io/blocks/duckdb/preview.png?\" /></a></td></tr><tr><td>fractal</td><td>market</td><td>raycasting</td></tr><tr><td><a href=\"https://perspective-dev.github.io/block?example=fractal\"><img height=\"125\" src=\"https://perspective-dev.github.io/blocks/fractal/preview.png?\" /></a></td><td><a href=\"https://perspective-dev.github.io/block?example=market\"><img height=\"125\" src=\"https://perspective-dev.github.io/blocks/market/preview.png?\" /></a></td><td><a href=\"https://perspective-dev.github.io/block?example=raycasting\"><img height=\"125\" src=\"https://perspective-dev.github.io/blocks/raycasting/preview.png?\" /></a></td></tr><tr><td>evictions</td><td>nypd</td><td>streaming</td></tr><tr><td><a href=\"https://perspective-dev.github.io/block?example=evictions\"><img height=\"125\" src=\"https://perspective-dev.github.io/blocks/evictions/preview.png?\" /></a></td><td><a href=\"https://perspective-dev.github",
+    "latestRelease": {
+      "tag": "v5.0.0",
+      "name": "v5.0.0",
+      "body": "## What's Changed\r\n* Fix `to_columns` off-by-one serialization error by @texodus in https://github.com/perspective-dev/perspective/pull/3196\r\n* Fix `date` type timezone error by @texodus in https://github.com/perspective-dev/perspective/pull/3197\r\n* Deprecate `@perspective-dev/workspace` by @texodus in https://github.com/perspective-dev/perspective/pull/3199\r\n* Fix `mallinfo` use by @abalabin-bamfunds in https://github.com/perspective-dev/perspective/pull/3183\r\n* Fix NaN bug in DuckDB aggregate SQL model, better wasm SIMD support, fix Window build by @texodus in https://github.com/perspective-dev/perspective/pull/3200\r\n* Add `@perspective-dev/anywidget` for vscode/jupyter by @texodus in https://github.com/perspective-dev/perspective/pull/3192\r\n* Fix GenericSQLAdapter to use manual path concatenation by @texodus in https://github.com/perspective-dev/perspective/pull/3202\r\n* `<perspective-viewer>` API cleanup by @texodus in https://github.com/perspective-dev/perspective/pull/3201\r\n* Add `wasm64` builds to CI and publish by @texodus in https://github.com/perspective-dev/perspective/pull/3203\r\n* Fix redraw artifacts by @texodus in https://github.com/perspective-dev/perspective/pull/3204\r\n\r\n## New Contributors\r\n* @abalabin-bamfunds made their first contribution in https://github.com/perspective-dev/perspective/pull/3183\r\n\r\n**Full Changelog**: https://github.com/perspective-dev/perspective/compare/v4.5.2...v5.0.0"
+    },
+    "otherCandidates": [
+      {
+        "name": "apache/seatunnel",
+        "stars": 9518,
+        "description": "SeaTunnel is a multimodal, high-performance, distributed, massive data integration tool."
+      },
+      {
+        "name": "hazelcast/hazelcast",
+        "stars": 6597,
+        "description": "Hazelcast is a unified real-time data platform combining stream processing with a fast data store, allowing customers to act instantly on data-in-motion for real-time insights."
+      },
+      {
+        "name": "apache/flink-cdc",
+        "stars": 6453,
+        "description": "Flink CDC is a streaming data integration tool"
+      },
+      {
+        "name": "fluvio-community/fluvio",
+        "stars": 5242,
+        "description": "🦀 event stream processing for developers to collect and transform data in motion to power responsive data intensive applications."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: SwimOS Rust – A framework for real-time streaming data applications",
+    "url": "https://github.com/swimos/swim-rust",
+    "hnUrl": "https://news.ycombinator.com/item?id=41045212",
+    "points": 71,
+    "numComments": 22,
+    "createdAt": "2024-07-23T12:22:02Z"
+  }
+}
