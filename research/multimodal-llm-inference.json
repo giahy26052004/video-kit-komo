@@ -1,0 +1,54 @@
+{
+  "query": "multimodal llm inference",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-01T03:52:22.158Z",
+  "github": {
+    "source": "github",
+    "name": "huggingface/transformers",
+    "description": "🤗 Transformers: the model-definition framework for state-of-the-art machine learning models in text, vision, audio, and multimodal models, for both inference and training. ",
+    "url": "https://github.com/huggingface/transformers",
+    "stars": 163215,
+    "language": "Python",
+    "homepage": "https://huggingface.co/transformers",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/25720743?v=4",
+    "pushedAt": "2026-08-01T01:12:45Z",
+    "readmeExcerpt": "<!---\nCopyright 2020 The HuggingFace Team. All rights reserved.\n\nLicensed under the Apache License, Version 2.0 (the \"License\");\nyou may not use this file except in compliance with the License.\nYou may obtain a copy of the License at\n\n    http://www.apache.org/licenses/LICENSE-2.0\n\nUnless required by applicable law or agreed to in writing, software\ndistributed under the License is distributed on an \"AS IS\" BASIS,\nWITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\nSee the License for the specific language governing permissions and\nlimitations under the License.\n-->\n\n<p align=\"center\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"https://huggingface.co/datasets/huggingface/documentation-images/raw/main/transformers-logo-dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"https://huggingface.co/datasets/huggingface/documentation-images/raw/main/transformers-logo-light.svg\">\n    <img alt=\"Hugging Face Transformers Library\" src=\"https://huggingface.co/datasets/huggingface/documentation-images/raw/main/transformers-logo-light.svg\" width=\"352\" height=\"59\" style=\"max-width: 100%;\">\n  </picture>\n  <br/>\n  <br/>\n</p>\n\n<p align=\"center\">\n    <a href=\"https://huggingface.com/models\"><img alt=\"Checkpoints on Hub\" src=\"https://img.shields.io/endpoint?url=https://huggingface.co/api/shields/models&color=brightgreen\"></a>\n    <a href=\"https://circleci.com/gh/huggingface/transformers\"><img alt=\"Build\" src=\"https://img.shields.io/circleci/build/github/huggingface/transformers/main\"></a>\n    <a href=\"https://github.com/huggingface/transformers/blob/main/LICENSE\"><img alt=\"GitHub\" src=\"https://img.shields.io/github/license/huggingface/transformers.svg?color=blue\"></a>\n    <a href=\"https://huggingface.co/docs/transformers/index\"><img alt=\"Documentation\" src=\"https://img.shields.io/website/http/huggingface.co/docs/transformers/index.svg?down_color=red&down_message=offline&up_message=online\"></a>\n    <a href=\"https://github.com/huggingface/transformers/releases\"><img alt=\"GitHub release\" src=\"https://img.shields.io/github/release/huggingface/transformers.svg\"></a>\n    <a href=\"https://github.com/huggingface/transformers/blob/main/CODE_OF_CONDUCT.md\"><img alt=\"Contributor Covenant\" src=\"https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg\"></a>\n    <a href=\"https://zenodo.org/badge/latestdoi/155220641\"><img src=\"https://zenodo.org/badge/155220641.svg\" alt=\"DOI\"></a>\n</p>\n\n<h4 align=\"center\">\n    <p>\n        <b>English</b> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_zh-hans.md\">简体中文</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_zh-hant.md\">繁體中文</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_ko.md\">한국어</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_es.md\">Español</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_ja.md\">日本語</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_hd.md\">हिन्दी</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_ru.md\">Русский</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_pt-br.md\">Português</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_te.md\">తెలుగు</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_fr.md\">Français</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_de.md\">Deutsch</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_it.md\">Italiano</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_vi.md\">Tiếng Việt</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_ar.md\">العربية</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_ur.md\">اردو</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_bn.md\">বাংলা</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_fa.md\">فارسی</a> |\n        <a href=\"https://github.com/huggingface/transformers/blob/main/i18n/README_tr.md\">Türkçe</a> |\n    </p>\n</h4>\n\n<h3 align=\"center\">\n    <p>State-of-the-art pretrained models for inference and training</p>\n</h3>\n\n<h3 align=\"center\">\n    <img src=\"https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/transformers/transformers_as_a_model_definition.png\"/>\n</h3>\n\nTransformers acts as the model-definition framework for state-of-the-art machine learning with text, computer\nvision, audio, video, and multimodal models, for both inference and training.\n\nIt centralizes the model definition so that this definition is agreed upon across the ecosystem. `transformers` is the\npivot across frameworks: if a model definition is supported, it will be compatible with the majority of training\nframeworks (Axolotl, Unsloth, DeepSpeed, FSDP, PyTorch-Lightning, ...), inference engines (vLLM, SGLang, TGI, ...),\nand adjacent modeling libraries (llama.cpp, mlx, ...) which leverage the model definition from `transformers`.\n\nWe pledge to help support new state-of-the-art models and democratize their usage by having their model definition be\nsimple, customizable, and efficient.\n\nThere are over 1M+ Transformers [model checkpoints](https://huggingface.co/models?library=transformers&sort=trending) on the [Hugging Face Hub](https://huggingface.co/models) you can use.\n\nExplore the [Hub](https://huggingface.co/) today to find a model and use Transformers to help you get started right away.\n\n## Installation\n\nTransformers works with Python 3.10+, and [PyTorch](https://pytorch.org/get-started/locally/) 2.5+.\n\nCreate and activate a virtual environment with [venv](https://docs.python.or",
+    "latestRelease": {
+      "tag": "v5.14.1",
+      "name": "Patch release: v5.14.1",
+      "body": "# Patch release v5.14.1\r\n\r\nThis patch solves a few issues which appeared when integrating Inkling model, most notably an issue affecting models using EncoderDecoderCache during assisted generation. It also fixes an issue that could appear during prefill with StaticCache and sdpa without padding for Inkling which uses a position_bias. \r\nIt contains the following commits:\r\n\r\n- Fix sdpa prefill with position_bias (#47359) by @Cyrilvallez\r\n- Fix assisted decoding for models with EncoderDecoder cache & OlmoHybrid (#47361) by @Cyrilvallez\r\n- [FP8] Bump kernels version (#47344) by @vasqu \r\n- Fix deepgemm on multiple devices (#47323) by @IlyasMoutawwakil "
+    },
+    "otherCandidates": [
+      {
+        "name": "sgl-project/sglang",
+        "stars": 31025,
+        "description": "SGLang is a high-performance serving framework for large language models and multimodal models."
+      },
+      {
+        "name": "RunanywhereAI/runanywhere-sdks",
+        "stars": 10309,
+        "description": "Production ready toolkit to run AI locally"
+      },
+      {
+        "name": "xorbitsai/inference",
+        "stars": 9469,
+        "description": "Swap GPT for any LLM by changing a single line of code. Xinference lets you run open-source, speech, and multimodal models on cloud, on-prem, or your laptop — all through one unified, production-ready inference API."
+      },
+      {
+        "name": "bentoml/BentoML",
+        "stars": 8747,
+        "description": "The easiest way to serve AI apps and models - Build Model Inference APIs, Job queues, LLM apps, Multi-model pipelines, and more!"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: Antfly: Distributed, Multimodal Search and Memory and Graphs in Go",
+    "url": "https://github.com/antflydb/antfly",
+    "hnUrl": "https://news.ycombinator.com/item?id=47414291",
+    "points": 107,
+    "numComments": 40,
+    "createdAt": "2026-03-17T15:45:15Z"
+  }
+}

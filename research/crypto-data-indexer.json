@@ -1,0 +1,15 @@
+{
+  "query": "crypto data indexer",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-01T03:52:22.450Z",
+  "github": null,
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Launch HN: SimpleHash (YC W22) – API to query digital assets",
+    "hnUrl": "https://news.ycombinator.com/item?id=33423759",
+    "points": 71,
+    "numComments": 34,
+    "createdAt": "2022-11-01T16:49:54Z"
+  }
+}
