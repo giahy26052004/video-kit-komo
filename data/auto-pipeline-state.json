@@ -1,5 +1,5 @@
 {
-  "queryIndex": 7,
+  "queryIndex": 10,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -53,6 +53,7 @@
     "hiyouga/LlamaFactory",
     "AgriciDaniel/claude-obsidian",
     "Comfy-Org/ComfyUI",
-    "milvus-io/milvus"
+    "milvus-io/milvus",
+    "bytedance/UI-TARS-desktop"
   ]
 }

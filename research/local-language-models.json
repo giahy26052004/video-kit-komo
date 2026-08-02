@@ -2,17 +2,17 @@
   "query": "local language models",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-31T23:17:23.765Z",
+  "fetchedAt": "2026-08-02T11:35:44.795Z",
   "github": {
     "source": "github",
     "name": "maziyarpanahi/openmed",
     "description": "Local-first healthcare AI: clinical NER & HIPAA PII de-identification that runs 100% on-device. 2,200+ medical models, 21 languages, Apple MLX + Python, no cloud, no patient data leaving your network. Apache-2.0",
     "url": "https://github.com/maziyarpanahi/openmed",
-    "stars": 4775,
+    "stars": 4787,
     "language": "Python",
     "homepage": "https://openmed.life/",
     "avatarUrl": "https://avatars.githubusercontent.com/u/5762953?v=4",
-    "pushedAt": "2026-07-31T22:07:32Z",
+    "pushedAt": "2026-08-02T11:23:25Z",
     "readmeExcerpt": "<div align=\"center\">\n\n<img src=\"docs/brand/openmed-readme-banner.png\" alt=\"OpenMed README banner with the cat mascot, lowercase wordmark, Open Cross, and the text Open-source healthcare AI, 340M+ downloads, and 10M+ installs\" width=\"1280\" />\n\n<h2>Your Data. Your Model. Your Hardware.</h2>\n\n<p><b>Turn clinical text into structured, de-identified insight on hardware you control.</b><br/>\nOpenMed's core local runtime performs extraction and de-identification after required model artifacts are available. Model downloads, remote-provider adapters, telemetry-enabled paths, and user-configured integrations may use a network; review each model and dataset's terms.</p>\n\n<p>\n  <a href=\"https://pypi.org/project/openmed/\">PyPI package</a> ·\n  <a href=\"https://www.python.org/downloads/\">Python 3.10+</a> ·\n  <a href=\"https://huggingface.co/OpenMed\">Model catalog</a> ·\n  <a href=\"https://arxiv.org/abs/2508.01630\">Research paper</a> ·\n  <a href=\"LICENSE\">Apache-2.0 SDK source</a>\n</p>\n\n<p>\n  <a href=\"swift/OpenMedKit\">OpenMedKit</a> ·\n  <a href=\"docs/mlx-backend.md\">Apple Silicon / MLX</a> ·\n  <a href=\"docs/export-onnx-android.md\">Android / ONNX Runtime Mobile</a> ·\n  <a href=\"docs/export-transformersjs.md\">Browser / Transformers.js</a> ·\n  <a href=\"https://openmed.life/docs\">Documentation</a>\n</p>\n\n<p>\n  <b>Local-first runtime</b> &nbsp;·&nbsp; <b>33 model-backed PII languages</b> &nbsp;·&nbsp; <b>Apache-2.0 SDK</b>\n</p>\n\n<p>\n  <b>English</b> ·\n  <a href=\"README.zh-CN.md\">简体中文</a> ·\n  <a href=\"README.es.md\">Español</a> ·\n  <a href=\"README.fr.md\">Français</a> ·\n  <a href=\"README.de.md\">Deutsch</a> ·\n  <a href=\"README.it.md\">Italiano</a> ·\n  <a href=\"README.pt.md\">Português</a> ·\n  <a href=\"README.nl.md\">Nederlands</a> ·\n  <a href=\"README.ar.md\">العربية</a> ·\n  <a href=\"README.hi.md\">हिन्दी</a> ·\n  <a href=\"README.te.md\">తెలుగు</a> ·\n  <a href=\"README.ja.md\">日本語</a> ·\n  <a href=\"README.tr.md\">Türkçe</a> ·\n  <a href=\"README.fa.md\">فارسی</a> ·\n  <a href=\"README.sw.md\">Kiswahili</a>\n</p>\n\n</div>\n\n---\n\n## See it in action\n\nThis iPhone example uses OpenMed's local runtime after the required model artifacts are available:\n\n<div align=\"center\">\n  <img src=\"docs/brand/openmed-ios-scan.png\" alt=\"OpenMed Scan on iPhone · on-device PII de-identification and clinical extraction via OpenMedKit\" width=\"840\" />\n  <br/>\n  <sub><b>On iPhone via <a href=\"swift/OpenMedKit\">OpenMedKit</a></b>: scan a clinical note, de-identify it, and extract clinical signals with Apple MLX processing locally in this configuration.</sub>\n</div>\n\n<br/>\n\n<div align=\"center\">\n  <img src=\"docs/brand/openmed-pii-demo.gif\" alt=\"OpenMed redacting PII from a clinical discharge document in real time\" width=\"760\" />\n  <br/>\n  <sub><b>Real-time PII de-identification</b>: in this configured local workflow, the Nemotron Privacy Filter redacts names, addresses, IDs, and billing data from a synthetic clinical discharge packet. <i>(All values shown are synthetic.)</i></sub>\n</div>\n\n---\n\n## 30-second example\n\n```python\nfrom openmed import analyze_text\n\nresult = analyze_text(\n    \"Patient started on imatinib for chronic myeloid leukemia.\",\n    model_name=\"disease_detection_superclinical\",\n)\n\nfor entity in result.entities:\n    print(f\"{entity.label:<12} {entity.text:<28} {entity.confidence:.2f}\")\n# DISEASE      chronic myeloid leukemia     0.98\n# DRUG         imatinib                     0.95\n```\n\nA clinical NER model using the local runtime after its required artifacts are available.\n\n---\n\n## Building with an agent?\n\nStart with the [consumer agent-usage guide](docs/agent-usage.md), or load the\ncurated [llms.txt](https://openmed.life/docs/llms.txt) documentation index.\nFor callable local interfaces, use the [MCP server](docs/mcp-clients.md), the\ntyped [tool registry](openmed/mcp/tool_registry.py), or the\n[command-line interface](docs/agent-usage.md#command-line-interface). Ready-made\ncross-tool procedures live in the [repository skills catalog](skills/README.md).\n\n---\n\n## Why OpenMed?\n\n| Deployment consideration | OpenMed SDK boundary |\n| --- | --- |\n| Core runtime | Processes locally after required artifacts are available |\n| Optional network paths | Downloads, remote adapters, telemetry-enabled paths, and user integrations may use a network |\n| Validation | Deployment owners validate model and dataset terms, privacy behavior, and clinical fitness |\n| Interfaces | Python, Swift, Android, browser, and service surfaces where supported |\n\n- **Curated model catalog**: validate each model, license, and dataset for your use case.\n- **Safe Harbor-aligned configuration**: can target the 18 identifier categories; expert deployment review remains required, and use of the SDK does not itself establish HIPAA compliance.\n- **Supported execution paths**: CPU, CUDA, MLX, mobile, service, and browser adapters vary by environment and artifact.\n- **Deployment interfaces**: Python, containers, services, and batch workflows require configuration and validation.\n- **SDK source**: released under the Apache-2.0 License; model and dataset terms vary.\n\n---\n\n## On-device on Apple: Swift, MLX & iOS\n\nOn supported Apple hardware, OpenMed can use **MLX** and **[OpenMedKit](swift/OpenMedKit)** for local processing after required artifacts are available. Model acquisition and any user-configured remote integrations remain separate network boundaries.\n\n```swift\n// Add OpenMedKit to your app\ndependencies: [\n    .package(url: \"https://github.com/maziyarpanahi/openmed.git\", from: \"2.0.0\"),\n]\n```\n\nExpected result: Swift Package Manager resolves OpenMedKit and makes\n`import OpenMedKit` available to your app target.\n\n- **MLX runtime** for PII token classification, the Privacy Filter family, experimental GLiNER-family zero-shot tasks, and Python MLX-LM text generation with Laneformer; includes a CoreML fallback path for supported token-classification artifacts.\n- **Portable model naming where supported**: an MLX model name can fall back to a matching PyTorch checkpoint when that mapping and artifa",
     "latestRelease": {
       "tag": "v2.0.0",
@@ -22,22 +22,22 @@
     "otherCandidates": [
       {
         "name": "containers/ramalama",
-        "stars": 2983,
+        "stars": 2982,
         "description": "RamaLama is an open-source developer tool that simplifies the local serving of AI models from any source and facilitates their use for inference in production, all through the familiar language of containers."
       },
       {
         "name": "jonfairbanks/local-rag",
-        "stars": 754,
+        "stars": 755,
         "description": "Ingest files for retrieval augmented generation (RAG) with open-source Large Language Models (LLMs), all without 3rd parties or sensitive data leaving your network."
       },
       {
         "name": "artokun/comfyui-mcp",
-        "stars": 467,
-        "description": "The local-first, agent-native control plane for ComfyUI — MCP server + Claude Code plugin. 108 tools, 29 AI skills (Flux · WAN · LT2.3 · Qwen · Ideogram4 · Krea2). Author & run workflows, edit your live graph in natural language, manage models & custom nodes. Local, LAN, VPS, or Comfy Cloud."
+        "stars": 471,
+        "description": "Local-first, agent-native control plane for ComfyUI — MCP server + sidebar agent that generates images, video & audio, authors and runs workflows, and edits your live graph in natural language on ANY LLM (Claude, ChatGPT, Gemini, offline Ollama, or any hosted model). 178 tools, 36 AI skills, 55 installer packs. Local, LAN, VPS, or Comfy Cloud."
       },
       {
         "name": "KevRojo/Dulus",
-        "stars": 371,
+        "stars": 372,
         "description": "Dulus Ai — Gui, Web, Cli, Telegram, 2,000 MCP, 100K Skills . LiteLLM (100+ providers), local models via Ollama, /lang in 34 languages, Mesa Redonda, voice, OCR, MemPalace, embedded sandbox OS."
       }
     ]
