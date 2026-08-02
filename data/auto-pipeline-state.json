@@ -55,6 +55,7 @@
     "Comfy-Org/ComfyUI",
     "milvus-io/milvus",
     "bytedance/UI-TARS-desktop",
-    "zilliztech/VectorDBBench"
+    "zilliztech/VectorDBBench",
+    "langchain-ai/langchain"
   ]
 }
