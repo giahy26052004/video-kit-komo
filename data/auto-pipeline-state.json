@@ -54,6 +54,7 @@
     "AgriciDaniel/claude-obsidian",
     "Comfy-Org/ComfyUI",
     "milvus-io/milvus",
-    "bytedance/UI-TARS-desktop"
+    "bytedance/UI-TARS-desktop",
+    "zilliztech/VectorDBBench"
   ]
 }
