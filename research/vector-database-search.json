@@ -1,0 +1,54 @@
+{
+  "query": "vector database search",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-02T10:09:37.217Z",
+  "github": {
+    "source": "github",
+    "name": "milvus-io/milvus",
+    "description": "Milvus is a high-performance, cloud-native vector database built for scalable vector ANN search",
+    "url": "https://github.com/milvus-io/milvus",
+    "stars": 45463,
+    "language": "Go",
+    "homepage": "https://milvus.io",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/51735404?v=4",
+    "pushedAt": "2026-08-02T01:10:22Z",
+    "readmeExcerpt": "<img src=\"https://github.com/user-attachments/assets/51e33300-7f85-43ff-a05a-3a0317a961f3\" alt=\"milvus banner\">\n\n<div class=\"column\" align=\"middle\">\n  <a href=\"https://github.com/milvus-io/milvus/blob/master/LICENSE\"><img height=\"20\" src=\"https://img.shields.io/github/license/milvus-io/milvus\" alt=\"license\"/></a>\n  <a href=\"https://milvus.io/docs/install_standalone-docker.md\"><img src=\"https://img.shields.io/docker/pulls/milvusdb/milvus\" alt=\"docker-pull-count\"/></a>\n  <a href=\"https://milvus.io/docs/roadmap.md\"><img src=\"https://img.shields.io/badge/2025-roadmap-orange\" alt=\"fully-managed-milvus\"/></a>\n  <a href=\"https://cloud.zilliz.com/signup?utm_source=partner&utm_medium=referral&utm_campaign=2024-11-04_web_github-readme_global\"><img src=\"https://img.shields.io/badge/fully_managed-milvus-blue\" alt=\"fully-managed-milvus\"/></a>\n  <a href=\"https://milvus.io/docs/tutorials-overview.md\"><img src=\"https://img.shields.io/badge/tutorials-green\" alt=\"tutorials\"/></a>\n  <a href=\"https://milvus.io/slack\"><img src=\"https://img.shields.io/badge/Slack-%234A154B.svg?style=flat&logo=slack&logoColor=white\" alt=\"slack\"/></a>\n  <a href=\"https://discord.gg/mKc3R95yE5\"><img height=\"20\" src=\"https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white\" alt=\"discord\"/></a>\n  <a href=\"https://x.com/milvusio\"><img src=\"https://img.shields.io/twitter/follow/milvusio\" alt=\"twitter\"/></a>\n</div>\n\n<div align=\"center\">\n<a href=\"https://trendshift.io/repositories/1026\" target=\"_blank\"><img src=\"https://trendshift.io/api/badge/repositories/1026\" alt=\"milvus-io%2Fmilvus | Trendshift\" style=\"width: 250px; height: 55px;\" width=\"250\" height=\"55\"/></a>\n</div>\n\n## What is Milvus?\n\n🐦 [Milvus](https://milvus.io/) is a high-performance vector database built for scale. It powers AI applications by efficiently organizing and searching vast amounts of unstructured data, such as text, images, and multi-modal information.\n\n🧑‍💻 Written in Go and C++, Milvus implements hardware acceleration for CPU/GPU to achieve best-in-class vector search performance. Thanks to its [fully-distributed and K8s-native architecture](https://milvus.io/docs/overview.md#What-Makes-Milvus-so-Scalable), Milvus can scale horizontally, handle tens of thousands of search queries on billions of vectors, and keep data fresh with real-time streaming updates. Milvus also supports [Standalone mode](https://milvus.io/docs/install_standalone-docker.md) for single machine deployment. [Milvus Lite](https://milvus.io/docs/milvus_lite.md) is a lightweight version good for quickstart in python with `pip install`.\n\nWant to use Milvus with zero setup? Try out [Zilliz Cloud ☁️](https://cloud.zilliz.com/signup?utm_source=partner&utm_medium=referral&utm_campaign=2024-11-04_web_github-readme_global) for free. Milvus is available as a fully managed service on Zilliz Cloud, with [Serverless](https://zilliz.com/serverless?utm_source=partner&utm_medium=referral&utm_campaign=2024-11-04_web_github-readme_global), [Dedicated](https://zilliz.com/cloud?utm_source=partner&utm_medium=referral&utm_campaign=2024-11-04_web_github-readme_global) and [BYOC](https://zilliz.com/bring-your-own-cloud?utm_source=partner&utm_medium=referral&utm_campaign=2024-11-04_web_github-readme_global) options available.\n\nFor questions about how to use Milvus, join the community on [Discord](https://discord.gg/33mfvwep3J) to get help. For reporting problems, file bugs and feature requests in GitHub [Issues](https://github.com/milvus-io/milvus/issues) or ask in [Discussions](https://github.com/milvus-io/milvus/discussions).\n\nThe Milvus open-source project is\nunder [LF AI & Data Foundation](https://lfaidata.foundation/projects/milvus/), distributed with [Apache 2.0](https://github.com/milvus-io/milvus/blob/master/LICENSE) License, with Zilliz as its major contributor.\n\n## Quickstart\n\n```python\n$ pip install -U pymilvus\n```\nThis installs `pymilvus`, the Python SDK for Milvus. Use `MilvusClient` to create a client:\n```python\nfrom pymilvus import MilvusClient\n```\n\n* You can also try Milvus Lite for quickstart by installing `pymilvus[milvus-lite]`. To create a local vector database, simply instantiate a client with a local file name for persisting data:\n\n  ```python\n  client = MilvusClient(\"milvus_demo.db\")\n  ```\n\n* You can also specify the credentials to connect to your deployed [Milvus server](https://milvus.io/docs/authenticate.md?tab=docker) or [Zilliz Cloud](https://docs.zilliz.com/docs/quick-start):\n\n  ```python\n  client = MilvusClient(\n    uri=\"<endpoint_of_self_hosted_milvus_or_zilliz_cloud>\",\n    token=\"<username_and_password_or_zilliz_cloud_api_key>\")\n  ```\n\nWith the client, you can create collection:\n```python\nclient.create_collection(\n    collection_name=\"demo_collection\",\n    dimension=768,  # The vectors we will use in this demo have 768 dimensions\n)\n```\n\nIngest data:\n```python\nres = client.insert(collection_name=\"demo_collection\", data=data)\n```\n\nPerform vector search:\n\n```python\nquery_vectors = embedding_fn.encode_queries([\"Who is Alan Turing?\", \"What is AI?\"])\nres = client.search(\n    collection_name=\"demo_collection\",  # target collection\n    data=query_vectors,  # a list of one or more query vectors, supports batch\n    limit=2,  # how many results to return (topK)\n    output_fields=[\"vector\", \"text\", \"subject\"],  # what fields to return\n)\n```\n\n## Why Milvus\n\nMilvus is designed to handle vector search at scale. It stores vectors, which are learned representations of unstructured data, together with other scalar data types such as integers, strings, and JSON objects. Users can conduct efficient vector search with metadata filtering or hybrid search. Here are why developers choose Milvus as the vector database for AI applications:\n\n**High Performance at Scale and High Availability**  \n  * Milvus features a [distributed architecture](https://milvus.io/docs/architecture_overview.md ) that separates [compute](https://milvus.io/docs/data_processing.md#Data-query",
+    "latestRelease": {
+      "tag": "v3.0.0",
+      "name": "milvus-3.0.0",
+      "body": "Release note is coming..."
+    },
+    "otherCandidates": [
+      {
+        "name": "pingcap/tidb",
+        "stars": 40373,
+        "description": "TiDB is built for agentic workloads that grow unpredictably, with ACID guarantees and native support for transactions, analytics, and vector search. No data silos. No noisy neighbors. No infrastructure ceiling."
+      },
+      {
+        "name": "qdrant/qdrant",
+        "stars": 33717,
+        "description": "Qdrant - High-performance, massive-scale Vector Database and Vector Search Engine for the next generation of AI. Also available in the cloud https://cloud.qdrant.io/"
+      },
+      {
+        "name": "weaviate/weaviate",
+        "stars": 16679,
+        "description": "Weaviate is an open-source vector database that stores both objects and vectors, allowing for the combination of vector search with structured filtering with the fault tolerance and scalability of a cloud-native database​."
+      },
+      {
+        "name": "apache/doris",
+        "stars": 15703,
+        "description": "Apache Doris is a real-time analytics and hybrid search database for AI agents."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Qdrant, the Vector Search Database, raised $28M in a Series A round",
+    "url": "https://qdrant.tech/blog/series-a-funding-round/",
+    "hnUrl": "https://news.ycombinator.com/item?id=39101682",
+    "points": 131,
+    "numComments": 167,
+    "createdAt": "2024-01-23T10:34:38Z"
+  }
+}

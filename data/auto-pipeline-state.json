@@ -52,6 +52,7 @@
     "n8n-io/n8n",
     "hiyouga/LlamaFactory",
     "AgriciDaniel/claude-obsidian",
-    "Comfy-Org/ComfyUI"
+    "Comfy-Org/ComfyUI",
+    "milvus-io/milvus"
   ]
 }
