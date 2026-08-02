@@ -1,0 +1,54 @@
+{
+  "query": "agentic ai workflows",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-02T23:13:40.953Z",
+  "github": {
+    "source": "github",
+    "name": "langflow-ai/langflow",
+    "description": "Langflow is a powerful tool for building and deploying AI-powered agents and workflows.",
+    "url": "https://github.com/langflow-ai/langflow",
+    "stars": 152760,
+    "language": "Python",
+    "homepage": "http://www.langflow.org",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/85702467?v=4",
+    "pushedAt": "2026-08-02T00:44:47Z",
+    "readmeExcerpt": "<!-- markdownlint-disable MD030 -->\n\n<picture>\n  <source media=\"(prefers-color-scheme: dark)\" srcset=\"./docs/static/img/langflow-logo-color-blue-bg.svg\">\n  <img src=\"./docs/static/img/langflow-logo-color-black-solid.svg\" alt=\"Langflow logo\">\n</picture>\n\n[![Release Notes](https://img.shields.io/github/release/langflow-ai/langflow?style=flat-square)](https://github.com/langflow-ai/langflow/releases)\n[![PyPI - License](https://img.shields.io/badge/license-MIT-orange)](https://opensource.org/licenses/MIT)\n[![PyPI - Downloads](https://img.shields.io/pypi/dm/langflow?style=flat-square)](https://pypistats.org/packages/langflow)\n[![Twitter](https://img.shields.io/twitter/url/https/twitter.com/langflow-ai.svg?style=social&label=Follow%20%40Langflow)](https://twitter.com/langflow_ai)\n[![YouTube Channel](https://img.shields.io/youtube/channel/subscribers/UCn2bInQrjdDYKEEmbpwblLQ?label=Subscribe)](https://www.youtube.com/@Langflow)\n[![Discord Server](https://img.shields.io/discord/1116803230643527710?logo=discord&style=social&label=Join)](https://discord.gg/EqksyE2EX9)\n[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/langflow-ai/langflow)\n\n[Langflow](https://langflow.org) is a powerful platform for building and deploying AI-powered agents and workflows. It provides developers with both a visual authoring experience and built-in API and MCP servers that turn every workflow into a tool that can be integrated into applications built on any framework or stack. Langflow comes with batteries included and supports all major LLMs, vector databases and a growing library of AI tools.\n\n## ✨ Highlight features\n\n- **Visual builder interface** to quickly get started and iterate.\n- **Source code access** lets you customize any component using Python.\n- **Interactive playground** to immediately test and refine your flows with step-by-step control.\n- **Multi-agent orchestration** with conversation management and retrieval.\n- **Deploy as an API** or export as JSON for Python apps.\n- **Deploy as an MCP server** and turn your flows into tools for MCP clients.\n- **Observability** with LangSmith, LangFuse and other integrations.\n- **Enterprise-ready** security and scalability.\n\n## 🖥️  Langflow Desktop\n\nLangflow Desktop is the easiest way to get started with Langflow. All dependencies are included, so you don't need to manage Python environments or install packages manually.\nAvailable for Windows and macOS.\n\n[📥 Download Langflow Desktop](https://www.langflow.org/desktop)\n\n## ⚡️ Quickstart\n\n### Install locally (recommended)\n\nRequires Python 3.10–3.14 and [uv](https://docs.astral.sh/uv/getting-started/installation/) (recommended package manager).\n\n#### Install\n\nFrom a fresh directory, run:\n```shell\nuv pip install langflow -U\n```\n\nThe latest Langflow package is installed.\nFor more information, see [Install and run the Langflow OSS Python package](https://docs.langflow.org/get-started-installation#install-and-run-the-langflow-oss-python-package).\n\n#### Run\n\nTo start Langflow, run:\n```shell\nuv run langflow run\n```\n\nLangflow starts at http://127.0.0.1:7860.\n\nThat's it! You're ready to build with Langflow! 🎉\n\n## 📦 Other install options\n\n### Run from source\nIf you've cloned this repository and want to contribute, run this command from the repository root:\n```shell\nmake run_cli\n```\nFor more information, see [DEVELOPMENT.md](./DEVELOPMENT.md).\n\n### Docker\nStart a Langflow container with default settings:\n```shell\ndocker run -p 7860:7860 langflowai/langflow:latest\n```\nLangflow is available at http://localhost:7860/.\nFor configuration options, see the [Docker deployment guide](https://docs.langflow.org/deployment-docker).\n\n## 🛡️ Security\n\nFor security information, see our [Security Policy](./SECURITY.md).\n\n## 🚀 Deployment\n\nLangflow is completely open source and you can deploy it to all major deployment clouds. To learn how to deploy Langflow, see our [Langflow deployment guides](https://docs.langflow.org/deployment-overview).\n\n## ⭐ Stay up-to-date\n\nStar Langflow on GitHub to be instantly notified of new releases.\n\n![Star Langflow](https://github.com/user-attachments/assets/03168b17-a11d-4b2a-b0f7-c1cce69e5a2c)\n\n## 👋 Contribute\n\nWe welcome contributions from developers of all levels. If you'd like to contribute, please check our [contributing guidelines](./CONTRIBUTING.md) and help make Langflow more accessible.\n\n---\n\n[![Star History Chart](https://api.star-history.com/svg?repos=langflow-ai/langflow&type=Timeline)](https://star-history.com/#langflow-ai/langflow&Date)\n\n## ❤️ Contributors\n\n[![langflow contributors](https://contrib.rocks/image?repo=langflow-ai/langflow)](https://github.com/langflow-ai/langflow/graphs/contributors)\n",
+    "latestRelease": {
+      "tag": "v1.11.1",
+      "name": "1.11.1",
+      "body": "<!-- Release notes generated using configuration in .github/release.yml at v1.11.1 -->\n\n## What's Changed\n### 🐛 Bug Fixes\n* fix: increment previous_content with content streamed by @lucaseduoli in https://github.com/langflow-ai/langflow/pull/14234\n* fix: add default fallback to instantiation.py and removed default ollama base url from components by @lucaseduoli in https://github.com/langflow-ai/langflow/pull/14236\n* fix(tracing): detach orphan spans before database flush by @erichare in https://github.com/langflow-ai/langflow/pull/14243\n* fix(settings): enable agentic experience by default by @Cristhianzl in https://github.com/langflow-ai/langflow/pull/14244\n* fix(auth): keep refresh sessions alive on HTTP by @erichare in https://github.com/langflow-ai/langflow/pull/14252\n* fix(mem0): defer client import during startup by @Success6666 in https://github.com/langflow-ai/langflow/pull/14247\n* fix(components): stop legacy aliases from importing every bundle at startup by @erichare in https://github.com/langflow-ai/langflow/pull/14259\n* fix(frontend): reset modifier-only saved shortcuts to default by @Cristhianzl in https://github.com/langflow-ai/langflow/pull/14245\n* fix(ssrf): honor connector loopback policy for A2A agent and PaddleOCR base URLs by @erichare in https://github.com/langflow-ai/langflow/pull/14265\n* fix(components): send chained input as user turn by @Cristhianzl in https://github.com/langflow-ai/langflow/pull/14286\n* fix(cuga): correct event debug log typo by @erichare in https://github.com/langflow-ai/langflow/pull/14275\n* fix(mcp): match display_name and description in search_registry query filter by @Simonzhaohui in https://github.com/langflow-ai/langflow/pull/14270\n* fix(mcp): backport MCP SDK <2.0 pin for uvx-launched servers by @viktoravelino in https://github.com/langflow-ai/langflow/pull/14298\n* fix(deps): restore FastAPI range by @erichare in https://github.com/langflow-ai/langflow/pull/14301\n### 📝 Documentation Updates\n* docs: fastapi pagination error troubleshooting by @mendonk in https://github.com/langflow-ai/langflow/pull/14294\n### 🛠 Maintenance Tasks\n* refactor(frontend): Add customization hook for API timestamp parsing by @Cristhianzl in https://github.com/langflow-ai/langflow/pull/14246\n### Others\n* chore: update deps 1.11.1 by @Adam-Aghili in https://github.com/langflow-ai/langflow/pull/14280\n\n## New Contributors\n* @Success6666 made their first contribution in https://github.com/langflow-ai/langflow/pull/14247\n* @Simonzhaohui made their first contribution in https://github.com/langflow-ai/langflow/pull/14270\n\n**Full Changelog**: https://github.com/langflow-ai/langflow/compare/v1.11.0...v1.11.1"
+    },
+    "otherCandidates": [
+      {
+        "name": "langgenius/dify",
+        "stars": 151100,
+        "description": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack."
+      },
+      {
+        "name": "ruvnet/ruflo",
+        "stars": 66860,
+        "description": "🌊 The original agent meta-harness. Deploy intelligent multi-player swarms, coordinate autonomous workflows, and build conversational AI systems. Features adaptive memory, self-learning intelligence, RAG integration, and native Claude Code / Codex / Hermes and many more Integrated"
+      },
+      {
+        "name": "HKUDS/nanobot",
+        "stars": 46517,
+        "description": "Ultra-lightweight, open-source, self-hosted personal AI agent framework in Python with WebUI, tools, memory, MCP, multi-agent workflows, automation, and chat apps"
+      },
+      {
+        "name": "ToolJet/ToolJet",
+        "stars": 38280,
+        "description": "ToolJet is the open-source foundation of ToolJet AI - the enterprise app generation platform for building internal tools, dashboard, business applications, workflows and AI agents 🚀"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: Mastra – Open-source JS agent framework, by the developers of Gatsby",
+    "url": "https://github.com/mastra-ai/mastra",
+    "hnUrl": "https://news.ycombinator.com/item?id=43103073",
+    "points": 442,
+    "numComments": 154,
+    "createdAt": "2025-02-19T15:25:08Z"
+  }
+}
