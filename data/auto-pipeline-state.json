@@ -64,6 +64,7 @@
     "HKUDS/LightRAG",
     "run-llama/llama_index",
     "raullenchai/Rapid-MLX",
-    "Vexa-ai/vexa"
+    "Vexa-ai/vexa",
+    "containers/ramalama"
   ]
 }
