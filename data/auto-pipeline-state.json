@@ -58,6 +58,7 @@
     "zilliztech/VectorDBBench",
     "langchain-ai/langchain",
     "arcjet/arcjet-js",
-    "langflow-ai/langflow"
+    "langflow-ai/langflow",
+    "griptape-ai/griptape"
   ]
 }
