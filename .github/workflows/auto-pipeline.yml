@@ -52,6 +52,7 @@ jobs:
 
       - name: Run 1 auto-pipeline cycle
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
           PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
           KOMOAPI_LLM_URL: "https://nine.komoapi.site/v1/chat/completions"

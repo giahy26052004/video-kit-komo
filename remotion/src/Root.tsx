@@ -16,7 +16,7 @@ import { TransitionSlide } from "./compositions/TransitionSlide";
 import { NumberHero } from "./compositions/NumberHero";
 import { ImageSlide, ImageMode } from "./compositions/ImageSlide";
 import { VideoTheme } from "./ui-kit/AnimatedBackground";
-import { SlideTransition, TRANSITION_VARIANTS } from "./ui-kit/SlideTransition";
+import { SlideTransition, TRANSITION_VARIANTS, TEMPLATE_TRANSITIONS } from "./ui-kit/SlideTransition";
 import { CaptionsLayer, CaptionPosition } from "./compositions/CaptionsLayer";
 import { BrandConfig } from "./compositions/BrandedSlideLayout";
 import { Preset, resolvePreset } from "./presets";
@@ -104,7 +104,9 @@ type SlideMeta = {
   formulaCaption?: string;
   formulaPrefix?: string;
 
-  // image (background | popup | screen — chèn ảnh thật, xem ImageSlide.tsx)
+  // image (background | popup | screen | banner | poster — chèn ảnh thật, xem ImageSlide.tsx)
+  // `imageSrc` cũng được TextSlide dùng làm ảnh nền minh hoạ (mọi slide đều
+  // cần có ảnh/video thật, kể cả slide text/bullet — xem TextSlide.tsx).
   imageSrc?: string;
   imageMode?: ImageMode;
   browserUrl?: string;
@@ -143,6 +145,13 @@ type Metadata = {
   musicVolume?: number;
   /** Nền động dùng chung cho cả video: "default" | "neon" | "particles". Random mỗi video ở auto_pipeline.mjs. */
   theme?: VideoTheme;
+  /**
+   * Layout template dùng chung cho cả video: "screen" | "banner" | "poster".
+   * Random mỗi video ở auto_pipeline.mjs, ĐỘC LẬP với `theme` (theme = màu/nền
+   * động, template = bố cục slide + kiểu chữ + chuyển cảnh) — 2 trục nhân lại
+   * cho nhiều tổ hợp hình ảnh khác nhau giữa các video.
+   */
+  template?: "screen" | "banner" | "poster";
 };
 
 const DEFAULT_METADATA: Metadata = {
@@ -209,7 +218,8 @@ const Main: React.FC<Metadata> = (meta) => {
         // Math.random(), component re-render mỗi frame nên random thật sẽ nhảy
         // liên tục). Lệch theo độ dài title để 2 video khác nhau đổi thứ tự.
         const transitionSeed = meta.title?.length ?? 0;
-        const transitionVariant = TRANSITION_VARIANTS[(transitionSeed + i) % TRANSITION_VARIANTS.length];
+        const transitionPool = TEMPLATE_TRANSITIONS[meta.template ?? "screen"] ?? TRANSITION_VARIANTS;
+        const transitionVariant = transitionPool[(transitionSeed + i) % transitionPool.length];
 
         return (
           <Sequence
@@ -253,6 +263,8 @@ const Main: React.FC<Metadata> = (meta) => {
                   accentColor={slide.accentColor ?? themeAccentColor}
                   fontScale={fontScale}
                   theme={meta.theme}
+                  template={meta.template}
+                  imageSrc={slide.imageSrc}
                 />
               </SlideTransition>
             )}

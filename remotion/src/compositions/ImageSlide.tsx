@@ -11,7 +11,7 @@ import {
 import { FakeBrowser } from "../ui-kit/FakeBrowser";
 import { AnimatedBackground, VideoTheme } from "../ui-kit/AnimatedBackground";
 
-export type ImageMode = "background" | "popup" | "screen";
+export type ImageMode = "background" | "popup" | "screen" | "banner" | "poster";
 
 interface ImageSlideProps {
   /** Đường dẫn ảnh, tương đối so với --public-dir (thường là workspace/ của project). */
@@ -128,6 +128,160 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
                 maxWidth: width * 0.8,
               }}
             >
+              {subtitle}
+            </div>
+          )}
+        </AbsoluteFill>
+      </AbsoluteFill>
+    );
+  }
+
+  if (mode === "banner") {
+    // banner: ảnh full-bleed phía trên, dải "ribbon" màu accent nghiêng ở dưới
+    // chứa title, kèm 1 chip ảnh nhỏ nổi đè lên mép ảnh/ribbon — layout khác
+    // hẳn "screen" (không giả browser) và "poster" (không chữ khổng lồ giữa khung).
+    const bannerSkew = interpolate(frame, [0, 15], [-8, -2], { extrapolateRight: "clamp" });
+    const titleSlide = spring({ frame, fps, config: { damping: 16, stiffness: 130, mass: 0.6 } });
+    const titleX = interpolate(titleSlide, [0, 1], [-140, 0]);
+    const chipRotate = interpolate(frame, [0, 20], [-16, -6], { extrapolateRight: "clamp" });
+    const chipScale = 0.6 + entrance * 0.4;
+    return (
+      <AbsoluteFill style={{ background: "#0b0b0f" }}>
+        {bgLayer}
+        <Img
+          src={imgSrc}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "66%",
+            objectFit: "cover",
+            transform: `scale(${kenBurns}) translateX(${kenBurnsPanX}px)`,
+            transformOrigin: "center",
+          }}
+        />
+        <AbsoluteFill style={{ background: "linear-gradient(180deg, transparent 38%, #0b0b0f 90%)" }} />
+        <div
+          style={{
+            position: "absolute",
+            top: height * 0.58,
+            left: 56,
+            width: 104,
+            height: 104,
+            borderRadius: 22,
+            overflow: "hidden",
+            border: `3px solid ${accentColor}`,
+            boxShadow: `0 12px 32px ${accentColor}66`,
+            transform: `rotate(${chipRotate}deg) scale(${chipScale})`,
+          }}
+        >
+          <Img src={imgSrc} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+        </div>
+        <div style={{ position: "absolute", left: 0, right: 0, bottom: height * 0.13, paddingLeft: 56, paddingRight: 56 }}>
+          {title && (
+            <div
+              style={{
+                display: "inline-block",
+                background: `linear-gradient(90deg, ${accentColor}, ${accentColor}cc)`,
+                padding: "16px 30px",
+                borderRadius: 12,
+                transform: `skewX(${bannerSkew}deg) translateX(${titleX}px)`,
+                boxShadow: "0 20px 50px rgba(0,0,0,0.5)",
+                maxWidth: width * 0.82,
+              }}
+            >
+              <div
+                style={{
+                  transform: `skewX(${-bannerSkew}deg)`,
+                  fontSize: 46 * fontScale,
+                  fontWeight: 900,
+                  color: "#0b0b0f",
+                  fontFamily: "'Inter', -apple-system, sans-serif",
+                  letterSpacing: "-0.02em",
+                  lineHeight: 1.1,
+                }}
+              >
+                {title}
+              </div>
+            </div>
+          )}
+          {subtitle && (
+            <div style={{ marginTop: 16, opacity: textOpacity, color: "#e5e7eb", fontSize: 26 * fontScale, maxWidth: width * 0.8 }}>
+              {subtitle}
+            </div>
+          )}
+        </div>
+      </AbsoluteFill>
+    );
+  }
+
+  if (mode === "poster") {
+    // poster: ảnh full-bleed duotone kịch tính + title khổng lồ nghiêng/xoay
+    // nhẹ kiểu poster phim, ribbon "HOT" góc trên trái — khác hẳn 2 mode kia.
+    const titleSpring = spring({ frame, fps, config: { damping: 13, stiffness: 110, mass: 0.7 } });
+    const titleY = interpolate(titleSpring, [0, 1], [90, 0]);
+    const rotateDeg = interpolate(frame, [0, durationInFrames], [-4, -1], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    });
+    return (
+      <AbsoluteFill style={{ background: "#000" }}>
+        {bgLayer}
+        <Img
+          src={imgSrc}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            transform: `scale(${kenBurns}) translateX(${kenBurnsPanX}px)`,
+            filter: "saturate(1.15) contrast(1.05)",
+          }}
+        />
+        <AbsoluteFill
+          style={{
+            background: `linear-gradient(180deg, ${accentColor}33 0%, rgba(0,0,0,0.35) 45%, rgba(0,0,0,0.92) 100%)`,
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            top: 76,
+            left: -64,
+            background: accentColor,
+            color: "#0b0b0f",
+            fontWeight: 800,
+            fontSize: 22 * fontScale,
+            padding: "8px 70px",
+            transform: "rotate(-35deg)",
+            boxShadow: "0 10px 30px rgba(0,0,0,0.5)",
+          }}
+        >
+          HOT
+        </div>
+        <AbsoluteFill style={{ alignItems: "center", justifyContent: "flex-end", paddingBottom: height * 0.16 }}>
+          {title && (
+            <div
+              style={{
+                opacity: interpolate(titleSpring, [0, 1], [0, 1]),
+                transform: `translateY(${titleY}px) skewY(-4deg) rotate(${rotateDeg}deg)`,
+                fontSize: 82 * fontScale,
+                fontWeight: 900,
+                textTransform: "uppercase",
+                color: "#fff",
+                textAlign: "center",
+                maxWidth: width * 0.9,
+                lineHeight: 0.98,
+                letterSpacing: "-0.03em",
+                fontFamily: "'Inter', -apple-system, sans-serif",
+                textShadow: `0 0 60px ${accentColor}88, 0 10px 40px rgba(0,0,0,0.8)`,
+              }}
+            >
+              {title}
+            </div>
+          )}
+          {subtitle && (
+            <div style={{ marginTop: 24, opacity: textOpacity, color: "#e5e7eb", fontSize: 30 * fontScale, maxWidth: width * 0.85, textAlign: "center" }}>
               {subtitle}
             </div>
           )}

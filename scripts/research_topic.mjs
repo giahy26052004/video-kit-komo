@@ -19,6 +19,13 @@ import { fileURLToPath } from "node:url";
 
 const KIT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const UA = { "User-Agent": "claude-video-kit-research/1.0" };
+// Không xác thực -> GitHub Search API chỉ cho 10 req/phút, hết rất nhanh khi
+// pickTopic() thử nhiều query liên tiếp (=> toàn bộ vòng lặp bị 403). Có token
+// (kể cả GITHUB_TOKEN mặc định của Actions) nâng lên 30 req/phút cho search
+// và 5000 req/giờ cho API thường.
+const GH_AUTH = process.env.GITHUB_TOKEN || process.env.GH_TOKEN
+  ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN || process.env.GH_TOKEN}` }
+  : {};
 
 function arg(name, def) {
   const i = process.argv.indexOf(`--${name}`);
@@ -46,7 +53,7 @@ async function findTopGithubRepo(query, days, minStars) {
   const since = isoDaysAgo(days);
   const q = encodeURIComponent(`${query} pushed:>${since} stars:>=${minStars}`);
   const url = `https://api.github.com/search/repositories?q=${q}&sort=stars&order=desc&per_page=5`;
-  const data = await fetchJson(url);
+  const data = await fetchJson(url, GH_AUTH);
   const items = data.items ?? [];
   if (!items.length) return null;
 
@@ -57,7 +64,7 @@ async function findTopGithubRepo(query, days, minStars) {
 
   let latestRelease = null;
   try {
-    latestRelease = await fetchJson(`https://api.github.com/repos/${top.full_name}/releases/latest`);
+    latestRelease = await fetchJson(`https://api.github.com/repos/${top.full_name}/releases/latest`, GH_AUTH);
   } catch { /* repo có thể chưa release lần nào — bỏ qua */ }
 
   return {

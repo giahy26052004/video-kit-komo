@@ -121,6 +121,13 @@ async function buildScript(research, slug, workspace) {
   const hn = research.hackernews;
   // Random 1/3 theme nền động mỗi video (không cố định 1 loại) — cho video đỡ nhàm.
   const theme = ["default", "neon", "particles"][Math.floor(Math.random() * 3) % 3];
+  // Random 1/3 template LAYOUT mỗi video, ĐỘC LẬP với theme (theme = màu/nền
+  // động, template = bố cục slide + kiểu chữ + chuyển cảnh) — 2 trục nhân lại
+  // cho video "nhìn khác hẳn" nhau chứ không chỉ đổi màu nền.
+  //   screen  — layout hiện tại: ảnh trong khung browser giả, chữ cân giữa.
+  //   banner  — ảnh rõ nét phía trên + khối chữ trong ribbon nghiêng màu accent phía dưới.
+  //   poster  — ảnh full-bleed kịch tính + chữ khổng lồ xoay nhẹ kiểu poster phim.
+  const template = ["screen", "banner", "poster"][Math.floor(Math.random() * 3) % 3];
   const bulletIcon = THEME_BULLET_ICON[theme];
   const loc = await localizeContent(gh, hn); // dịch/tóm tắt tiếng Anh -> tiếng Việt (onscreen ngắn + voice đầy đủ)
   const websiteUrl = gh.homepage ? gh.homepage.replace(/^https?:\/\//i, "").replace(/\/$/, "") : null;
@@ -139,6 +146,10 @@ async function buildScript(research, slug, workspace) {
     repo: exists("github-repo.png") && { imageSrc: "github-repo.png", browserUrl: githubUrlShort },
     releases: gh.latestRelease?.name && exists("github-releases.png") && { imageSrc: "github-releases.png", browserUrl: releasesUrlShort },
     hn: hn && exists("hn-post.png") && { imageSrc: "hn-post.png", browserUrl: hnUrlShort },
+    // Ảnh minh hoạ chủ đề (chụp từ kết quả tìm kiếm liên quan qua Playwright,
+    // xem asset_collector.mjs) — dùng làm nền cho slide text/bullet, để MỌI
+    // slide đều có ảnh/video minh hoạ thật, không chỉ riêng slide "image".
+    topic: exists("topic-visual.png") && { imageSrc: "topic-visual.png", browserUrl: null },
   };
   const hasHn = Boolean(hn && IMG.hn); // chỉ thêm slide HN nếu có ảnh minh hoạ thật
   let lastImageSrc = null;
@@ -161,7 +172,7 @@ async function buildScript(research, slug, workspace) {
   const hookAsset = assetFor("website", "repo");
   slides.push({
     type: "image",
-    imageMode: "screen",
+    imageMode: template,
     imageSrc: hookAsset.imageSrc,
     browserUrl: hookAsset.browserUrl,
     title: `${THEME_HOOK_ICON[theme]} ${gh.name.split("/").pop()}`,
@@ -173,7 +184,7 @@ async function buildScript(research, slug, workspace) {
   const descAsset = assetFor("repo", "website", "releases");
   slides.push({
     type: "image",
-    imageMode: "screen",
+    imageMode: template,
     imageSrc: descAsset.imageSrc,
     browserUrl: descAsset.browserUrl,
     title: loc.desc_onscreen || gh.name,
@@ -186,10 +197,14 @@ async function buildScript(research, slug, workspace) {
     // Release note KHÔNG bao giờ render nguyên văn / KHÔNG đè lên screenshot —
     // slide riêng, chỉ vài bullet ngắn đã qua LLM diễn giải (không thuật ngữ Git).
     const highlights = (loc.release_highlights?.length ? loc.release_highlights : [stripMarkdown(gh.latestRelease.name, 40)]).slice(0, 3);
+    // Slide text/bullet cũng cần ảnh minh hoạ thật (không chỉ nền màu) —
+    // ưu tiên ảnh chủ đề riêng (topic-visual.png), rồi mới lặp lại ảnh repo/website.
+    const releaseAsset = assetFor("topic", "repo", "website", "releases");
     slides.push({
       type: "text",
       text: [loc.release_onscreen || "🚀 Có gì mới?", ...highlights.map((h) => `${bulletIcon} ${h}`)].join("\n"),
       voice_text: loc.release_voice || `Bản cập nhật mới nhất: ${stripMarkdown(gh.latestRelease.name, 80)}. ${stripMarkdown(gh.latestRelease.body, 160)}`,
+      imageSrc: releaseAsset.imageSrc,
       sfx: "transition",
       sfxVolume: 0.2,
     });
@@ -198,7 +213,7 @@ async function buildScript(research, slug, workspace) {
     const hnAsset = assetFor("hn", "website", "repo");
     slides.push({
       type: "image",
-      imageMode: "screen",
+      imageMode: template,
       imageSrc: hnAsset.imageSrc,
       browserUrl: hnAsset.browserUrl,
       title: loc.hn_onscreen || "Đang hot trên Hacker News",
@@ -231,6 +246,7 @@ async function buildScript(research, slug, workspace) {
     music,
     musicVolume: 0.05,
     theme,
+    template,
     slides,
   };
 }
@@ -245,7 +261,7 @@ function buildReviewInput(slug) {
       duration: { status: "pass", notes: "4-5 slide ngắn, phù hợp short 20-35s." },
       visual_feasibility: { status: "pass", notes: "Dùng composition image (screen) + text đã build sẵn; ảnh là screenshot thật qua Playwright." },
       privacy: { status: "pass", notes: "Chỉ dùng thông tin public GitHub/Hacker News, không có dữ liệu cá nhân." },
-      copyright: { status: "pass", notes: "Ảnh là screenshot public của website/GitHub repo, không dùng ảnh bên thứ ba khác." },
+      copyright: { status: "pass", notes: "Ảnh là screenshot public của website/GitHub repo/trang kết quả tìm kiếm ảnh (Bing Images) — không hotlink/tải riêng ảnh của bên thứ ba." },
     },
   };
 }
@@ -327,6 +343,8 @@ async function main() {
   if (websiteUrl) collectArgs.push("--website", websiteUrl);
   if (research.github.latestRelease?.name) collectArgs.push("--releases", `${research.github.url}/releases`);
   if (research.hackernews?.hnUrl) collectArgs.push("--hn", research.hackernews.hnUrl);
+  // Chỉ cần ảnh chủ đề khi có slide text/bullet (release highlights) để minh hoạ.
+  if (research.github.latestRelease?.name) collectArgs.push("--topic", query);
   execFileSync("node", collectArgs, { cwd: KIT_ROOT, stdio: "inherit" });
 
   // Build script SAU khi có ảnh thật, để biết chính xác ảnh nào chụp thành công

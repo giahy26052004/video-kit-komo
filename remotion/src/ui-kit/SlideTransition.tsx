@@ -1,8 +1,15 @@
 import React from "react";
 import { AbsoluteFill, interpolate, useCurrentFrame } from "remotion";
 
-export type TransitionVariant = "fade" | "zoomBlur" | "slideLeft" | "slideRight" | "pushZoom";
+export type TransitionVariant = "fade" | "zoomBlur" | "slideLeft" | "slideRight" | "pushZoom" | "skewWipe";
 export const TRANSITION_VARIANTS: TransitionVariant[] = ["fade", "zoomBlur", "slideLeft", "slideRight", "pushZoom"];
+// Theo template layout (Root.tsx) — mỗi bộ template thiên về vài kiểu chuyển
+// cảnh riêng để "cá tính" hình ảnh nhất quán suốt video, thay vì xoay vòng chung 1 bộ.
+export const TEMPLATE_TRANSITIONS: Record<string, TransitionVariant[]> = {
+  screen: ["fade", "zoomBlur", "pushZoom"],
+  banner: ["slideLeft", "slideRight", "fade"],
+  poster: ["zoomBlur", "pushZoom", "skewWipe"],
+};
 
 interface SlideTransitionProps {
   durationInFrames: number;
@@ -68,6 +75,24 @@ export const SlideTransition: React.FC<SlideTransitionProps> = ({
       extrapolateRight: "clamp",
     });
     return <AbsoluteFill style={{ opacity, transform: `scale(${scale})` }}>{children}</AbsoluteFill>;
+  }
+
+  if (variant === "skewWipe") {
+    // Trượt lên từ dưới kèm nghiêng nhẹ — dùng cho template "poster" (kịch
+    // tính, giống banner/poster phim đang "quét" vào khung hình).
+    const y = interpolate(frame, [t0, t1, t2, t3], [90, 0, 0, -60], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    });
+    const skew = interpolate(frame, [t0, t1, t2, t3], [6, 0, 0, -4], {
+      extrapolateLeft: "clamp",
+      extrapolateRight: "clamp",
+    });
+    return (
+      <AbsoluteFill style={{ opacity, transform: `translateY(${y}px) skewY(${skew}deg)` }}>
+        {children}
+      </AbsoluteFill>
+    );
   }
 
   // "fade" — mặc định, giữ hành vi cũ.

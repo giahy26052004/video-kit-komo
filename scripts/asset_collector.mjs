@@ -14,10 +14,16 @@
  * Output: workspace/<name>.png trong out/<slug>/workspace/, trả về manifest
  * JSON liệt kê ảnh đã chụp + nguồn thật (url) để ghi vào review-input.json.
  *
+ * --topic <query> (optional): tìm ảnh minh hoạ chủ đề (không gắn với 1 repo/
+ * trang cụ thể) bằng cách chụp màn hình trang kết quả Bing Images cho query
+ * đó -> topic-visual.png. Dùng để slide text/bullet (vốn trước giờ chỉ có
+ * nền màu) cũng có ảnh minh hoạ thật, không cần API ảnh trả phí.
+ *
  * Usage:
  *   node scripts/asset_collector.mjs --slug ai-agent \
  *     --repo https://github.com/obra/superpowers \
- *     --website https://example.com
+ *     --website https://example.com \
+ *     --topic "ai agent"
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -57,14 +63,32 @@ async function screenshotUrl(page, url, destPath, { fullPage = false, waitMs = 1
   await page.screenshot({ path: destPath, fullPage });
 }
 
+/**
+ * Tìm ảnh minh hoạ cho 1 chủ đề (không phải 1 URL cụ thể) bằng cách search
+ * Bing Images rồi chụp lại lưới kết quả — vẫn là "chụp màn hình thật" đúng
+ * tinh thần cả file này (không hotlink ảnh của người khác, không dùng API
+ * ảnh trả phí), chỉ khác nguồn là trang search thay vì 1 site cố định.
+ */
+async function screenshotTopicVisual(page, query, destPath) {
+  const url = `https://www.bing.com/images/search?q=${encodeURIComponent(query)}&form=HDRSC2`;
+  await page.goto(url, { waitUntil: "load", timeout: 25000 });
+  // Đóng banner cookie/consent nếu có — không fatal nếu không tìm thấy nút.
+  for (const sel of ["#bnp_btn_accept", "button#onetrust-accept-btn-handler"]) {
+    await page.click(sel, { timeout: 2000 }).catch(() => {});
+  }
+  await page.waitForTimeout(1500); // để lưới ảnh kịp lazy-load
+  await page.screenshot({ path: destPath, fullPage: false });
+}
+
 async function main() {
   const slug = arg("slug");
   const repoUrl = arg("repo");
   const websiteUrl = arg("website");
   const releasesUrl = arg("releases");
   const hnUrl = arg("hn");
+  const topic = arg("topic");
   if (!slug) {
-    console.error("usage: asset_collector.mjs --slug <slug> [--repo <url>] [--website <url>] [--releases <url>] [--hn <url>]");
+    console.error("usage: asset_collector.mjs --slug <slug> [--repo <url>] [--website <url>] [--releases <url>] [--hn <url>] [--topic <query>]");
     process.exit(1);
   }
 
@@ -91,6 +115,17 @@ async function main() {
       console.log(`  ${t.name} <- ${t.url}`);
     } catch (e) {
       console.warn(`  ${t.name} screenshot FAILED (${t.url}): ${e.message}`);
+    }
+  }
+
+  if (topic) {
+    try {
+      const dest = path.join(workspace, "topic-visual.png");
+      await screenshotTopicVisual(page, topic, dest);
+      manifest.captured.push({ name: "topic-visual.png", source: `bing-images:${topic}`, kind: "topic-visual" });
+      console.log(`  topic-visual.png <- bing images "${topic}"`);
+    } catch (e) {
+      console.warn(`  topic-visual.png screenshot FAILED ("${topic}"): ${e.message}`);
     }
   }
 

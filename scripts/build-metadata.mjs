@@ -85,6 +85,7 @@ function main() {
     ...(script.brand ? { brand: script.brand } : {}),
     ...(script.music ? { music: script.music } : {}),
     ...(script.theme ? { theme: script.theme } : {}),
+    ...(script.template ? { template: script.template } : {}),
     slides,
   };
 
