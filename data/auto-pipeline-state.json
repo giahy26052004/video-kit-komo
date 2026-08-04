@@ -61,6 +61,7 @@
     "langflow-ai/langflow",
     "griptape-ai/griptape",
     "ratel-ai/ratel",
-    "HKUDS/LightRAG"
+    "HKUDS/LightRAG",
+    "run-llama/llama_index"
   ]
 }
