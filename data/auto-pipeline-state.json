@@ -65,6 +65,7 @@
     "run-llama/llama_index",
     "raullenchai/Rapid-MLX",
     "Vexa-ai/vexa",
-    "containers/ramalama"
+    "containers/ramalama",
+    "shuvonsec/claude-bug-bounty"
   ]
 }
