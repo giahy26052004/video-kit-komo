@@ -12,6 +12,7 @@
  * Usage:
  *   node scripts/research_topic.mjs "ai agent"
  *   node scripts/research_topic.mjs "ai agent" --days 7 --min-stars 500
+ *   node scripts/research_topic.mjs "ai agent" --exclude "owner/repo1,owner/repo2"
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -48,8 +49,16 @@ async function fetchText(url, headers = {}) {
   return r.text();
 }
 
-/** Nguồn 1 — GitHub Search API: repo AI hoạt động gần đây, nhiều sao nhất. */
-async function findTopGithubRepo(query, days, minStars) {
+/**
+ * Nguồn 1 — GitHub Search API: repo AI hoạt động gần đây, nhiều sao nhất.
+ *
+ * `excludeSet` (Set<string> tên "owner/repo" đã đăng video rồi) — lấy top 5
+ * kết quả rồi chọn cái ĐẦU TIÊN chưa dùng, thay vì chỉ nhìn top[0]. Không có
+ * bước này thì cùng 1 query gần như luôn ra đúng 1 repo (top sao ít đổi trong
+ * 14 ngày), nên sau vài chục lần chạy, MỌI query trong QUERY_POOL đều bị coi
+ * là "hết chủ đề mới" dù GitHub vẫn còn 4 kết quả khác chưa từng dùng.
+ */
+async function findTopGithubRepo(query, days, minStars, excludeSet = new Set()) {
   const since = isoDaysAgo(days);
   const q = encodeURIComponent(`${query} pushed:>${since} stars:>=${minStars}`);
   const url = `https://api.github.com/search/repositories?q=${q}&sort=stars&order=desc&per_page=5`;
@@ -57,7 +66,7 @@ async function findTopGithubRepo(query, days, minStars) {
   const items = data.items ?? [];
   if (!items.length) return null;
 
-  const top = items[0];
+  const top = items.find((r) => !excludeSet.has(r.full_name)) ?? items[0];
   const readme = await fetchText(
     `https://raw.githubusercontent.com/${top.full_name}/${top.default_branch}/README.md`
   );
@@ -81,7 +90,7 @@ async function findTopGithubRepo(query, days, minStars) {
     latestRelease: latestRelease
       ? { tag: latestRelease.tag_name, name: latestRelease.name, body: (latestRelease.body ?? "").slice(0, 3000) }
       : null,
-    otherCandidates: items.slice(1, 5).map((r) => ({
+    otherCandidates: items.filter((r) => r.full_name !== top.full_name).map((r) => ({
       name: r.full_name, stars: r.stargazers_count, description: r.description,
     })),
   };
@@ -115,11 +124,12 @@ async function main() {
   }
   const days = Number(arg("days", "7"));
   const minStars = Number(arg("min-stars", "200"));
+  const excludeSet = new Set((arg("exclude", "") || "").split(",").map((s) => s.trim()).filter(Boolean));
 
   console.log(`Tìm kiếm chủ đề: "${query}" (${days} ngày gần nhất, >=${minStars} sao)...`);
 
   const [github, hackernews] = await Promise.all([
-    findTopGithubRepo(query, days, minStars).catch((e) => { console.warn("github lỗi:", e.message); return null; }),
+    findTopGithubRepo(query, days, minStars, excludeSet).catch((e) => { console.warn("github lỗi:", e.message); return null; }),
     findTopHackerNewsPost(query).catch((e) => { console.warn("hackernews lỗi:", e.message); return null; }),
   ]);
 

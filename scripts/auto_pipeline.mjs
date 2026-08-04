@@ -75,7 +75,16 @@ function stripMarkdown(text, maxLen) {
 
 function tryQuery(query, state) {
   console.log(`[pick] thử query: "${query}"`);
-  execFileSync("node", [path.join(KIT_ROOT, "scripts/research_topic.mjs"), query, "--days", "14", "--min-stars", "300"], {
+  // --exclude: research_topic.mjs tự chọn kết quả ĐẦU TIÊN trong top 5 chưa
+  // dùng (không chỉ nhìn top[0]) — nếu thiếu bước này, 1 query gần như luôn ra
+  // đúng 1 repo (top sao ít đổi trong 14 ngày) nên chỉ sau vài chục lần chạy
+  // là TOÀN BỘ QUERY_POOL bị coi là "hết chủ đề mới" dù GitHub còn nhiều kết
+  // quả khác chưa từng dùng.
+  execFileSync("node", [
+    path.join(KIT_ROOT, "scripts/research_topic.mjs"), query,
+    "--days", "14", "--min-stars", "300",
+    "--exclude", state.usedRepos.join(","),
+  ], {
     cwd: KIT_ROOT,
     stdio: "inherit",
   });
@@ -109,7 +118,24 @@ async function pickTopic(state) {
     const research = tryQuery(query, state);
     if (research) return { query, research };
   }
-  throw new Error("không tìm được chủ đề mới sau khi thử hết QUERY_POOL");
+
+  // Hết sạch QUERY_POOL: usedRepos đã tích luỹ đủ lớn để che hết top-kết-quả
+  // của MỌI query (kể cả sau khi đã thử 5 candidate/query ở trên). Thay vì
+  // fail cứng, bỏ bớt các repo cũ nhất trong usedRepos rồi thử lại 1 lượt nữa
+  // — đúng tinh thần comment gốc "hết pool thì quay vòng lại, repo có thể đã
+  // có version/HN mới nên vẫn là nội dung hợp lệ".
+  if (state.usedRepos.length > 20) {
+    console.warn(`  hết QUERY_POOL, usedRepos đang có ${state.usedRepos.length} repo -> bỏ bớt nửa cũ nhất rồi thử lại.`);
+    state.usedRepos = state.usedRepos.slice(Math.floor(state.usedRepos.length / 2));
+    for (let i = 0; i < QUERY_POOL.length; i++) {
+      const idx = (state.queryIndex + i) % QUERY_POOL.length;
+      const query = QUERY_POOL[idx];
+      state.queryIndex = idx + 1;
+      const research = tryQuery(query, state);
+      if (research) return { query, research };
+    }
+  }
+  throw new Error("không tìm được chủ đề mới sau khi thử hết QUERY_POOL (kể cả sau khi xoay vòng usedRepos)");
 }
 
 // Icon bullet đổi theo theme để video "nhìn khác hẳn" nhau, không chỉ đổi nền.
