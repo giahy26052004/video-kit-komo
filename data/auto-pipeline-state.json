@@ -62,6 +62,7 @@
     "griptape-ai/griptape",
     "ratel-ai/ratel",
     "HKUDS/LightRAG",
-    "run-llama/llama_index"
+    "run-llama/llama_index",
+    "raullenchai/Rapid-MLX"
   ]
 }
