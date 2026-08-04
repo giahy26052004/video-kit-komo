@@ -63,6 +63,7 @@
     "ratel-ai/ratel",
     "HKUDS/LightRAG",
     "run-llama/llama_index",
-    "raullenchai/Rapid-MLX"
+    "raullenchai/Rapid-MLX",
+    "Vexa-ai/vexa"
   ]
 }
