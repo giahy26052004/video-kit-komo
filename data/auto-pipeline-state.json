@@ -60,6 +60,7 @@
     "arcjet/arcjet-js",
     "langflow-ai/langflow",
     "griptape-ai/griptape",
-    "ratel-ai/ratel"
+    "ratel-ai/ratel",
+    "HKUDS/LightRAG"
   ]
 }
