@@ -59,6 +59,7 @@
     "langchain-ai/langchain",
     "arcjet/arcjet-js",
     "langflow-ai/langflow",
-    "griptape-ai/griptape"
+    "griptape-ai/griptape",
+    "ratel-ai/ratel"
   ]
 }
