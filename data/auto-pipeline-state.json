@@ -71,6 +71,7 @@
     "jonfairbanks/local-rag",
     "Pangu-Immortal/MagicWX",
     "elizaOS/eliza",
-    "wshobson/agents"
+    "wshobson/agents",
+    "agent0ai/agent-zero"
   ]
 }
