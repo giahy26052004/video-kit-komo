@@ -1,0 +1,49 @@
+{
+  "query": "agentic workflows automation",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-05T17:55:10.843Z",
+  "github": {
+    "source": "github",
+    "name": "wshobson/agents",
+    "description": "Multi-harness agentic plugin marketplace for Claude Code, Codex CLI, Cursor, OpenCode, GitHub Copilot, and Gemini CLI",
+    "url": "https://github.com/wshobson/agents",
+    "stars": 38512,
+    "language": "Python",
+    "homepage": "https://sethhobson.com",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/553618?v=4",
+    "pushedAt": "2026-08-05T07:11:13Z",
+    "readmeExcerpt": "# Agentic Plugin Marketplace\n\n> Production-ready agentic workflow building blocks: **94 plugins**, **203 agents**,\n> **175 skills**, **109 commands** — built for Claude Code and consumed natively by\n> OpenAI Codex CLI, Cursor, OpenCode, Gemini CLI, and GitHub Copilot from a single Markdown source.\n\n[![Claude Code](https://img.shields.io/badge/Claude%20Code-native-blueviolet)](#claude-code) [![Codex CLI](https://img.shields.io/badge/Codex%20CLI-supported-black)](docs/harnesses.md) [![Cursor](https://img.shields.io/badge/Cursor-supported-purple)](docs/harnesses.md) [![OpenCode](https://img.shields.io/badge/OpenCode-supported-green)](docs/harnesses.md) [![Gemini CLI](https://img.shields.io/badge/Gemini%20CLI-supported-blue)](GEMINI.md) [![Copilot](https://img.shields.io/badge/Copilot-supported-lightgrey)](docs/harnesses.md)\n\n> [!NOTE]\n> One source-of-truth (`plugins/`), five harnesses. Each harness gets idiomatic,\n> harness-native artifacts — not lowest-common-denominator translations.\n> See [docs/harnesses.md](docs/harnesses.md) for the capability matrix.\n\n## Quick start\n\nPick your harness:\n\n### Claude Code\n\n```bash\n/plugin marketplace add wshobson/agents\n/plugin install python-development          # or any of 94 plugins\n```\n\n[→ Full Claude Code setup, troubleshooting, and plugin catalog](docs/usage.md)\n\n### Codex CLI · Cursor · OpenCode · Gemini CLI · Copilot\n\nCodex and Cursor install natively from the committed registries (which point at the source `plugins/`):\n\n```bash\nnpx codex-marketplace add wshobson/agents        # Codex; then install individual plugins\n# Cursor: add the marketplace, then `/plugin install <name>` (reads .cursor-plugin/ + source)\n```\n\nGemini and OpenCode install via clone + generate (the transformed trees are gitignored):\n\n```bash\ngh repo clone wshobson/agents ~/agents && cd ~/agents\nmake generate HARNESS=gemini && gemini extensions install .   # Gemini\nmake install-opencode                                          # OpenCode (runs generate + symlinks)\n```\n\nSetup details and per-harness gotchas: [docs/harnesses.md](docs/harnesses.md). Gemini-specific setup: [GEMINI.md](GEMINI.md) (also auto-loaded by Gemini CLI).\n\n## What's inside\n\n| | Count | What it is |\n|---|---:|---|\n| **Plugins** | 94 | Granular, single-purpose installable units (90 local + 4 external via git-subdir) |\n| **Agents** | 203 | Domain experts (architecture, languages, infra, security, data, ML, docs, business, SEO) |\n| **Skills** | 175 | Modular knowledge packages with progressive disclosure (load when activated) |\n| **Commands** | 109 | Slash commands: scaffolding, security scans, test gen, infrastructure setup |\n| **Orchestrators** | 16 | Multi-agent coordination workflows (full-stack, security, ML, incident response) |\n\nBrowse the catalog: [docs/plugins.md](docs/plugins.md) · [docs/agents.md](docs/agents.md) · [docs/agent-skills.md](docs/agent-skills.md)\n\n## How it works\n\nEach plugin is isolated and composable: agents, commands, and skills are auto-discovered\nfrom directory structure. **Installing a plugin loads only its components into\ncontext** — not the whole marketplace.\n\n```\nplugins/python-development/\n├── .claude-plugin/plugin.json\n├── agents/             # 3 Python agents (python-pro, django-pro, fastapi-pro)\n├── commands/           # 1 scaffolding command\n└── skills/             # 16 specialized skills (async, testing, packaging, …)\n```\n\nTiered model strategy:\n\n| Tier | Model | Use |\n|---|---|---|\n| 0 | Fable 5  | Longest-horizon autonomous work — large migrations, multi-hour runs (opt-in, premium cost) |\n| 1 | Opus     | Architecture, security, code review, production-critical |\n| 2 | inherit  | User-chosen — backend, frontend, AI/ML, specialized |\n| 3 | Sonnet   | Docs, testing, debugging, API references |\n| 4 | Haiku    | Fast operational tasks, SEO, deployment, content |\n\n[→ Model configuration details](docs/agents.md#model-configuration)\n\n## Multi-harness support\n\nThis marketplace ships to five agentic harnesses from one Markdown source. Each adapter\nemits harness-native artifacts (not lowest-common-denominator translations):\n\n| Harness | Generates | Notes |\n|---|---|---|\n| **Claude Code** | (source-of-truth) | Native `marketplace.json` + `plugins/` |\n| **Codex CLI** | `.agents/plugins/marketplace.json` + `plugins/*/.codex-plugin/plugin.json` (committed); `.codex/skills/`, `.codex/agents/` (gitignored) | 8 KB skill cap respected; commands → skills |\n| **Cursor** | `.cursor-plugin/`, `.cursor/rules/` | Thin marketplace + curated rules; reuses `.claude/` |\n| **OpenCode** | `.opencode/agents/`, `.opencode/commands/`, `.opencode/skills/` | `permission:` block from `tools:` allowlist; OpenCode-safe skill names |\n| **Gemini CLI** | `skills/`, `agents/`, `commands/` (TOML) | Native skills + subagents (April 2026 spec) |\n| **Copilot** | `.copilot/agents/`, `.copilot/skills/`, `.copilot/commands/` | Markdown agent profiles + SKILL.md skills + commands-as-skills; model maps to native Claude models |\n\n```bash\nmake generate-all                        # all five\nmake validate                            # structural checks\nmake garden                              # drift / dead-link / cap detection\n```\n\nCodex and Cursor install from source via committed registries; Gemini and OpenCode install via clone + `make`.\n\n[→ Full capability matrix and per-harness deep-dives](docs/harnesses.md)\n\n## Quality evaluation\n\n[`plugin-eval`](plugins/plugin-eval/) is a three-layer evaluation framework for measuring\nand certifying plugin/skill quality:\n\n- **Static** — deterministic structural analysis (<2s, free)\n- **LLM Judge** — semantic evaluation across 4 dimensions (~30s, Haiku + Sonnet)\n- **Monte Carlo** — statistical reliability via 50-100 simulated runs (~2-5 min)\n\n```bash\nuv run plugin-eval score path/to/skill --depth quick\nuv run plugin-eval certify path/to/skill\n```\n\n[→ PluginEval framework documentation](docs/plugin-eval.md)\n\n## Documentation map\n\nDetail lives in `docs/`. Read in this order:\n\n- **[docs/plu",
+    "latestRelease": null,
+    "otherCandidates": [
+      {
+        "name": "langgenius/dify",
+        "stars": 151452,
+        "description": "Build Agentic workflows, RAG pipelines, with rich AI model and tool support on one collaborative workspace. Deploy on cloud, VPC, or self-hosted, so teams move from prototype to production without rebuilding the stack."
+      },
+      {
+        "name": "HKUDS/nanobot",
+        "stars": 46671,
+        "description": "Ultra-lightweight, open-source, self-hosted personal AI agent framework in Python with WebUI, tools, memory, MCP, multi-agent workflows, automation, and chat apps"
+      },
+      {
+        "name": "enescingoz/awesome-n8n-templates",
+        "stars": 24461,
+        "description": "280+ free n8n automation templates — ready-to-use workflows for Gmail, Telegram, Slack, Discord, WhatsApp, Google Drive, Notion, OpenAI, and more. AI agents, RAG   chatbots, email automation, social media, DevOps, and document processing. The largest open-source n8n template collection."
+      },
+      {
+        "name": "activepieces/activepieces",
+        "stars": 23593,
+        "description": "AI Agents & MCPs & AI Workflow Automation • (~400 MCP servers for AI agents) • AI Automation / AI Agent with MCPs • AI Workflows & AI Agents • MCPs for AI Agents"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Launch HN: BrowserBook (YC F24) – IDE for deterministic browser automation",
+    "hnUrl": "https://news.ycombinator.com/item?id=46232434",
+    "points": 77,
+    "numComments": 36,
+    "createdAt": "2025-12-11T15:18:51Z"
+  }
+}

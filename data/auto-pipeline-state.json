@@ -70,6 +70,7 @@
     "AtomicBot-ai/Atomic-Chat",
     "jonfairbanks/local-rag",
     "Pangu-Immortal/MagicWX",
-    "elizaOS/eliza"
+    "elizaOS/eliza",
+    "wshobson/agents"
   ]
 }
