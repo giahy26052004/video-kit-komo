@@ -67,6 +67,7 @@
     "Vexa-ai/vexa",
     "containers/ramalama",
     "shuvonsec/claude-bug-bounty",
-    "AtomicBot-ai/Atomic-Chat"
+    "AtomicBot-ai/Atomic-Chat",
+    "jonfairbanks/local-rag"
   ]
 }
