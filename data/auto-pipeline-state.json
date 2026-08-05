@@ -73,6 +73,7 @@
     "elizaOS/eliza",
     "wshobson/agents",
     "agent0ai/agent-zero",
-    "SamurAIGPT/Generative-Media-Skills"
+    "SamurAIGPT/Generative-Media-Skills",
+    "apocas/restai"
   ]
 }
