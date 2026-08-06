@@ -76,6 +76,7 @@
     "SamurAIGPT/Generative-Media-Skills",
     "apocas/restai",
     "openai/openai-agents-python",
-    "leofan90/Awesome-World-Models"
+    "leofan90/Awesome-World-Models",
+    "screenpipe/screenpipe"
   ]
 }

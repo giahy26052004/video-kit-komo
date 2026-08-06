@@ -1,0 +1,54 @@
+{
+  "query": "multimodal ai agents",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-06T10:50:20.091Z",
+  "github": {
+    "source": "github",
+    "name": "screenpipe/screenpipe",
+    "description": "YC (S26) | Record your screen 24/7 and plug into your agents. Local, private, secure. Connect to OpenClaw, Hermes agent and 100+ apps",
+    "url": "https://github.com/screenpipe/screenpipe",
+    "stars": 20773,
+    "language": "Rust",
+    "homepage": "https://screenpipe.com",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/259178917?v=4",
+    "pushedAt": "2026-08-06T10:00:17Z",
+    "readmeExcerpt": "<h1 align=\"center\"><a href=\"https://screenpipe.com/how-to-install?download=1\">DOWNLOAD SCREENPIPE</a></h1>\n\n<img width=\"1500\" height=\"500\" alt=\"image\" src=\"https://github.com/user-attachments/assets/058a44b8-fcad-4a37-92d8-830167dbd400\" />\n\n\n<p align=\"center\">\n   <a href =\"https://screenpi.pe\">\n      <img src=\"https://github.com/user-attachments/assets/d3b1de26-c3c0-4c84-b9c4-b03213b97a30\" alt=\"logo\" width=\"200\">\n   </a>\n</p>\n\n<h1 align=\"center\">[ screenpipe | YC S26 ]</h1>\n\n\n\n\n<p align=\"center\">screenpipe remembers how you actually work</p>\n<p align=\"center\">It captures what you see, say, and do, locally, 24/7, then turns real work into searchable memory, SOPs, and automations for AI agents.</p>\n\n\n\n\n<p align=\"center\">\n<a align=\"center\" href=\"https://trendshift.io/repositories/20386\" target=\"_blank\"><img align=\"center\" src=\"https://trendshift.io/api/badge/repositories/20386\" alt=\"screenpipe%2Fscreenpipe | Trendshift\" style=\"width: 250px; height: 55px;\" width=\"250\" height=\"55\"/></a>\n</p>\n\n<p align=\"center\">\n  <a href=\"https://discord.gg/screenpipe\">\n    <img src=\"https://img.shields.io/discord/823813159592001537?style=for-the-badge&logo=discord&logoColor=white\" alt=\"discord\">\n  </a>\n  <a href=\"https://twitter.com/screenpipe\">\n    <img src=\"https://img.shields.io/twitter/follow/screenpipe?style=for-the-badge&logo=x&logoColor=white&label=follow\" alt=\"twitter\">\n  </a>\n  <a href=\"https://www.youtube.com/@screen_pipe\">\n    <img src=\"https://img.shields.io/youtube/channel/subscribers/UCwjkpAsb70_mENKvy7hT5bw?style=for-the-badge&logo=youtube&logoColor=white&label=subscribers\" alt=\"youtube\">\n  </a>\n</p>\n\n\n\n\n\n\n\nhttps://github.com/user-attachments/assets/70fe94eb-6d2a-47ca-b7c3-c8ead13a5b7f\n\n<img width=\"1312\" height=\"947\" alt=\"Screenshot 2026-07-16 at 1 57 50 PM\" src=\"https://github.com/user-attachments/assets/e8de9f45-1f08-4157-ab52-10e3c31822db\" />\n\n<img width=\"1312\" height=\"947\" alt=\"Screenshot 2026-07-16 at 1 58 37 PM\" src=\"https://github.com/user-attachments/assets/4448a90b-6113-46e5-80e4-244c24bb9ba8\" />\n\n---\n\n## news\n\n- 06/10 - **we updated our license to keep screenpipe sustainable** — more funding, more shipping, better product\n- 05/29 - **we released an [alpha version of our AI PII model](https://screenpipe.github.io/screenleak/) outperforming Google, Microsoft, and OpenAI models** on computer recording data and running at 9ms on consumer device\n- 05/14 - **we joined YC S26** \n\n\n\n## what is this?\n\nscreenpipe turns your computer into a personal AI that knows everything you've done. record. search. automate. all local, all private, all yours\n\n```\n┌─────────────────────────────────────────┐\n│  screen + audio → local storage → ai   │\n└─────────────────────────────────────────┘\n```\n\n- **remember everything** - never forget what you saw, heard, or did\n- **run agents that work based on what you do** - pipes are agents triggered by your work activity\n\n<img width=\"360\" height=\"311\" alt=\"image\" src=\"https://github.com/user-attachments/assets/cfbf0fd3-84ef-4feb-8c6d-2779d67058a7\" />\n\n- **search with ai** - find anything using natural language\n- **100% local** - your data lives on your machine only\n- **source-available** - inspect, modify, audit ([LICENSE.md](LICENSE.md))\n\n<p align=\"center\">\n   <a href =\"https://screenpi.pe\">\n      <img src=\"https://github.com/user-attachments/assets/1f0c04f6-300a-417d-8bd3-5b73435ee2e9\">\n   </a>\n</p>\n\n\n## install\n\n[download the desktop app](https://screenpipe.com/how-to-install?download=1) — all features, auto-updates\n\nor run the CLI:\n\n```\nnpx screenpipe record\n```\n\nthen \n\n```bash\nnpx screenpipe setup\n# or\nclaude mcp add screenpipe -- npx -y screenpipe-mcp@latest\n```\n\nthen ask claude `what did i see in the last 5 mins?` or `summarize today conversations` or `create a pipe that updates linear every time i work on task X`\n\n\n## specs\n\n- captures full accessibility tree, OCR as fallback, transcription, speakers, keyboard inputs, app switches\n- 5-10% cpu usage\n- 0.5-3gb ram\n- ~20gb storage/month\n- filters (window, app, chrome extensions, passwords, proprietary AI PII model)\n- optional encryption at rest\n- works offline\n\n---\n\n<p align=\"center\">\n    <a href=\"https://docs.screenpi.pe\">docs</a> ·\n    <a href=\"https://screenpi.pe/team\">enterprise</a> ·\n    <a href=\"https://discord.gg/screenpipe\">discord</a> ·\n    <a href=\"https://twitter.com/screenpipe\">x</a> ·\n    <a href=\"https://www.youtube.com/@screen_pipe\">youtube</a> ·\n    <a href=\"https://www.reddit.com/r/screen_pipe\">reddit</a>\n</p>\n\n## Contributing\n\nSee [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines, maintainers, and how to submit PRs.\n\nThanks to all contributors:\n\n<a href=\"https://github.com/screenpipe/screenpipe/graphs/contributors\">\n  <img src=\"https://contrib.rocks/image?repo=screenpipe/screenpipe\" />\n</a>\n\n## Translations\n\n- [日本語 (Japanese)](docs/translations/README-ja.md)\n- [简体中文 (Simplified Chinese)](docs/translations/README-zh_CN.md)\n- [Français (French)](docs/translations/README-fr.md)\n- [Español (Spanish)](docs/translations/README-es.md)\n- [Português BR (Brazilian Portuguese)](docs/translations/README-pt_BR.md)\n- [Deutsch (German)](docs/translations/README-de.md)\n- [Українська (Ukrainian)](docs/translations/README-uk.md)\n- [한국어 (Korean)](docs/translations/README-ko.md)\n\nWant to translate screenpipe into another language? See [`docs/translations/`](docs/translations/README.md).\n\n<details>\n<summary>📖 LLM reference</summary>\n\n## About screenpipe\n\nscreenpipe is a source-available application that continuously captures your screen and audio, creating a searchable, AI-powered memory of everything you do on your computer. All data is stored locally on your device. It is the leading source-available alternative to Rewind.ai (now Limitless), Microsoft Recall, Granola, and Otter.ai. If you're looking for a rewind alternative, recall alternative, or a private local screen recorder with AI, screenpipe is the most popular option you can fully audit.\n\n- **Website**: https://screenpi.pe\n- **Documentation**: https://do",
+    "latestRelease": {
+      "tag": "app-v2.5.176",
+      "name": "Screenpipe App v2.5.176",
+      "body": "## What's Changed\n* fix(ai): route Max Ultra and rescue Pipes with Argus by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5833\n* [codex] animate stop-to-summary transition by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5836\n* fix(ai): keep Pipe rescue independent of flex switch by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5840\n* test(e2e): align process map with builder handoff by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5835\n* fix(ai): make paid background Pipes resilient on Argus by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5842\n* [codex] fix H1 follow-up notification delivery by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5844\n* feat(ai): expose Cloudflare allowance usage and exact upgrades by @EzraEllette in https://github.com/screenpipe/screenpipe/pull/5846\n* feat(app): collapse Brain canvas tools by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5850\n* fix(app): keep canvas hint above AI composer by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5851\n* fix enterprise sync timestamp-boundary data loss by @EzraEllette in https://github.com/screenpipe/screenpipe/pull/5854\n* fix(enterprise): complete rejected sync credential recovery by @EzraEllette in https://github.com/screenpipe/screenpipe/pull/5853\n* [codex] fix macOS capture stalls with bounded fallback by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5845\n* test(e2e): open collapsed canvas tools with real clicks by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5852\n* chore(ci): refresh v2.5.175 lock and coverage by @louis030195 in https://github.com/screenpipe/screenpipe/pull/5858\n\n\n**Full Changelog**: https://github.com/screenpipe/screenpipe/compare/app-v2.5.173...app-v2.5.176"
+    },
+    "otherCandidates": [
+      {
+        "name": "bytedance/UI-TARS-desktop",
+        "stars": 38464,
+        "description": "The Open-Source Multimodal AI Agent Stack: Connecting Cutting-Edge AI Models and Agent Infra"
+      },
+      {
+        "name": "bojieli/ai-agent-book",
+        "stars": 33364,
+        "description": "《深入理解 AI Agent：设计原理与工程实践》（李博杰 著）开源主仓库：全书正文、编译版 PDF 与按章配套代码"
+      },
+      {
+        "name": "deepset-ai/haystack",
+        "stars": 26129,
+        "description": "Open-source AI orchestration framework for building context-engineered, production-ready LLM applications. Design modular pipelines and agent workflows with explicit control over retrieval, routing, memory, and generation. Built for scalable agents, RAG, multimodal applications, semantic search, and conversational systems."
+      },
+      {
+        "name": "pipecat-ai/pipecat",
+        "stars": 13956,
+        "description": "Open Source framework for voice agents, multimodal apps, and realtime AI. Maintained by Daily and the community."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Magma: A foundation model for multimodal AI agents",
+    "url": "https://microsoft.github.io/Magma/",
+    "hnUrl": "https://news.ycombinator.com/item?id=43110265",
+    "points": 305,
+    "numComments": 68,
+    "createdAt": "2025-02-20T02:11:25Z"
+  }
+}
