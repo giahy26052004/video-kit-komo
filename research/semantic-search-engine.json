@@ -1,0 +1,39 @@
+{
+  "query": "semantic search engine",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-07T13:41:32.975Z",
+  "github": {
+    "source": "github",
+    "name": "probelabs/probe",
+    "description": "AI-friendly semantic code search engine for large codebases. Combines ripgrep speed with tree-sitter AST parsing. Powers AI coding assistants with precise, context-aware code understanding.",
+    "url": "https://github.com/probelabs/probe",
+    "stars": 677,
+    "language": "Rust",
+    "homepage": "https://probelabs.com/probe",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/226675185?v=4",
+    "pushedAt": "2026-07-31T06:43:24Z",
+    "readmeExcerpt": "<p align=\"center\">\n  <img src=\"logo.png?2\" alt=\"Probe Logo\" width=\"400\">\n</p>\n\n# Probe\n\n**We read code 10x more than we write it.** Probe is a code and markdown context engine, with a built-in agent, made to work on enterprise-scale codebases.\n\nToday's AI coding tools use a caveman approach: grep some files, read random lines, hope for the best. It works on toy projects. It falls apart on real codebases.\n\n**Probe is a context engine built for reading and reasoning.** It treats your code as code—not text. AST parsing understands structure. Semantic search finds what matters. You get complete, meaningful context in a single call.\n\n**The Probe Agent** is purpose-built for code understanding. It knows how to wield the Probe engine expertly—searching, extracting, and reasoning across your entire codebase. Perfect for spec-driven development, code reviews, onboarding, and any task where understanding comes before writing.\n\n**One Probe call captures what takes other tools 10+ agentic loops**—deeper, cleaner, and far less noise.\n\n---\n\n## Table of Contents\n\n- [Why Probe?](#why-probe)\n- [Quick Start](#quick-start)\n- [Features](#features)\n- [Usage Modes](#usage-modes)\n  - [Probe Agent (MCP)](#probe-agent-mcp)\n  - [Raw MCP Tools](#raw-mcp-tools)\n  - [CLI Agent](#cli-agent)\n  - [Direct CLI Commands](#direct-cli-commands)\n  - [Node.js SDK](#nodejs-sdk)\n- [LLM Script](#llm-script)\n- [Installation](#installation)\n- [Supported Languages](#supported-languages)\n- [Documentation](#documentation)\n- [Environment Variables](#environment-variables)\n- [Contributing](#contributing)\n- [License](#license)\n\n---\n\n## Why Probe?\n\nMost code search tools fall into two camps: **text-based** (grep, ripgrep) or **embedding-based** (vector search requiring indexing and an embedding model). Probe takes a third path: **AST-aware structural search with zero setup**.\n\n| | grep/ripgrep | Embedding tools (grepai, Octocode) | Probe |\n|---|---|---|---|\n| **Setup time** | None | Minutes (indexing + embedding service) | None |\n| **Code understanding** | Text only | Text chunks (can split mid-function) | AST-aware (returns complete functions/classes) |\n| **Search method** | Regex | Vector similarity | Elasticsearch-style boolean queries + BM25 |\n| **Result quality** | Line fragments | ~512-char chunks | Complete semantic code blocks |\n| **Ranking** | None (line order) | Cosine similarity | BM25/TF-IDF/Hybrid with SIMD acceleration |\n| **External dependencies** | None | Embedding API (Ollama/OpenAI) | None |\n| **Token awareness** | No | Partial | Yes (`--max-tokens`, session dedup) |\n| **Works offline** | Yes | Only with local model | Always |\n| **AI agent integration** | None | MCP server | Full agent loop + MCP + Vercel AI SDK |\n\n### The key insight: AI agents don't need embedding search\n\nEmbedding-based tools solve vocabulary mismatch -- finding \"authentication\" when the code says `verify_credentials`. But when an AI agent is the consumer, **the LLM already handles this**:\n\n```\nUser: \"find the authentication logic\"\n  -> LLM generates: probe search \"verify_credentials OR authenticate OR login OR auth_handler\"\n  -> Probe returns complete AST blocks in milliseconds\n```\n\nThe LLM translates intent into precise boolean queries. Probe gives it a powerful query language (`AND`, `OR`, `+required`, `-excluded`, `\"exact phrases\"`, `ext:rs`, `lang:python`) purpose-built for this. Combined with session dedup, the agent can run 3-4 rapid searches and cover more ground than a single embedding query -- faster, deterministic, and with zero setup cost.\n\n---\n\n## Quick Start\n\n### Option 1: Probe Agent via MCP (Recommended)\n\nOur built-in agent natively integrates with Claude Code, using its authentication—no extra API keys needed.\n\nAdd to `~/.claude/claude_desktop_config.json`:\n```json\n{\n  \"mcpServers\": {\n    \"probe\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@probelabs/probe@latest\", \"agent\", \"--mcp\"]\n    }\n  }\n}\n```\n\nThe Probe Agent is purpose-built to read and reason about code. It piggybacks on Claude Code's auth (or Codex auth), or works with any model via your own API key (e.g., `GOOGLE_API_KEY`).\n\n### Option 2: Raw Probe Tools via MCP\n\nIf you prefer direct access to search/query/extract tools without the agent layer:\n\n```json\n{\n  \"mcpServers\": {\n    \"probe\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@probelabs/probe@latest\", \"mcp\"]\n    }\n  }\n}\n```\n\n### Option 3: Direct CLI (No MCP)\n\nUse Probe directly from your terminal—no AI editor required:\n\n```bash\n# Semantic search with Elasticsearch syntax\nnpx -y @probelabs/probe search \"authentication AND login\" ./src\n\n# Extract code block at line 42\nnpx -y @probelabs/probe extract src/main.rs:42\n\n# AST pattern matching\nnpx -y @probelabs/probe query \"fn $NAME($$$) -> Result<$RET>\" --language rust\n```\n\n### Option 4: CLI Agent\n\nAsk questions about any codebase directly from your terminal:\n\n```bash\n# One-shot question (works with any LLM provider)\nnpx -y @probelabs/probe@latest agent \"How is authentication implemented?\"\n\n# With code editing capabilities\nnpx -y @probelabs/probe@latest agent \"Refactor the login function\" --allow-edit\n```\n\n---\n\n## Features\n\n- **Code-Aware**: Tree-sitter AST parsing understands your code's actual structure\n- **Semantic Search**: Elasticsearch-style queries (`AND`, `OR`, `NOT`, phrases, filters)\n- **Complete Context**: Returns entire functions, classes, or structs -- not text chunks that break mid-function\n- **Zero Indexing**: Instant results on any codebase. No embedding models, no vector databases, no setup\n- **Deterministic**: Same query always returns the same results. No model variance, no stale indexes\n- **Fully Local**: Your code never leaves your machine. No API calls for search\n- **Blazing Fast**: SIMD-accelerated pattern matching + ripgrep scanning + rayon parallelism\n- **Smart Ranking**: BM25, TF-IDF, and hybrid algorithms with optional BERT reranking\n- **Token-Aware**: `--max-tokens` budget, session-based dedup to avoid repeating context\n- **Built-in Agent**:",
+    "latestRelease": {
+      "tag": "v0.6.0-rc330",
+      "name": "v0.6.0-rc330",
+      "body": "**Full Changelog**: https://github.com/probelabs/probe/compare/v0.6.0-rc329...v0.6.0-rc330"
+    },
+    "otherCandidates": [
+      {
+        "name": "hitmux/hitmux-context-engine",
+        "stars": 401,
+        "description": "Semantic code search and context engine for AI coding agents."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: Hacker Search – A semantic search engine for Hacker News",
+    "url": "https://hackersearch.net",
+    "hnUrl": "https://news.ycombinator.com/item?id=40238509",
+    "points": 233,
+    "numComments": 73,
+    "createdAt": "2024-05-02T17:01:00Z"
+  }
+}
