@@ -85,6 +85,7 @@
     "builderz-labs/mission-control",
     "zylon-ai/private-gpt",
     "probelabs/probe",
-    "Agents365-ai/video-podcast-maker"
+    "Agents365-ai/video-podcast-maker",
+    "lowdefy/lowdefy"
   ]
 }
