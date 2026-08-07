@@ -21,7 +21,8 @@ import fs from "node:fs";
 import path from "node:path";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { localizeContent, suggestSearchQuery } from "./llm_localize.mjs";
+import { localizeContent, suggestSearchQuery, suggestVisualQuery } from "./llm_localize.mjs";
+import { findAndDownloadVideo } from "./media_providers.mjs";
 
 const KIT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const STATE_PATH = path.join(KIT_ROOT, "data", "auto-pipeline-state.json");
@@ -142,7 +143,7 @@ async function pickTopic(state) {
 const THEME_BULLET_ICON = { default: "✅", neon: "⚡", particles: "🔹" };
 const THEME_HOOK_ICON = { default: "🔥", neon: "💜", particles: "🌐" };
 
-async function buildScript(research, slug, workspace) {
+async function buildScript(research, slug, workspace, query) {
   const gh = research.github;
   const hn = research.hackernews;
   // Random 1/3 theme nền động mỗi video (không cố định 1 loại) — cho video đỡ nhàm.
@@ -177,6 +178,33 @@ async function buildScript(research, slug, workspace) {
     // slide đều có ảnh/video minh hoạ thật, không chỉ riêng slide "image".
     topic: exists("topic-visual.png") && { imageSrc: "topic-visual.png", browserUrl: null },
   };
+  // Thử tìm video B-roll thật (Pexels) cho slide chủ đề chung — không bắt
+  // buộc, thất bại thì IMG.topic giữ nguyên ảnh topic-visual.png như cũ
+  // (không throw, không làm hỏng pipeline — xem media_providers.mjs).
+  if (gh.latestRelease?.name) {
+    try {
+      // Query kỹ thuật hẹp (vd "local llm inference") kho stock không có cảnh
+      // quay tương ứng -> đổi sang 1 cụm mô tả HÌNH ẢNH chung trước khi search,
+      // để Pexels ra kết quả thực sự liên quan chứ không phải "gần đúng" ngẫu
+      // nhiên. Lỗi/rỗng thì suggestVisualQuery trả null -> dùng nguyên query gốc.
+      const visualQuery = (await suggestVisualQuery(query)) || query;
+      const videoResult = await findAndDownloadVideo(visualQuery, path.join(workspace, "video"), {
+        orientation: "portrait",
+        targetWidth: 1080,
+      });
+      if (videoResult) {
+        IMG.topic = {
+          imageSrc: videoResult.posterPath,
+          browserUrl: null,
+          mediaType: "video",
+          videoSrc: videoResult.videoPath,
+        };
+        console.log(`[media] dùng video ${videoResult.provider} "${videoResult.videoPath}" cho slide chủ đề.`);
+      }
+    } catch (e) {
+      console.warn(`[media] tìm video thất bại, dùng ảnh topic-visual.png như cũ: ${e.message}`);
+    }
+  }
   const hasHn = Boolean(hn && IMG.hn); // chỉ thêm slide HN nếu có ảnh minh hoạ thật
   let lastImageSrc = null;
   function assetFor(...preferredKeys) {
@@ -231,6 +259,7 @@ async function buildScript(research, slug, workspace) {
       text: [loc.release_onscreen || "🚀 Có gì mới?", ...highlights.map((h) => `${bulletIcon} ${h}`)].join("\n"),
       voice_text: loc.release_voice || `Bản cập nhật mới nhất: ${stripMarkdown(gh.latestRelease.name, 80)}. ${stripMarkdown(gh.latestRelease.body, 160)}`,
       imageSrc: releaseAsset.imageSrc,
+      ...(releaseAsset.mediaType ? { mediaType: releaseAsset.mediaType, videoSrc: releaseAsset.videoSrc } : {}),
       sfx: "transition",
       sfxVolume: 0.2,
     });
@@ -375,7 +404,7 @@ async function main() {
 
   // Build script SAU khi có ảnh thật, để biết chính xác ảnh nào chụp thành công
   // (asset_collector có thể fail 1 vài cái, vd. HN chặn bot).
-  const script = await buildScript(research, slug, workspace);
+  const script = await buildScript(research, slug, workspace, query);
   fs.writeFileSync(path.join(projectDir, "script.json"), JSON.stringify(script, null, 2));
   fs.writeFileSync(path.join(projectDir, "review-input.json"), JSON.stringify(buildReviewInput(slug), null, 2));
 

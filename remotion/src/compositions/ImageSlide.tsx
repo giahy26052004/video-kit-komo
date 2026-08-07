@@ -2,6 +2,7 @@ import React from "react";
 import {
   AbsoluteFill,
   Img,
+  OffthreadVideo,
   interpolate,
   spring,
   staticFile,
@@ -10,6 +11,7 @@ import {
 } from "remotion";
 import { FakeBrowser } from "../ui-kit/FakeBrowser";
 import { AnimatedBackground, VideoTheme } from "../ui-kit/AnimatedBackground";
+import { FitMedia, MediaKind } from "../ui-kit/FitMedia";
 
 export type ImageMode = "background" | "popup" | "screen" | "banner" | "poster";
 
@@ -26,6 +28,11 @@ interface ImageSlideProps {
   accentColor?: string;
   /** Nền động dùng chung cho cả video (random mỗi video). "default" = giữ nguyên nền cũ. */
   theme?: VideoTheme;
+  /** "image" (mặc định) hoặc "video" — khi "video", src trỏ tới file video, poster/src dùng làm fallback nếu video lỗi. */
+  mediaType?: MediaKind;
+  /** Video minh hoạ thật (Pexels...) — chỉ dùng khi mediaType === "video". */
+  videoSrc?: string;
+  mediaDurationSeconds?: number;
 }
 
 /**
@@ -43,9 +50,26 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
   fontScale = 1,
   accentColor = "#22d3ee",
   theme = "default",
+  mediaType = "image",
+  videoSrc,
+  mediaDurationSeconds,
 }) => {
   const frame = useCurrentFrame();
   const { fps, width, height, durationInFrames } = useVideoConfig();
+  const isVideo = mediaType === "video" && Boolean(videoSrc);
+  const mediaSrc = isVideo ? videoSrc! : src;
+  const videoProps =
+    isVideo && mediaDurationSeconds
+      ? mediaDurationSeconds * fps < durationInFrames
+        ? { loopDurationInFrames: Math.max(1, Math.round(mediaDurationSeconds * fps)) }
+        : { trimAfter: durationInFrames }
+      : undefined;
+  // Ảnh chụp màn hình web luôn ngang (16:9-16:10, giống browserWidth/Height ở
+  // mode "screen" bên dưới) — nhét "contain" vào khung dọc sẽ bị thu nhỏ nặng,
+  // chữ trên ảnh không đọc được. Tính khung đúng tỉ lệ 16:10 rồi "cover" neo
+  // top trong ĐÚNG khung đó để gần như không crop gì mà vẫn full-size dễ đọc.
+  // Video B-roll thật thì đã gần khớp tỉ lệ dọc sẵn nên giữ "contain" full vùng.
+  const screenshotBoxHeightPct = Math.min(78, ((width * 0.625) / height) * 100);
 
   const entrance = spring({
     frame,
@@ -77,15 +101,9 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
     return (
       <AbsoluteFill style={{ background: "#0b0b0f" }}>
         {bgLayer}
-        <Img
-          src={imgSrc}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            opacity: 0.55 + entrance * 0.1,
-          }}
-        />
+        <AbsoluteFill style={{ opacity: 0.55 + entrance * 0.1 }}>
+          <FitMedia src={mediaSrc} kind={isVideo ? "video" : "image"} videoProps={videoProps} posterSrc={src} />
+        </AbsoluteFill>
         {/* Lớp tối để chữ dễ đọc trên ảnh */}
         <AbsoluteFill
           style={{
@@ -148,20 +166,22 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
     return (
       <AbsoluteFill style={{ background: "#0b0b0f" }}>
         {bgLayer}
-        <Img
-          src={imgSrc}
+        <FitMedia
+          src={mediaSrc}
+          kind={isVideo ? "video" : "image"}
+          videoProps={videoProps}
+          posterSrc={src}
+          contentArea={{ top: 0, left: 0, width: "100%", height: isVideo ? "78%" : `${screenshotBoxHeightPct}%` }}
+          fit={isVideo ? "contain" : "cover"}
+          transform={`scale(${kenBurns}) translateX(${kenBurnsPanX}px)`}
+        />
+        <AbsoluteFill
           style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "66%",
-            objectFit: "cover",
-            transform: `scale(${kenBurns}) translateX(${kenBurnsPanX}px)`,
-            transformOrigin: "center",
+            background: isVideo
+              ? "linear-gradient(180deg, transparent 55%, #0b0b0f 92%)"
+              : `linear-gradient(180deg, transparent ${Math.max(0, screenshotBoxHeightPct - 5)}%, #0b0b0f 85%)`,
           }}
         />
-        <AbsoluteFill style={{ background: "linear-gradient(180deg, transparent 38%, #0b0b0f 90%)" }} />
         <div
           style={{
             position: "absolute",
@@ -228,15 +248,15 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
     return (
       <AbsoluteFill style={{ background: "#000" }}>
         {bgLayer}
-        <Img
-          src={imgSrc}
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            transform: `scale(${kenBurns}) translateX(${kenBurnsPanX}px)`,
-            filter: "saturate(1.15) contrast(1.05)",
-          }}
+        <FitMedia
+          src={mediaSrc}
+          kind={isVideo ? "video" : "image"}
+          videoProps={videoProps}
+          posterSrc={src}
+          contentArea={isVideo ? undefined : { top: 0, left: 0, width: "100%", height: `${screenshotBoxHeightPct}%` }}
+          fit={isVideo ? "contain" : "cover"}
+          transform={`scale(${kenBurns}) translateX(${kenBurnsPanX}px)`}
+          filter="saturate(1.15) contrast(1.05)"
         />
         <AbsoluteFill
           style={{
@@ -329,7 +349,16 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
             maxWidth: width * 0.86,
           }}
         >
-          <Img src={imgSrc} style={{ width: "100%", display: "block" }} />
+          {mediaType === "video" && videoSrc ? (
+            <OffthreadVideo
+              src={staticFile(videoSrc)}
+              muted
+              trimAfter={videoProps && "trimAfter" in videoProps ? videoProps.trimAfter : undefined}
+              style={{ width: "100%", display: "block" }}
+            />
+          ) : (
+            <Img src={imgSrc} style={{ width: "100%", display: "block" }} />
+          )}
         </div>
         {subtitle && (
           <div
@@ -408,15 +437,7 @@ export const ImageSlide: React.FC<ImageSlideProps> = ({
             height={browserHeight}
             accentColor={accentColor}
           >
-            <Img
-              src={imgSrc}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-                objectPosition: "top",
-              }}
-            />
+            <FitMedia src={mediaSrc} kind={isVideo ? "video" : "image"} videoProps={videoProps} posterSrc={src} />
           </FakeBrowser>
         </div>
       </div>

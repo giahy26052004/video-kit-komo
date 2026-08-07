@@ -15,6 +15,7 @@ import { FormulaSlide, FormulaGroup } from "./compositions/FormulaSlide";
 import { TransitionSlide } from "./compositions/TransitionSlide";
 import { NumberHero } from "./compositions/NumberHero";
 import { ImageSlide, ImageMode } from "./compositions/ImageSlide";
+import { MediaKind } from "./ui-kit/FitMedia";
 import { VideoTheme } from "./ui-kit/AnimatedBackground";
 import { SlideTransition, TRANSITION_VARIANTS, TEMPLATE_TRANSITIONS } from "./ui-kit/SlideTransition";
 import { CaptionsLayer, CaptionPosition } from "./compositions/CaptionsLayer";
@@ -110,6 +111,11 @@ type SlideMeta = {
   imageSrc?: string;
   imageMode?: ImageMode;
   browserUrl?: string;
+  /** "image" (mặc định) hoặc "video". Khi "video", videoSrc là clip thật (vd Pexels), imageSrc dùng làm poster fallback nếu video lỗi/thiếu — xem scripts/build-metadata.mjs. */
+  mediaType?: MediaKind;
+  videoSrc?: string;
+  /** Thời lượng gốc (giây) của videoSrc, đo bằng ffprobe ở build-metadata.mjs — dùng để trim/loop video cho khớp durationInFrames. */
+  mediaDurationSeconds?: number;
 
   // numberHero (shorts data-hook slide)
   heroValue?: string | number;
@@ -265,6 +271,9 @@ const Main: React.FC<Metadata> = (meta) => {
                   theme={meta.theme}
                   template={meta.template}
                   imageSrc={slide.imageSrc}
+                  mediaType={slide.mediaType}
+                  videoSrc={slide.videoSrc}
+                  mediaDurationSeconds={slide.mediaDurationSeconds}
                 />
               </SlideTransition>
             )}
@@ -335,6 +344,9 @@ const Main: React.FC<Metadata> = (meta) => {
                   fontScale={fontScale}
                   accentColor={slide.accentColor ?? meta.brand?.accentColor ?? themeAccentColor}
                   theme={meta.theme}
+                  mediaType={slide.mediaType}
+                  videoSrc={slide.videoSrc}
+                  mediaDurationSeconds={slide.mediaDurationSeconds}
                 />
               </SlideTransition>
             )}

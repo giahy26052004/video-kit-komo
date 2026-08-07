@@ -1,14 +1,13 @@
 import React from "react";
 import {
   AbsoluteFill,
-  Img,
   interpolate,
   spring,
-  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
 import { AnimatedBackground, VideoTheme } from "../ui-kit/AnimatedBackground";
+import { FitMedia, MediaKind } from "../ui-kit/FitMedia";
 
 type Caption = { from: number; to: number; text: string };
 
@@ -35,8 +34,13 @@ interface TextSlideProps {
   theme?: VideoTheme;
   /** Layout template — "screen" (mặc định, ảnh mờ nền nhẹ) | "banner" (ảnh rõ + khối chữ nghiêng dạng ribbon) | "poster" (ảnh full-bleed kịch tính + chữ khổng lồ). */
   template?: TextSlideTemplate;
-  /** Ảnh minh hoạ thật (screenshot) — MỌI slide đều cần có ảnh/video minh hoạ, kể cả slide text/bullet. */
+  /** Ảnh minh hoạ thật (screenshot) — MỌI slide đều cần có ảnh/video minh hoạ, kể cả slide text/bullet. Cũng dùng làm poster fallback khi mediaType="video" lỗi. */
   imageSrc?: string;
+  /** "image" (mặc định) hoặc "video". */
+  mediaType?: MediaKind;
+  /** Video minh hoạ thật — chỉ dùng khi mediaType === "video". */
+  videoSrc?: string;
+  mediaDurationSeconds?: number;
 }
 
 /**
@@ -54,13 +58,28 @@ export const TextSlide: React.FC<TextSlideProps> = ({
   theme = "default",
   template = "screen",
   imageSrc,
+  mediaType = "image",
+  videoSrc,
+  mediaDurationSeconds,
 }) => {
   const frame = useCurrentFrame();
-  const { fps, durationInFrames } = useVideoConfig();
+  const { fps, width, height, durationInFrames } = useVideoConfig();
   // Captions are rendered globally by CaptionsLayer at the Root level for
   // consistent styling across all slide types; no per-slide caption render here.
   void captions;
-  const imgSrc = imageSrc ? staticFile(imageSrc) : undefined;
+  const hasMedia = Boolean(imageSrc);
+  const isVideo = mediaType === "video" && Boolean(videoSrc);
+  const mediaSrc = isVideo ? videoSrc! : imageSrc;
+  const videoProps =
+    isVideo && mediaDurationSeconds
+      ? mediaDurationSeconds * fps < durationInFrames
+        ? { loopDurationInFrames: Math.max(1, Math.round(mediaDurationSeconds * fps)) }
+        : { trimAfter: durationInFrames }
+      : undefined;
+  // Giống ImageSlide: ảnh chụp màn hình web luôn ngang (16:9-16:10) — "contain"
+  // vào khung dọc sẽ bị thu nhỏ nặng, chữ không đọc được. Video B-roll thật đã
+  // gần khớp tỉ lệ dọc nên giữ "contain" full vùng như cũ.
+  const screenshotBoxHeightPct = Math.min(78, ((width * 0.625) / height) * 100);
 
   const isHero = mode === "hero";
   // Default base font: 72 (legacy). Hero amplifies via fontScale × 1.5.
@@ -102,7 +121,7 @@ export const TextSlide: React.FC<TextSlideProps> = ({
     return (
       <AbsoluteFill
         style={{
-          backgroundColor: theme === "default" && !imgSrc ? "#0b0b0f" : "transparent",
+          backgroundColor: theme === "default" && !hasMedia ? "#0b0b0f" : "transparent",
           alignItems: "center",
           justifyContent: "center",
           padding: 80,
@@ -110,13 +129,16 @@ export const TextSlide: React.FC<TextSlideProps> = ({
           transformOrigin: "center",
         }}
       >
-        {/* Ảnh thật (nếu có) LÀ nền — AnimatedBackground (nền giả) chỉ dùng khi
-            không có ảnh, vì 2 lớp vẽ đè lên nhau sẽ che mất ảnh thật phía dưới. */}
-        {imgSrc ? (
+        {/* Ảnh/video thật (nếu có) LÀ nền — AnimatedBackground (nền giả) chỉ dùng khi
+            không có media, vì 2 lớp vẽ đè lên nhau sẽ che mất media thật phía dưới. */}
+        {hasMedia ? (
           <>
-            <Img
-              src={imgSrc}
-              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", filter: "blur(8px) brightness(0.45)" }}
+            <FitMedia
+              src={mediaSrc!}
+              kind={mediaType}
+              videoProps={videoProps}
+              posterSrc={imageSrc}
+              filter="blur(8px) brightness(0.45)"
             />
             <AbsoluteFill style={{ background: "rgba(11,11,15,0.35)" }} />
           </>
@@ -166,13 +188,24 @@ export const TextSlide: React.FC<TextSlideProps> = ({
     const ribbonX = interpolate(heroSpring, [0, 1], [-120, 0]);
     return (
       <AbsoluteFill style={{ background: "#0b0b0f" }}>
-        {imgSrc ? (
+        {hasMedia ? (
           <>
-            <Img
-              src={imgSrc}
-              style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "62%", objectFit: "cover", transform: `scale(${kenBurnsScale})` }}
+            <FitMedia
+              src={mediaSrc!}
+              kind={isVideo ? "video" : "image"}
+              videoProps={videoProps}
+              posterSrc={imageSrc}
+              contentArea={{ top: 0, left: 0, width: "100%", height: isVideo ? "78%" : `${screenshotBoxHeightPct}%` }}
+              fit={isVideo ? "contain" : "cover"}
+              transform={`scale(${kenBurnsScale})`}
             />
-            <AbsoluteFill style={{ background: "linear-gradient(180deg, transparent 34%, #0b0b0f 88%)" }} />
+            <AbsoluteFill
+              style={{
+                background: isVideo
+                  ? "linear-gradient(180deg, transparent 55%, #0b0b0f 92%)"
+                  : `linear-gradient(180deg, transparent ${Math.max(0, screenshotBoxHeightPct - 5)}%, #0b0b0f 85%)`,
+              }}
+            />
           </>
         ) : (
           theme !== "default" && <AnimatedBackground theme={theme} accentColor={accentColor} />
@@ -216,11 +249,17 @@ export const TextSlide: React.FC<TextSlideProps> = ({
   });
   return (
     <AbsoluteFill style={{ background: "#000" }}>
-      {imgSrc ? (
+      {hasMedia ? (
         <>
-          <Img
-            src={imgSrc}
-            style={{ width: "100%", height: "100%", objectFit: "cover", transform: `scale(${kenBurnsScale})`, filter: "saturate(1.1)" }}
+          <FitMedia
+            src={mediaSrc!}
+            kind={isVideo ? "video" : "image"}
+            videoProps={videoProps}
+            posterSrc={imageSrc}
+            contentArea={isVideo ? undefined : { top: 0, left: 0, width: "100%", height: `${screenshotBoxHeightPct}%` }}
+            fit={isVideo ? "contain" : "cover"}
+            transform={`scale(${kenBurnsScale})`}
+            filter="saturate(1.1)"
           />
           <AbsoluteFill style={{ background: `linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.7) 45%, rgba(0,0,0,0.85) 70%, rgba(0,0,0,0.95) 100%)` }} />
         </>

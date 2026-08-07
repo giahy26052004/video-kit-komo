@@ -100,6 +100,57 @@ Field nào input là null thì trả về "" (hoặc [] cho release_highlights) 
 }
 
 /**
+ * Chuyển 1 query kỹ thuật hẹp (vd "local llm inference") thành 1 cụm mô tả
+ * HÌNH ẢNH chung, tiếng Anh, mà kho stock video (Pexels) thực sự có cảnh quay
+ * tương ứng — vd "local llm inference" -> "server room technology blue light".
+ * Kho stock không có khái niệm hình ảnh cho thuật ngữ kỹ thuật hẹp, nên search
+ * thẳng query gốc thường ra kết quả không liên quan (video ngẫu nhiên gần
+ * đúng theo thuật toán nội bộ của Pexels, chứ không phải do code chọn sai).
+ *
+ * Lỗi/rỗng -> trả về null, nơi gọi PHẢI tự fallback dùng nguyên query gốc,
+ * không throw, không làm hỏng cả pipeline.
+ *
+ * @param {string} query - cụm từ khoá kỹ thuật gốc (tiếng Anh)
+ * @returns {Promise<string|null>}
+ */
+export async function suggestVisualQuery(query) {
+  if (!LLM_URL || !LLM_KEY) return null;
+
+  const prompt = `Bạn đang tìm 1 đoạn B-roll (video nền minh hoạ, không lời) trên kho stock video Pexels cho 1 video ngắn về chủ đề công nghệ.
+Chủ đề kỹ thuật: "${query}"
+
+Kho stock video KHÔNG có cảnh quay cho các thuật ngữ kỹ thuật hẹp (vd không có clip "LLM inference" hay "RAG retrieval" thật). Việc của bạn: nghĩ ra 1 cụm mô tả HÌNH ẢNH chung, cụ thể, tiếng Anh (3-6 từ) mà một nhà quay phim thật SẼ quay được và kho stock chắc chắn có — vd server/data center, người gõ code trên laptop, đường dây mạng/ánh sáng xanh công nghệ, bộ xử lý/chip máy tính, thành phố công nghệ ban đêm... Chọn hình ảnh gợi liên tưởng gần nhất tới chủ đề trên.
+
+Trả lời DUY NHẤT cụm mô tả đó (tiếng Anh), không giải thích, không dấu ngoặc kép, không markdown.`;
+
+  try {
+    const res = await fetch(LLM_URL, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${LLM_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: LLM_MODEL,
+        stream: false,
+        max_tokens: 30,
+        messages: [
+          { role: "system", content: "Trả lời NGẮN GỌN, chỉ 1 cụm mô tả hình ảnh tiếng Anh, không giải thích." },
+          { role: "user", content: prompt },
+        ],
+      }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}: ${await res.text()}`);
+    const data = await res.json();
+    const raw = (data.choices?.[0]?.message?.content || "").trim();
+    const visualQuery = raw.replace(/^["'`]|["'`.]$/g, "").trim();
+    if (!visualQuery || visualQuery.length > 80) return null;
+    console.log(`  [llm] query hình ảnh cho video: "${query}" -> "${visualQuery}"`);
+    return visualQuery;
+  } catch (e) {
+    console.warn(`  [llm] gợi ý query hình ảnh thất bại (${e.message}) -> dùng nguyên query gốc`);
+    return null;
+  }
+}
+
+/**
  * Gợi ý 1 từ khoá tìm kiếm GitHub MỚI, dựa trên danh sách chủ đề đã làm rồi
  * (usedRepos) — để nội dung đa dạng, đỡ lặp lại quanh vài mảng cũ, và tìm
  * được những mảng "hay ho" người xem thật sự cần biết chứ không chỉ xoay

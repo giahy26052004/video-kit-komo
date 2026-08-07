@@ -38,6 +38,31 @@ function wavDurationSeconds(wavPath) {
   return seconds;
 }
 
+/**
+ * Kiểm tra 1 file video có stream video thật + duration > 0 bằng ffprobe.
+ * Trả về số giây nếu hợp lệ, hoặc null nếu file thiếu/hỏng — không bao giờ
+ * throw, để 1 video lỗi không làm fail cả build-metadata (giống convention
+ * warn-and-continue của asset_collector.mjs/prepare_media_assets.mjs).
+ */
+function probeVideoDurationSeconds(videoPath) {
+  if (!fs.existsSync(videoPath)) return null;
+  try {
+    const out = execSync(
+      `ffprobe -v error -select_streams v:0 -show_entries "stream=codec_type:format=duration" -of csv=p=0 "${videoPath}"`,
+      { encoding: "utf8" }
+    );
+    const lines = out.trim().split("\n").filter(Boolean);
+    const hasVideoStream = lines.some((l) => l.trim() === "video");
+    const durationLine = lines.find((l) => /^[\d.]+$/.test(l.trim()));
+    const seconds = durationLine ? parseFloat(durationLine) : NaN;
+    if (!hasVideoStream || !Number.isFinite(seconds) || seconds <= 0) return null;
+    return seconds;
+  } catch (e) {
+    console.warn(`[build-metadata] ffprobe thất bại trên ${videoPath}: ${e.message}`);
+    return null;
+  }
+}
+
 function main() {
   const project = process.argv[2];
   if (!project) {
@@ -68,8 +93,27 @@ function main() {
       durationInFrames = Math.ceil(seconds * fps) + BUFFER_FRAMES;
       audio = `${idx}.wav`;
     }
+
+    let { mediaType, videoSrc, ...rest } = slide;
+    let mediaDurationSeconds;
+    if (mediaType === "video" && videoSrc) {
+      const seconds = probeVideoDurationSeconds(path.join(workspace, videoSrc));
+      if (seconds === null) {
+        console.warn(
+          `[build-metadata] slide ${idx}: video "${videoSrc}" thiếu/hỏng — hạ về mediaType "image" (dùng imageSrc làm poster).`
+        );
+        mediaType = undefined;
+        videoSrc = undefined;
+      } else {
+        mediaDurationSeconds = seconds;
+      }
+    }
+
     return {
-      ...slide,
+      ...rest,
+      ...(mediaType ? { mediaType } : {}),
+      ...(videoSrc ? { videoSrc } : {}),
+      ...(mediaDurationSeconds ? { mediaDurationSeconds } : {}),
       durationInFrames,
       audio,
       captions: captions[idx] ?? undefined,
