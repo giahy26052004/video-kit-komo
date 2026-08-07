@@ -1,5 +1,5 @@
 {
-  "queryIndex": 12,
+  "queryIndex": 13,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -87,6 +87,7 @@
     "probelabs/probe",
     "Agents365-ai/video-podcast-maker",
     "lowdefy/lowdefy",
-    "OpenNMT/CTranslate2"
+    "OpenNMT/CTranslate2",
+    "huggingface/lerobot"
   ]
 }

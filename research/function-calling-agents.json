@@ -1,0 +1,16 @@
+{
+  "query": "function calling agents",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-07T21:00:28.447Z",
+  "github": null,
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Show HN: Open source framework OpenAI uses for Advanced Voice",
+    "url": "https://github.com/livekit/agents",
+    "hnUrl": "https://news.ycombinator.com/item?id=41743327",
+    "points": 266,
+    "numComments": 61,
+    "createdAt": "2024-10-04T17:01:04Z"
+  }
+}
