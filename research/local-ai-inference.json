@@ -1,0 +1,54 @@
+{
+  "query": "local ai inference",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-07T09:17:07.307Z",
+  "github": {
+    "source": "github",
+    "name": "zylon-ai/private-gpt",
+    "description": "Complete API layer for private AI applications on local models: RAG, skills, tools, MCP, text-to-sql, and more. Works with any OpenAI-compatible inference server.",
+    "url": "https://github.com/zylon-ai/private-gpt",
+    "stars": 57416,
+    "language": "Python",
+    "homepage": "https://www.zylon.ai/private-gpt",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/143802295?v=4",
+    "pushedAt": "2026-08-06T13:41:08Z",
+    "readmeExcerpt": "![Banner image](./fern/docs/assets/privategpt_banner.png)\n\n<div align=\"center\">\n\n**PrivateGPT is the open-source API layer that turns local models into production AI applications.**\n\n[![Tests](https://github.com/zylon-ai/private-gpt/actions/workflows/tests.yml/badge.svg)](https://github.com/zylon-ai/private-gpt/actions/workflows/tests.yml?query=branch%3Amain)\n[![Website](https://img.shields.io/website?up_message=check%20it&down_message=down&url=https%3A%2F%2Fdocs.privategpt.dev%2F&label=Documentation)](https://docs.privategpt.dev/)\n[![Discord](https://img.shields.io/discord/1164200432894234644?logo=discord&label=PrivateGPT)](https://discord.gg/F8KCFeZbkx)\n[![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/ZylonPrivateGPT)](https://twitter.com/ZylonPrivateGPT)\n\n<a href=\"https://trendshift.io/repositories/8691\" target=\"_blank\"><img src=\"https://trendshift.io/api/badge/repositories/8691\" alt=\"zylon-ai%2Fprivate-gpt | Trendshift\" style=\"width: 250px; height: 55px;\" width=\"250\" height=\"55\"/></a>\n\n</div>\n\n---\n\nRunning a model locally is only the first step. To build useful AI applications you need a set of higher-level building blocks. PrivateGPT provides that layer as an open-source API following the Claude API model — so you can build private AI products without rebuilding the same backend primitives from scratch, and without depending on cloud APIs.\n\nProduction-tested: [PrivateGPT powers Zylon](#privategpt-vs-zylon), the on-premise AI platform providing Private AI to enterprises across the globe.\n\n\n```text\nYour app / agent / workflow / UI\n              |\n        PrivateGPT API\n              |\nOpenAI-compatible inference server (Ollama, llama.cpp, vLLM, …)              \n```\n\n> PrivateGPT does **not** run models itself. It connects to any OpenAI-compatible inference server via `OPENAI_API_BASE`. If it implements `/v1/chat/completions` and `/v1/models`, it works.\n\nPrivateGPT ships a built-in workbench UI for testing and demos, available at `/ui`. The API is the actual product.\n\n---\n\n## What PrivateGPT gives you\n\n- Standard messages API (streaming, async, token counting)\n- File and artifact ingestion\n- Retrieval with citations and agentic RAG\n- Built-in tools mirroring the Claude API (web search, web fetch, code execution)\n- Custom tools and MCP connectors\n- Structured access to databases and CSVs\n- Embeddings and orchestration\n\n---\n\n## Quickstart\n\n> For Docker, full installation options, and model configuration see the [full Quickstart guide](https://docs.privategpt.dev/getting-started/quickstart).\n\n**Prerequisites:** You need a running OpenAI-compatible LLM server. [Ollama](https://docs.privategpt.dev/providers/ollama) is the easiest starting point.\n\n**1. Install PrivateGPT**\n\n```bash\n# macOS\nbrew tap zylon-ai/tap\nbrew install private-gpt\n```\n\n```bash\n# Linux\ncurl -LsSf https://astral.sh/uv/install.sh | sh\n\nuv tool install --python 3.11 \\\n  --find-links https://wheels.privategpt.dev/packages/ \\\n  \"private-gpt[core]\"\n```\n\n```powershell\n# Windows\npowershell -ExecutionPolicy ByPass -c \"irm https://astral.sh/uv/install.ps1 | iex\"\n\nuv tool install --python 3.11 `\n  --find-links https://wheels.privategpt.dev/packages/ `\n  \"private-gpt[core]\"\n```\n\n**2. Start your LLM server**\n\n```bash\n# Example with Ollama\nollama pull qwen3.5:35b         # LLM (~24 GB)\nollama pull mxbai-embed-large   # Embeddings (~670 MB)\nollama serve\n```\n\n**3. Run PrivateGPT**\n\n```bash\n# macOS / Linux\nOPENAI_API_BASE=http://localhost:<llm-port>/v1 \\\n  OPENAI_EMBEDDING_API_BASE=http://localhost:<embedding-port>/v1 \\\n  private-gpt serve\n```\n\n```powershell\n# Windows (PowerShell)\n$env:OPENAI_API_BASE = \"http://localhost:<llm-port>/v1\"\n$env:OPENAI_EMBEDDING_API_BASE = \"http://localhost:<embedding-port>/v1\"\nprivate-gpt serve\n```\n\n**4. Open the UI**\n\nGo to [http://localhost:8080/ui](http://localhost:8080/ui). The API is at `http://localhost:8080` and follows the [Anthropic API](https://docs.privategpt.dev/api-reference/api-reference) spec.\n\n<img src=\"./fern/docs/assets/ui.png\"/>\n\nThe UI is useful for:\n\n- Sending messages.\n- Selecting models from /v1/models.\n- Uploading documents.\n- Testing retrieval with citations.\n- Enabling tools per chat.\n- Configuring databases, MCP connectors, skills, and custom tools.\n- Inspecting requests and responses through the API Debugger. \n\nThis UI is a demonstrator, not the core product. Developers are expected to build their own applications on top of the API. That said, the UI is intentionally polished enough for demos, videos, internal pilots, and quick local usage.\n\n---\n\n## Integrations\n\n| | | |\n|:-------------------------:|:-------------------------:|:-------------------------:|\n|[![claude cowork](./fern/docs/assets/claude_cowork_privategpt.png)](./fern/docs/assets/claude_cowork_privategpt.png)<br/>**Claude Desktop / Cowork**|[![ms excel claude](./fern/docs/assets/ms_excel_claude_privategpt.png)](./fern/docs/assets/ms_excel_claude_privategpt.png)<br/>**Microsoft Excel Claude add-in**|[![ms word claude](./fern/docs/assets/ms_word_claude_privategpt.png)](./fern/docs/assets/ms_word_claude_privategpt.png)<br/>**Microsoft Word Claude add-in**|\n|[![n8n](./fern/docs/assets/n8n_privategpt.png)](./fern/docs/assets/n8n_privategpt.png)<br/>**n8n**|[![opencode](./fern/docs/assets/opencode_privategpt.png)](./fern/docs/assets/opencode_privategpt.png)<br/>**OpenCode**|[![privategpt workbench](./fern/docs/assets/privategpt_workbench.png)](./fern/docs/assets/privategpt_workbench.png)<br/>**PrivateGPT Workbench**|\n\nPrivateGPT works natively as the local backend for the tools developers and end users already use.\n\n| Integration Guide | What it enables |\n|---|---|\n| **[Claude Code](https://docs.privategpt.dev/integrations/claude-code)** | Use your local models as the backend for agentic coding in the terminal |\n| **[Claude Desktop / Cowork](https://docs.privategpt.dev/integrations/claude-desktop)** | Connect the Claude desktop app and Cowork to your private models |\n| **[Claude for Microsoft 365](https:",
+    "latestRelease": {
+      "tag": "v1.0.1",
+      "name": "v1.0.1",
+      "body": "## [1.0.1](https://github.com/zylon-ai/private-gpt/compare/v1.0.0...v1.0.1) (2026-06-16)\n\n\n### Bug Fixes\n\n* add missing docker database deps ([#2264](https://github.com/zylon-ai/private-gpt/issues/2264)) ([4302bd6](https://github.com/zylon-ai/private-gpt/commit/4302bd629a4ca5fcee23e9064a0448cd110eb523))\n* ensure that the publisher is ready to publish new messages ([#2266](https://github.com/zylon-ai/private-gpt/issues/2266)) ([4c0c500](https://github.com/zylon-ai/private-gpt/commit/4c0c500bbd34a06feedb52e1d267d9b7b918554b))\n* make embedding API key optional for local OpenAI-compatible engines ([#2261](https://github.com/zylon-ai/private-gpt/issues/2261)) ([c120a90](https://github.com/zylon-ai/private-gpt/commit/c120a90603f78bb28b19f758a9ba4b40c37480ff)), closes [#2260](https://github.com/zylon-ai/private-gpt/issues/2260)\n* use PGPT_HOME for local data, caches, and cleanup paths ([#2267](https://github.com/zylon-ai/private-gpt/issues/2267)) ([4021cf4](https://github.com/zylon-ai/private-gpt/commit/4021cf4e203d4c309f496a8fbf95271f6084834c))\n\n\n### Performance Improvements\n\n* **prompts:** use date-level current_date to preserve prompt-prefix caching ([#2271](https://github.com/zylon-ai/private-gpt/issues/2271)) ([a64f1c9](https://github.com/zylon-ai/private-gpt/commit/a64f1c9cf088af5d5047126c9099ea4d674cc70c))"
+    },
+    "otherCandidates": [
+      {
+        "name": "Andyyyy64/whichllm",
+        "stars": 6159,
+        "description": "Find the local LLM that actually runs and performs best on your hardware. Ranked by real, recency-aware benchmarks, not parameter count. One command, run it instantly."
+      },
+      {
+        "name": "raullenchai/Rapid-MLX",
+        "stars": 3412,
+        "description": "The fastest local AI engine for Apple Silicon. 4.2x faster than Ollama, 0.08s cached TTFT, 100% tool calling. 17 tool parsers, prompt cache, reasoning separation, cloud routing. Drop-in OpenAI replacement. Works with Claude Code, Cursor, Aider."
+      },
+      {
+        "name": "containers/ramalama",
+        "stars": 2990,
+        "description": "RamaLama is an open-source developer tool that simplifies the local serving of AI models from any source and facilitates their use for inference in production, all through the familiar language of containers."
+      },
+      {
+        "name": "tphakala/birdnet-go",
+        "stars": 1541,
+        "description": "Self-hosted realtime soundscape analyser for birds, bats and other wildlife. Multi-model local AI inference, runs 24/7 on a Raspberry Pi."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "NVIDIA DGX Spark In-Depth Review: A New Standard for Local AI Inference",
+    "url": "https://lmsys.org/blog/2025-10-13-nvidia-dgx-spark/",
+    "hnUrl": "https://news.ycombinator.com/item?id=45575127",
+    "points": 115,
+    "numComments": 93,
+    "createdAt": "2025-10-14T01:07:45Z"
+  }
+}
