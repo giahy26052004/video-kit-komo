@@ -1,5 +1,5 @@
 {
-  "queryIndex": 11,
+  "queryIndex": 12,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -86,6 +86,7 @@
     "zylon-ai/private-gpt",
     "probelabs/probe",
     "Agents365-ai/video-podcast-maker",
-    "lowdefy/lowdefy"
+    "lowdefy/lowdefy",
+    "OpenNMT/CTranslate2"
   ]
 }
