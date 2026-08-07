@@ -1,0 +1,53 @@
+{
+  "query": "agentic ai framework",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-07T05:52:14.305Z",
+  "github": {
+    "source": "github",
+    "name": "heygen-com/hyperframes",
+    "description": "Write HTML. Render video. Built for agents.",
+    "url": "https://github.com/heygen-com/hyperframes",
+    "stars": 39827,
+    "language": "TypeScript",
+    "homepage": null,
+    "avatarUrl": "https://avatars.githubusercontent.com/u/65394575?v=4",
+    "pushedAt": "2026-08-07T05:41:36Z",
+    "readmeExcerpt": "<p align=\"center\">\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"docs/logo/dark.svg\">\n    <source media=\"(prefers-color-scheme: light)\" srcset=\"docs/logo/light.svg\">\n    <img alt=\"HyperFrames\" src=\"docs/logo/light.svg\" width=\"300\">\n  </picture>\n</p>\n\n<p align=\"center\">\n  <a href=\"https://www.npmjs.com/package/hyperframes\"><img src=\"https://img.shields.io/npm/v/hyperframes.svg?style=flat\" alt=\"npm version\"></a>\n  <a href=\"https://www.npmjs.com/package/hyperframes\"><img src=\"https://img.shields.io/npm/dm/hyperframes.svg?style=flat\" alt=\"npm downloads\"></a>\n  <a href=\"LICENSE\"><img src=\"https://img.shields.io/badge/license-Apache%202.0-blue.svg\" alt=\"License\"></a>\n  <a href=\"https://nodejs.org\"><img src=\"https://img.shields.io/badge/node-%3E%3D22-brightgreen\" alt=\"Node.js\"></a>\n  <a href=\"https://discord.gg/EbK98HBPdk\"><img src=\"https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white\" alt=\"Discord\"></a>\n</p>\n\n<p align=\"center\"><b>Write HTML. Render video. Built for agents.</b></p>\n\n<p align=\"center\">\n  <a href=\"https://hyperframes.heygen.com/quickstart\">Quickstart</a> |\n  <a href=\"https://hyperframes.heygen.com/showcase\">Showcase</a> |\n  <a href=\"https://www.hyperframes.dev/\">Playground</a> |\n  <a href=\"https://hyperframes.heygen.com/catalog/blocks/data-chart\">Catalog</a> |\n  <a href=\"https://hyperframes.heygen.com/introduction\">Docs</a> |\n  <a href=\"https://discord.gg/EbK98HBPdk\">Discord</a>\n</p>\n\n<p align=\"center\">\n  <img src=\"docs/public/images/hyperframes-logo-motion-1280-trimmed.webp\" alt=\"HyperFrames demo: HTML code on the left transforms into a rendered video on the right\" width=\"800\">\n</p>\n\nHyperFrames is an open-source framework for turning HTML, CSS, media, and seekable animations into deterministic MP4 videos. Use it locally with the CLI, from AI coding agents with skills, or as the rendering core behind hosted authoring workflows.\n\n## Quick Start\n\n### With an AI coding agent\n\nInstall the HyperFrames skills, then describe the video you want:\n\n```bash\nnpx skills add heygen-com/hyperframes --full-depth\n```\n\n> The picker opens with nothing pre-selected — the **Core Skills** group is all you need: the `/hyperframes` router installs each creation workflow on demand. Agents and non-interactive runs should use `npx hyperframes skills update` instead — it installs exactly the core set, whereas a non-interactive `skills add` without `--skill` installs all 19.\n>\n> `--full-depth` does a full clone of the repo's current `main`. Without it, `skills add` fetches the skills.sh registry blob, which lags `main` by hours — you'd get an older copy of a skill. (`hyperframes skills update` already installs full-depth.)\n\nTry a prompt like:\n\n> Using `/hyperframes`, create a 10-second product intro with a fade-in title, a background video, and subtle background music.\n\nThe skills teach agents the HyperFrames production loop: plan the video, write valid HTML, wire seekable animations, add media, lint, preview, and render. They work with Claude Code, Cursor, Gemini CLI, Codex, and other coding agents that support skills.\n\n## Skills\n\nHyperFrames ships 19 skills agents load on demand. Read `/hyperframes` first — it's the router and capability map; it picks a workflow for any \"make me a…\" request — video, deck, or composition port — and points to the domain skills below.\n\nDefault to the **core set** — the router installs each creation workflow on demand. `npx hyperframes skills update` installs exactly that from anywhere; the interactive picker (`npx skills add heygen-com/hyperframes --full-depth`) lists it as the \"Core Skills\" group, nothing pre-selected. The picker is interactive-only — a non-interactive or agent run without `--skill` installs all 19. Use `npx skills add heygen-com/hyperframes --all --full-depth` to install all 19 deliberately (skips the picker), or `npx skills add heygen-com/hyperframes --skill <name> --full-depth` for just one (bare name, no leading `/`). Keep `--full-depth` — it installs the current `main`; without it `skills add` fetches the skills.sh blob, which lags by hours.\n\nInstalls stay lean after that: `npx hyperframes init` keeps the **core set** fresh (the router, the `hyperframes-*` domain skills, and `media-use` — plus whatever is already installed; `/figma` stays on demand) and never expands a partial install; the creation workflows install **on demand** — the router runs `npx hyperframes skills update <workflow>` before entering one. Nothing re-pulls the full set behind your back.\n\n### Upload to Codex\n\nBuild the upload-ready Codex plugin archive from the committed `HEAD` version of the manifest, brand assets, and skills:\n\n```bash\nbun run package:codex-plugin\n```\n\nThis writes `dist/hyperframes-plugin.zip` with a `hyperframes/` root folder and fails if the archive exceeds Codex's 100 MB upload limit.\n\n### Router\n\n| Skill          | Use when                                                                                                                                                                                                                                                                 |\n| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |\n| `/hyperframes` | **Read first** for any request to make / create / edit / animate / render a video, animation, or motion graphic. Capability map for the domain skills, the intent layer that confirms every creation brief up front, and intent router for the creation workflows below. |\n\n### Creation workflows\n\n| Skill                      | Use when                                                                                                                                                                                                                     |\n| ",
+    "latestRelease": {
+      "tag": "v0.7.97",
+      "name": "v0.7.97",
+      "body": "# HyperFrames v0.7.97\n\nReleased on 2026-08-07.\n\nStudio resizes now keep animated elements exactly where they were dropped. The saved GSAP scale and position match the frame shown during the gesture, preventing post-drop jumps.\n\n## Fixes\n\n- **Studio:** Keep first, repeated, rotated, uniform, and per-axis animated resizes pinned to their drop point ([#3076](https://github.com/heygen-com/hyperframes/pull/3076)).\n- **Studio:** Measure stylesheet-sized and legacy elements from their real box instead of a 200px fallback ([#3076](https://github.com/heygen-com/hyperframes/pull/3076)).\n\n## Full changelog\n\nhttps://github.com/heygen-com/hyperframes/compare/v0.7.96...v0.7.97\n"
+    },
+    "otherCandidates": [
+      {
+        "name": "obra/superpowers",
+        "stars": 268245,
+        "description": "An agentic skills framework & software development methodology that works."
+      },
+      {
+        "name": "langchain-ai/langchain",
+        "stars": 143586,
+        "description": "The agent engineering platform."
+      },
+      {
+        "name": "crewAIInc/crewAI",
+        "stars": 56721,
+        "description": "Framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks."
+      },
+      {
+        "name": "HKUDS/nanobot",
+        "stars": 46719,
+        "description": "Ultra-lightweight, open-source, self-hosted personal AI agent framework in Python with WebUI, tools, memory, MCP, multi-agent workflows, automation, and chat apps"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Launch HN: Human Layer (YC F24) – Human-in-the-Loop API for AI Systems",
+    "hnUrl": "https://news.ycombinator.com/item?id=42247368",
+    "points": 354,
+    "numComments": 196,
+    "createdAt": "2024-11-26T16:57:12Z"
+  }
+}
