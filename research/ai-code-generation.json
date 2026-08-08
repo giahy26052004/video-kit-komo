@@ -2,13 +2,13 @@
   "query": "ai code generation",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-08-08T09:02:10.347Z",
+  "fetchedAt": "2026-08-08T13:13:56.674Z",
   "github": {
     "source": "github",
     "name": "the-open-agent/openagent",
     "description": "⚡️next-generation personal AI assistant powered by LLM, RAG and agent loops, supporting computer-use, browser-use and coding agent, demo: https://demo.openagentai.org",
     "url": "https://github.com/the-open-agent/openagent",
-    "stars": 5503,
+    "stars": 5504,
     "language": "Go",
     "homepage": "https://www.openagentai.org/",
     "avatarUrl": "https://avatars.githubusercontent.com/u/277180808?v=4",
@@ -22,7 +22,7 @@
     "otherCandidates": [
       {
         "name": "shuvonsec/claude-bug-bounty",
-        "stars": 4162,
+        "stars": 4165,
         "description": "AI-powered bug bounty hunting from your terminal - recon, 20 vuln classes,   autonomous hunting, and report generation. All inside Claude Code."
       },
       {

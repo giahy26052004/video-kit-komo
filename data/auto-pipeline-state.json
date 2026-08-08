@@ -1,5 +1,5 @@
 {
-  "queryIndex": 20,
+  "queryIndex": 21,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -94,6 +94,7 @@
     "starVLA/starVLA",
     "Barca0412/Introduction-to-Quantitative-Finance",
     "sdv-dev/SDV",
-    "x1xhlol/system-prompts-and-models-of-ai-tools"
+    "x1xhlol/system-prompts-and-models-of-ai-tools",
+    "thu-ml/TurboDiffusion"
   ]
 }
