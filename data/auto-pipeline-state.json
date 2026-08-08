@@ -1,5 +1,5 @@
 {
-  "queryIndex": 16,
+  "queryIndex": 17,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -91,6 +91,7 @@
     "huggingface/lerobot",
     "pytorch/executorch",
     "wanshuiyin/Auto-claude-code-research-in-sleep",
-    "starVLA/starVLA"
+    "starVLA/starVLA",
+    "Barca0412/Introduction-to-Quantitative-Finance"
   ]
 }
