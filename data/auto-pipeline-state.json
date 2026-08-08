@@ -90,6 +90,7 @@
     "OpenNMT/CTranslate2",
     "huggingface/lerobot",
     "pytorch/executorch",
-    "wanshuiyin/Auto-claude-code-research-in-sleep"
+    "wanshuiyin/Auto-claude-code-research-in-sleep",
+    "starVLA/starVLA"
   ]
 }
