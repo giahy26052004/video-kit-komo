@@ -1,5 +1,5 @@
 {
-  "queryIndex": 21,
+  "queryIndex": 22,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -97,6 +97,7 @@
     "x1xhlol/system-prompts-and-models-of-ai-tools",
     "thu-ml/TurboDiffusion",
     "Houseofmvps/codesight",
-    "pingcap/tidb"
+    "pingcap/tidb",
+    "PostHog/posthog"
   ]
 }
