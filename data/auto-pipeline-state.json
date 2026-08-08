@@ -98,6 +98,7 @@
     "thu-ml/TurboDiffusion",
     "Houseofmvps/codesight",
     "pingcap/tidb",
-    "PostHog/posthog"
+    "PostHog/posthog",
+    "qdrant/qdrant"
   ]
 }
