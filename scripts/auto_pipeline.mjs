@@ -222,6 +222,16 @@ async function buildScript(research, slug, workspace, query) {
     return anyAsset;
   }
 
+  // banner/poster đã có ribbon/title riêng án ngữ hẳn vùng đáy khung -> caption
+  // lời đọc (CaptionsLayer, mặc định neo "bottom") sẽ đè lên ribbon, nhìn như
+  // "2 cái subtitle" chồng nhau. "top" (120px) lại đè lên phần trên của ảnh
+  // screenshot (box ảnh chỉ ~35% khung, "top" nằm lọt trong đó). "center" (giữa
+  // khung dọc) rơi đúng vào khoảng trống giữa ảnh screenshot và ribbon (an
+  // toàn) — với slide dùng video B-roll thì caption đè lên video là bình
+  // thường (giống style TikTok/Reels caption-trên-video), không phải lỗi.
+  // Template "screen" không có ribbon đáy nên giữ nguyên default "bottom".
+  const captionPosition = template === "screen" ? undefined : "center";
+
   const slides = [];
   const hookAsset = assetFor("website", "repo");
   slides.push({
@@ -233,6 +243,7 @@ async function buildScript(research, slug, workspace, query) {
     voice_text: `Một dự án AI đang gây chú ý với ${gh.stars.toLocaleString("vi-VN")} sao trên GitHub.`,
     sfx: "impact",
     sfxVolume: 0.1,
+    ...(captionPosition ? { captionPosition } : {}),
   });
 
   const descAsset = assetFor("repo", "website", "releases");
@@ -245,6 +256,7 @@ async function buildScript(research, slug, workspace, query) {
     voice_text: loc.desc_voice || `${gh.name}. ${stripMarkdown(gh.description, 200)}`,
     sfx: "whoosh",
     sfxVolume: 0.11,
+    ...(captionPosition ? { captionPosition } : {}),
   });
 
   if (gh.latestRelease?.name) {
@@ -262,6 +274,7 @@ async function buildScript(research, slug, workspace, query) {
       ...(releaseAsset.mediaType ? { mediaType: releaseAsset.mediaType, videoSrc: releaseAsset.videoSrc } : {}),
       sfx: "transition",
       sfxVolume: 0.2,
+      ...(captionPosition ? { captionPosition } : {}),
     });
   }
   if (hasHn) {
@@ -275,6 +288,7 @@ async function buildScript(research, slug, workspace, query) {
       voice_text: loc.hn_voice || `Chủ đề "${stripMarkdown(hn.title, 60)}" đang được bàn luận nhiều trên Hacker News với ${hn.points} điểm và ${hn.numComments} bình luận.`,
       sfx: "ui",
       sfxVolume: 0.24,
+      ...(captionPosition ? { captionPosition } : {}),
     });
   }
   slides.push({
