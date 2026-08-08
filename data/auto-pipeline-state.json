@@ -99,6 +99,7 @@
     "Houseofmvps/codesight",
     "pingcap/tidb",
     "PostHog/posthog",
-    "qdrant/qdrant"
+    "qdrant/qdrant",
+    "roboflow/supervision"
   ]
 }
