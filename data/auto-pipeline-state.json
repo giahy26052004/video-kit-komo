@@ -89,6 +89,7 @@
     "lowdefy/lowdefy",
     "OpenNMT/CTranslate2",
     "huggingface/lerobot",
-    "pytorch/executorch"
+    "pytorch/executorch",
+    "wanshuiyin/Auto-claude-code-research-in-sleep"
   ]
 }
