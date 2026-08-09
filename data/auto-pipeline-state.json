@@ -102,6 +102,7 @@
     "qdrant/qdrant",
     "roboflow/supervision",
     "StarTrail-org/PixelRAG",
-    "SkyworkAI/Skywork-R1V"
+    "SkyworkAI/Skywork-R1V",
+    "openlit/openlit"
   ]
 }
