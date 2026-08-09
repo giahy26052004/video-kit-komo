@@ -103,6 +103,7 @@
     "roboflow/supervision",
     "StarTrail-org/PixelRAG",
     "SkyworkAI/Skywork-R1V",
-    "openlit/openlit"
+    "openlit/openlit",
+    "sourcery-ai/sourcery"
   ]
 }
