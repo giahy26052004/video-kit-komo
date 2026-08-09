@@ -1,0 +1,54 @@
+{
+  "query": "voice ai agents",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-09T19:02:28.333Z",
+  "github": {
+    "source": "github",
+    "name": "mudler/LocalAI",
+    "description": "LocalAI is the open-source AI engine. Run any model - LLMs, vision, voice, image, video - on any hardware. No GPU required.",
+    "url": "https://github.com/mudler/LocalAI",
+    "stars": 48351,
+    "language": "Go",
+    "homepage": "https://localai.io",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/2420543?v=4",
+    "pushedAt": "2026-08-09T14:39:13Z",
+    "readmeExcerpt": "<h1 align=\"center\">\n  <br>\n  <img width=\"300\" src=\"./core/http/static/logo.png\"> <br>\n<br>\n</h1>\n\n<p align=\"center\">\n<a href=\"https://github.com/go-skynet/LocalAI/stargazers\" target=\"blank\">\n<img src=\"https://img.shields.io/github/stars/go-skynet/LocalAI?style=for-the-badge\" alt=\"LocalAI stars\"/>\n</a>\n<a href='https://github.com/go-skynet/LocalAI/releases'>\n<img src='https://img.shields.io/github/release/go-skynet/LocalAI?&label=Latest&style=for-the-badge'>\n</a>\n<a href=\"LICENSE\" target=\"blank\">\n<img src=\"https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge\" alt=\"LocalAI License\"/>\n</a>\n</p>\n\n<p align=\"center\">\n<a href=\"https://twitter.com/LocalAI_API\" target=\"blank\">\n<img src=\"https://img.shields.io/badge/X-%23000000.svg?style=for-the-badge&logo=X&logoColor=white&label=LocalAI_API\" alt=\"Follow LocalAI_API\"/>\n</a>\n<a href=\"https://discord.gg/uJAeKSAGDy\" target=\"blank\">\n<img src=\"https://img.shields.io/badge/dynamic/json?color=blue&label=Discord&style=for-the-badge&query=approximate_member_count&url=https%3A%2F%2Fdiscordapp.com%2Fapi%2Finvites%2FuJAeKSAGDy%3Fwith_counts%3Dtrue&logo=discord\" alt=\"Join LocalAI Discord Community\"/>\n</a>\n</p>\n\n<p align=\"center\">\n<a href=\"https://trendshift.io/repositories/5539\" target=\"_blank\"><img src=\"https://trendshift.io/api/badge/repositories/5539\" alt=\"mudler%2FLocalAI | Trendshift\" style=\"width: 250px; height: 55px;\" width=\"250\" height=\"55\"/></a>\n</p>\n\n<!-- Keep these links, translations synced daily. -->\n<p align=\"center\">\n<a href=\"https://zdoc.app/de/mudler/LocalAI\">Deutsch</a> |\n<a href=\"https://zdoc.app/es/mudler/LocalAI\">Español</a> |\n<a href=\"https://zdoc.app/fr/mudler/LocalAI\">français</a> |\n<a href=\"https://zdoc.app/ja/mudler/LocalAI\">日本語</a> |\n<a href=\"https://zdoc.app/ko/mudler/LocalAI\">한국어</a> |\n<a href=\"https://zdoc.app/pt/mudler/LocalAI\">Português</a> |\n<a href=\"https://zdoc.app/ru/mudler/LocalAI\">Русский</a> |\n<a href=\"https://zdoc.app/zh/mudler/LocalAI\">中文</a>\n</p>\n\n**LocalAI** is the open-source AI engine. Run any model - LLMs, vision, voice, image, video - on any hardware. No GPU required.\n\n**A small core, not a bundle.** Each backend wraps a best-in-class engine (llama.cpp, vLLM, whisper.cpp, stable-diffusion, MLX...) in its own image, pulled only when a model needs it. You install nothing you don't use.\n\n- **Composable by design**: backends are separate and pulled on demand, so you install only what your model needs\n- **Open and extensible**: load any model, or build your own backend in any language against an open interface\n- **Drop-in API compatibility**: OpenAI, Anthropic, and ElevenLabs APIs across every backend\n- **Any model, any modality**: LLMs, vision, voice, image, and video behind one API\n- **Any hardware**: NVIDIA, AMD, Intel, Apple Silicon, Vulkan, or CPU-only\n- **Multi-user ready**: API key auth, user quotas, role-based access\n- **Built-in AI agents**: autonomous agents with tool use, RAG, MCP, and skills\n- **Privacy-first**: your data never leaves your infrastructure\n\n![A small LocalAI core with backends (llama.cpp, vLLM, MLX, whisper.cpp, stable-diffusion, kokoro, parakeet.cpp...) plugged in as separate on-demand images](docs/static/images/diagrams/composable-core.png)\n\nCreated by [Ettore Di Giacinto](https://github.com/mudler) and maintained by the [LocalAI team](#team).\n\n> [:book: Documentation](https://localai.io/) | [:speech_balloon: Discord](https://discord.gg/uJAeKSAGDy) | [💻 Quickstart](https://localai.io/basics/getting_started/) | [🖼️ Models](https://models.localai.io/) | [❓FAQ](https://localai.io/faq/)\n\n## Guided tour\n\nhttps://github.com/user-attachments/assets/08cbb692-57da-48f7-963d-2e7b43883c18\n\n<details>\n\n<summary>\nClick to see more!\n</summary>\n\n#### User and auth\n\nhttps://github.com/user-attachments/assets/228fa9ad-81a3-4d43-bfb9-31557e14a36c\n\n#### Agents\n\nhttps://github.com/user-attachments/assets/6270b331-e21d-4087-a540-6290006b381a\n\n#### Usage metrics per user\n\nhttps://github.com/user-attachments/assets/cbb03379-23b4-4e3d-bd26-d152f057007f\n\n#### Fine-tuning and Quantization\n\nhttps://github.com/user-attachments/assets/5ba4ace9-d3df-4795-b7d4-b0b404ea71ee\n\n#### WebRTC\n\nhttps://github.com/user-attachments/assets/ed88e34c-fed3-4b83-8a67-4716a9feeb7b\n\n</details>\n\n## Quickstart\n\n### macOS\n\n<a href=\"https://github.com/mudler/LocalAI/releases/latest/download/LocalAI.dmg\">\n  <img src=\"https://img.shields.io/badge/Download-macOS-blue?style=for-the-badge&logo=apple&logoColor=white\" alt=\"Download LocalAI for macOS\"/>\n</a>\n\n> **Note:** The DMG is not signed by Apple. After installing, run: `sudo xattr -d com.apple.quarantine /Applications/LocalAI.app`. See [#6268](https://github.com/mudler/LocalAI/issues/6268) for details.\n\n### Containers (Docker, podman, ...)\n\n> Already ran LocalAI before? Use `docker start -i local-ai` to restart an existing container.\n\n#### CPU only:\n\n```bash\ndocker run -ti --name local-ai -p 8080:8080 localai/localai:latest\n```\n\n#### NVIDIA GPU:\n\n```bash\n# CUDA 13\ndocker run -ti --name local-ai -p 8080:8080 --gpus all localai/localai:latest-gpu-nvidia-cuda-13\n\n# CUDA 12\ndocker run -ti --name local-ai -p 8080:8080 --gpus all localai/localai:latest-gpu-nvidia-cuda-12\n\n# NVIDIA Jetson ARM64 (CUDA 12, for AGX Orin and similar)\ndocker run -ti --name local-ai -p 8080:8080 --gpus all localai/localai:latest-nvidia-l4t-arm64\n\n# NVIDIA Jetson ARM64 (CUDA 13, for DGX Spark)\ndocker run -ti --name local-ai -p 8080:8080 --gpus all localai/localai:latest-nvidia-l4t-arm64-cuda-13\n```\n\n#### AMD GPU (ROCm):\n\n```bash\ndocker run -ti --name local-ai -p 8080:8080 --device=/dev/kfd --device=/dev/dri --group-add=video localai/localai:latest-gpu-hipblas\n```\n\n#### Intel GPU (oneAPI):\n\n```bash\ndocker run -ti --name local-ai -p 8080:8080 --device=/dev/dri/card1 --device=/dev/dri/renderD128 localai/localai:latest-gpu-intel\n```\n\n#### Vulkan GPU:\n\n```bash\ndocker run -ti --name local-ai -p 8080:8080 localai/localai:latest-gpu-vulkan\n```\n\n### Loading models\n\n```bash\n# From the model gallery (see available ",
+    "latestRelease": {
+      "tag": "v4.8.2",
+      "name": "v4.8.2",
+      "body": "<!-- Release notes generated using configuration in .github/release.yml at master -->\r\n\r\n## What's Changed\r\n### 👒 Dependencies\r\n* chore(deps): bump actions/stale from 10.4.0 to 11.0.0 by @dependabot[bot] in https://github.com/mudler/LocalAI/pull/11395\r\n* chore(deps): bump actions/checkout from 4 to 7 by @dependabot[bot] in https://github.com/mudler/LocalAI/pull/11396\r\n### Other Changes\r\n* feat(gallery): fall back to mirrors and a cached index when the primary source fails by @localai-bot in https://github.com/mudler/LocalAI/pull/11389\r\n* chore(model-gallery): :arrow_up: update checksum by @localai-bot in https://github.com/mudler/LocalAI/pull/11405\r\n* docs: :arrow_up: update docs version mudler/LocalAI by @localai-bot in https://github.com/mudler/LocalAI/pull/11397\r\n* feat(swagger): update swagger by @localai-bot in https://github.com/mudler/LocalAI/pull/11398\r\n* feat(gallery): default to index.localai.io with GitHub as a mirror by @localai-bot in https://github.com/mudler/LocalAI/pull/11409\r\n* feat(nemo-speech-cpp): add the NVIDIA NeMo-Speech.cpp backend by @localai-bot in https://github.com/mudler/LocalAI/pull/11406\r\n* fix(ci): remove unsupported cosign bundle flag by @localai-bot in https://github.com/mudler/LocalAI/pull/11413\r\n\r\n\r\n**Full Changelog**: https://github.com/mudler/LocalAI/compare/v4.8.1...v4.8.2"
+    },
+    "otherCandidates": [
+      {
+        "name": "pipecat-ai/pipecat",
+        "stars": 14025,
+        "description": "Open Source framework for voice agents, multimodal apps, and realtime AI. Maintained by Daily and the community."
+      },
+      {
+        "name": "livekit/agents",
+        "stars": 12803,
+        "description": "A framework for building realtime voice AI agents 🤖🎙️📹 "
+      },
+      {
+        "name": "huggingface/speech-to-speech",
+        "stars": 11855,
+        "description": "Build local voice agents with open-source models"
+      },
+      {
+        "name": "TEN-framework/ten-framework",
+        "stars": 11028,
+        "description": " Open-source framework for conversational voice AI agents"
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Asterisk AI Voice Agent",
+    "url": "https://github.com/hkjarral/Asterisk-AI-Voice-Agent",
+    "hnUrl": "https://news.ycombinator.com/item?id=46380399",
+    "points": 198,
+    "numComments": 119,
+    "createdAt": "2025-12-24T23:25:37Z"
+  }
+}
