@@ -2,13 +2,13 @@
   "query": "ai code generation",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-08-08T13:13:56.674Z",
+  "fetchedAt": "2026-08-09T22:51:45.000Z",
   "github": {
     "source": "github",
     "name": "the-open-agent/openagent",
     "description": "⚡️next-generation personal AI assistant powered by LLM, RAG and agent loops, supporting computer-use, browser-use and coding agent, demo: https://demo.openagentai.org",
     "url": "https://github.com/the-open-agent/openagent",
-    "stars": 5504,
+    "stars": 5510,
     "language": "Go",
     "homepage": "https://www.openagentai.org/",
     "avatarUrl": "https://avatars.githubusercontent.com/u/277180808?v=4",
@@ -22,12 +22,12 @@
     "otherCandidates": [
       {
         "name": "shuvonsec/claude-bug-bounty",
-        "stars": 4165,
+        "stars": 4176,
         "description": "AI-powered bug bounty hunting from your terminal - recon, 20 vuln classes,   autonomous hunting, and report generation. All inside Claude Code."
       },
       {
         "name": "SamurAIGPT/Generative-Media-Skills",
-        "stars": 3999,
+        "stars": 4017,
         "description": "Multi-modal Generative Media Skills for AI Agents (Claude Code, Cursor, Gemini CLI). High-quality image, video, and audio generation powered by muapi.ai."
       },
       {
@@ -37,7 +37,7 @@
       },
       {
         "name": "Agents365-ai/video-podcast-maker",
-        "stars": 1524,
+        "stars": 1532,
         "description": "Topic → 4K narrated video for coding agents. v4.0: all TTS via the ttsCN engine component (11 platforms incl. MiniMax voice clone, native word-level subtitle sync), manifest-based Asset Engine, Remotion composition, cost-gated AI generation"
       }
     ]

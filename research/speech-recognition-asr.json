@@ -2,43 +2,43 @@
   "query": "speech recognition asr",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-08-01T17:17:38.919Z",
+  "fetchedAt": "2026-08-09T22:51:45.700Z",
   "github": {
     "source": "github",
-    "name": "modelscope/FunASR",
-    "description": "Open-source speech recognition toolkit for training, inference, streaming ASR, VAD, punctuation, speaker diarization pipelines, and OpenAI-compatible/MCP serving.",
-    "url": "https://github.com/modelscope/FunASR",
-    "stars": 19582,
-    "language": "Python",
-    "homepage": "www.funasr.com",
-    "avatarUrl": "https://avatars.githubusercontent.com/u/109945100?v=4",
-    "pushedAt": "2026-07-31T03:39:55Z",
-    "readmeExcerpt": "([简体中文](./README_zh.md)|English|[日本語](./README_ja.md)|[한국어](./README_ko.md))\n\n<p align=\"center\">\n<a href=\"https://github.com/modelscope/FunASR\"><img src=\"https://svg-banners.vercel.app/api?type=origin&text1=FunASR🤠&text2=💖%20A%20Fundamental%20End-to-End%20Speech%20Recognition%20Toolkit&width=800&height=210\" alt=\"FunASR\"></a>\n</p>\n\n<p align=\"center\">\n  <strong>Industrial speech recognition toolkit for offline, streaming, and edge deployment.</strong><br>\n  <em>ASR · VAD · punctuation · speaker pipelines · emotion and audio-event models · OpenAI-compatible serving</em>\n</p>\n\n<p align=\"center\">\n  <a href=\"https://pypi.org/project/funasr/\"><img src=\"https://img.shields.io/pypi/v/funasr\" alt=\"PyPI\"></a>\n  <a href=\"https://github.com/modelscope/FunASR\"><img src=\"https://img.shields.io/github/stars/modelscope/FunASR?style=social\" alt=\"Stars\"></a>\n  <a href=\"https://pypi.org/project/funasr/\"><img src=\"https://img.shields.io/pypi/dm/funasr\" alt=\"Downloads\"></a>\n  <a href=\"https://modelscope.github.io/FunASR/\"><img src=\"https://img.shields.io/badge/docs-online-blue\" alt=\"Docs\"></a>\n  <a href=\"https://mcptoplist.com/server/io.github.modelscope%2Ffunasr-mcp\"><img src=\"https://mcptoplist.com/badge/io.github.modelscope%2Ffunasr-mcp.svg\" alt=\"MCP Toplist\"></a>\n</p>\n\n<p align=\"center\">\n<a href=\"https://trendshift.io/repositories/10479\" target=\"_blank\"><img src=\"https://trendshift.io/api/badge/repositories/10479\" alt=\"modelscope%2FFunASR | Trendshift\" style=\"width: 250px; height: 55px;\" width=\"250\" height=\"55\"/></a>\n</p>\n\n<p align=\"center\">\n  <a href=\"#quick-start\">Quick Start</a> · <a href=\"./examples/colab/\">Colab</a> · <a href=\"#benchmark\">Benchmark</a> · <a href=\"./docs/model_selection.md\">Model selection</a> · <a href=\"./docs/migration_from_whisper.md\">Migration guide</a> · <a href=\"./docs/use_case_showcase.md\">Use cases</a> · <a href=\"./docs/community_projects.md\">Community integrations</a> · <a href=\"./docs/deployment_matrix.md\">Deployment matrix</a> · <a href=\"https://www.funasr.com/\">Deployment hub</a> · <a href=\"./docs/troubleshooting.md\">Troubleshooting</a> · <a href=\"#model-zoo\">Models</a> · <a href=\"https://modelscope.github.io/FunASR/agent.html\">Agent Integration</a> · <a href=\"https://modelscope.github.io/FunASR/\">Docs</a> · <a href=\"./CONTRIBUTING.md\">Contribute</a>\n</p>\n\n---\n\n## Quick Start\n\n[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/modelscope/FunASR/blob/main/examples/colab/funasr_quickstart.ipynb)\n\nNo local setup? Open the [Colab quickstart](./examples/colab/) to transcribe a public sample or upload your own audio in a browser.\n\n```bash\n# CPU-only installs can use the default PyPI wheels.\npip install torch torchaudio\npip install funasr\n```\n\nFor GPU quickstarts, install the PyTorch and torchaudio wheels that match your\nNVIDIA driver from [pytorch.org](https://pytorch.org/get-started/locally/)\nbefore installing FunASR. After installation, confirm the GPU is visible:\n\n```bash\npython - <<'PY'\nimport torch\nprint(torch.cuda.is_available())\nPY\n```\n\nOnly use `device=\"cuda\"` when this prints `True`; otherwise use `device=\"cpu\"`\nor reinstall PyTorch with the correct CUDA wheel.\n\n**Flagship model — Fun-ASR-Nano** (LLM-ASR for Chinese, English, and Japanese, plus Chinese dialect groups and regional accents; needs a GPU):\n\n```python\nfrom funasr import AutoModel\n\nmodel = AutoModel(model=\"FunAudioLLM/Fun-ASR-Nano-2512\", device=\"cuda\")\nresult = model.generate(input=\"https://isv-data.oss-cn-hangzhou.aliyuncs.com/ics/MaaS/ASR/test_audio/asr_example_zh.wav\")\nprint(result[0][\"text\"])\n# 欢迎大家来体验达摩院推出的语音识别模型。\n```\n\nFor the separate 31-language checkpoint, use\n[Fun-ASR-MLT-Nano-2512](https://huggingface.co/FunAudioLLM/Fun-ASR-MLT-Nano-2512).\nLanguage coverage is checkpoint-specific, so Nano and MLT-Nano should be treated as distinct model choices.\n\nOn CPU (or for five-language ASR plus emotion and audio-event tags), use\n**SenseVoiceSmall**. The pipeline below composes SenseVoiceSmall with FSMN-VAD\nand CAM++; diarization is provided by the separate CAM++ model, not by the\nSenseVoiceSmall checkpoint:\nSee the [SenseVoice paper](https://arxiv.org/abs/2407.04051),\n[Hugging Face checkpoint](https://huggingface.co/FunAudioLLM/SenseVoiceSmall),\nand [GGUF edge checkpoint](https://huggingface.co/FunAudioLLM/SenseVoiceSmall-GGUF).\n\n```python\nfrom funasr import AutoModel\nfrom funasr.utils.postprocess_utils import rich_transcription_postprocess\n\nmodel = AutoModel(model=\"iic/SenseVoiceSmall\", vad_model=\"fsmn-vad\", spk_model=\"cam++\", device=\"cuda\")  # use device=\"cpu\" if you don't have a GPU\nresult = model.generate(\n    input=\"https://isv-data.oss-cn-hangzhou.aliyuncs.com/ics/MaaS/ASR/test_audio/asr_example_zh.wav\",\n    batch_size_s=300,\n)\n\n# The AutoModel pipeline returns VAD segments with speaker ids and timestamps:\nfor seg in result[0][\"sentence_info\"]:\n    print(f\"[{seg['start']/1000:.1f}s] Speaker {seg['spk']}: {rich_transcription_postprocess(seg['sentence'])}\")\n```\n\n**Output** — structured text with speaker labels, timestamps, and punctuation:\n```\n[0.6s] Speaker 0: 欢迎大家来体验达摩院推出的语音识别模型\n```\n\nOne `AutoModel` pipeline call coordinates the configured ASR, VAD, and speaker\nmodels and returns the combined result.\n\n### Scale & deploy the flagship\n\nAt scale, accelerate Fun-ASR-Nano with vLLM (batch processing):\n\n```python\nfrom funasr.auto.auto_model_vllm import AutoModelVLLM\n\nmodel = AutoModelVLLM(model=\"FunAudioLLM/Fun-ASR-Nano-2512\", tensor_parallel_size=1)\nresults = model.generate([\"audio1.wav\", \"audio2.wav\"], language=\"auto\")\n```\n\n> **Deploy as API server:** `funasr-server --device cuda` → OpenAI-compatible endpoint at localhost:8000\n>\n> **Use with AI agents:** [MCP Server](examples/mcp_server/) for Claude/Cursor · [OpenAI API](examples/openai_api/) for LangChain/Dify/AutoGen\n\n### Why FunASR?\n\nWhisper is a single model; **FunASR is a toolkit** — you pick the right model\nper job: **Fun-ASR-Nano** (Chinese, English, Japanese, and Chinese dialec",
+    "name": "alphacep/vosk-api",
+    "description": "Offline speech recognition API for Android, iOS, Raspberry Pi and servers with Python, Java, C# and Node",
+    "url": "https://github.com/alphacep/vosk-api",
+    "stars": 15034,
+    "language": "Jupyter Notebook",
+    "homepage": null,
+    "avatarUrl": "https://avatars.githubusercontent.com/u/26358566?v=4",
+    "pushedAt": "2026-08-09T13:35:47Z",
+    "readmeExcerpt": "# Vosk Speech Recognition Toolkit\n\nVosk is an offline open source speech recognition toolkit. It enables\nspeech recognition for 20+ languages and dialects - English, Indian\nEnglish, German, French, Spanish, Portuguese, Chinese, Russian, Turkish,\nVietnamese, Italian, Dutch, Catalan, Arabic, Greek, Farsi, Filipino,\nUkrainian, Kazakh, Swedish, Japanese, Esperanto, Hindi, Czech, Polish.\nMore to come.\n\nVosk models are small (50 Mb) but provide continuous large vocabulary\ntranscription, zero-latency response with streaming API, reconfigurable\nvocabulary and speaker identification.\n\nSpeech recognition bindings implemented for various programming languages\nlike Python, Java, Node.JS, C#, C++, Rust, Go and others.\n\nVosk supplies speech recognition for chatbots, smart home appliances,\nvirtual assistants. It can also create subtitles for movies,\ntranscription for lectures and interviews.\n\nVosk scales from small devices like Raspberry Pi or Android smartphone to\nbig clusters.\n\n# Documentation\n\nFor installation instructions, examples and documentation visit [Vosk\nWebsite](https://alphacephei.com/vosk).\n",
     "latestRelease": {
-      "tag": "v1.4.0",
-      "name": "FunASR v1.4.0",
-      "body": "## FunASR 1.4.0\n\nInstall or upgrade the Python package:\n\n```bash\npip install -U funasr==1.4.0\n```\n\n### Python package\n\n- Rejects the common `vda_model` misspelling immediately and points users to the supported `vad_model` argument, instead of silently running without VAD.\n- Restores SenseVoice English spelling normalization in installed wheels by packaging `english.json`.\n- Restores RWKV-BAT CUDA kernel compilation from installed wheels by packaging the encoder and decoder `.cpp` and `.cu` sources.\n\n### Tagged source\n\n- Finalizes legacy WebSocket file-input sessions correctly when the client sends the end-control message. This runtime is distributed in the tagged GitHub source and is not part of the PyPI wheel.\n\n### Prebuilt llama.cpp runtime\n\nThe release assets include self-contained FunASR llama.cpp / GGUF runtimes for SenseVoice, Paraformer, and Fun-ASR-Nano:\n\n- Linux arm64\n- Linux x64\n- Linux x64 AVX2\n- Linux x64 Vulkan\n- macOS arm64\n- Windows x64\n- Windows x64 AVX2\n- Windows x64 CUDA\n- Windows x64 Vulkan\n\nUse `SHA256SUMS-v1.4.0` to verify every Python and runtime artifact after download.\n\n**Full Changelog:** https://github.com/modelscope/FunASR/compare/v1.3.30...v1.4.0\n"
+      "tag": "v0.3.50",
+      "name": "v0.3.50",
+      "body": "Endpointer config updates"
     },
     "otherCandidates": [
       {
+        "name": "modelscope/FunASR",
+        "stars": 19736,
+        "description": "Open-source speech recognition toolkit for training, inference, streaming ASR, VAD, punctuation, speaker diarization pipelines, and OpenAI-compatible/MCP serving."
+      },
+      {
         "name": "NVIDIA-NeMo/Speech",
-        "stars": 17843,
+        "stars": 18061,
         "description": "A scalable generative AI framework built for researchers and developers working on Large Language Models, Multimodal, and Speech AI (Automatic Speech Recognition and Text-to-Speech)"
       },
       {
         "name": "nyrahealth/CrisperWhisper",
-        "stars": 1044,
+        "stars": 1263,
         "description": "Verbatim Automatic Speech Recognition with improved word-level timestamps and filler detection"
       },
       {
         "name": "TensorSpeech/TensorFlowASR",
         "stars": 1010,
         "description": ":zap: TensorFlowASR: Almost State-of-the-art Automatic Speech Recognition in Tensorflow 2. Supported languages that can use characters or subwords"
-      },
-      {
-        "name": "AudarAI/Audar-ASR-V1",
-        "stars": 561,
-        "description": "Arabic-first generative speech recognition — Audar-ASR-V1 (Flash + Turbo). #1 on the Open Universal Arabic ASR Leaderboard. Model cards, benchmarks & inference."
       }
     ]
   },
