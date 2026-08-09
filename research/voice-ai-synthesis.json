@@ -1,0 +1,15 @@
+{
+  "query": "voice ai synthesis",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-09T05:20:03.823Z",
+  "github": null,
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Launch HN: Retell AI (YC W24) – Conversational Speech API for Your LLM",
+    "hnUrl": "https://news.ycombinator.com/item?id=39453402",
+    "points": 350,
+    "numComments": 173,
+    "createdAt": "2024-02-21T13:18:13Z"
+  }
+}

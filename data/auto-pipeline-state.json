@@ -1,5 +1,5 @@
 {
-  "queryIndex": 22,
+  "queryIndex": 23,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -101,6 +101,7 @@
     "PostHog/posthog",
     "qdrant/qdrant",
     "roboflow/supervision",
-    "StarTrail-org/PixelRAG"
+    "StarTrail-org/PixelRAG",
+    "SkyworkAI/Skywork-R1V"
   ]
 }
