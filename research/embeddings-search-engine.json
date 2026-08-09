@@ -1,0 +1,43 @@
+{
+  "query": "embeddings search engine",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-09T16:56:36.794Z",
+  "github": {
+    "source": "github",
+    "name": "cocoindex-io/cocoindex-code",
+    "description": "A super light-weight embedded code search engine CLI (AST based) that just works -  improves speed and efficiency for coding agent  🌟 Star if you like it!",
+    "url": "https://github.com/cocoindex-io/cocoindex-code",
+    "stars": 2619,
+    "language": "Python",
+    "homepage": "https://cocoindex.io/",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/190812870?v=4",
+    "pushedAt": "2026-08-07T00:15:51Z",
+    "readmeExcerpt": "<p align=\"center\">\n<img width=\"2428\" alt=\"cocoindex code\" src=\"https://github.com/user-attachments/assets/d05961b4-0b7b-42ea-834a-59c3c01717ca\" />\n</p>\n\n\n<h1 align=\"center\">AST-based semantic code search that just works</h1>\n\n![effect](https://github.com/user-attachments/assets/cb3a4cae-0e1f-49c4-890b-7bb93317ab60)\n\n\nA lightweight, effective **(AST-based)** semantic code search tool for your codebase. Built on [CocoIndex](https://github.com/cocoindex-io/cocoindex) — a Rust-based ultra performant data transformation engine. Use it from the CLI, or integrate with Claude, Codex, Cursor — any coding agent — via [Skill](#skill-recommended) or [MCP](#mcp-server).\n\n- Instant token saving by 70%.\n- **1 min setup** — install and go, zero config needed!\n\n<div align=\"center\">\n\n[![Discord](https://img.shields.io/discord/1314801574169673738?logo=discord&color=5B5BD6&logoColor=white)](https://discord.com/invite/zpA9S2DR7s)\n[![GitHub](https://img.shields.io/github/stars/cocoindex-io/cocoindex?color=5B5BD6)](https://github.com/cocoindex-io/cocoindex)\n[![Documentation](https://img.shields.io/badge/Documentation-394e79?logo=readthedocs&logoColor=00B9FF)](https://cocoindex.io/docs/getting_started/quickstart)\n[![License](https://img.shields.io/badge/license-Apache%202.0-5B5BD6?logoColor=white)](https://opensource.org/licenses/Apache-2.0)\n<!--[![PyPI - Downloads](https://img.shields.io/pypi/dm/cocoindex)](https://pypistats.org/packages/cocoindex) -->\n[![PyPI Downloads](https://static.pepy.tech/badge/cocoindex/month)](https://pepy.tech/projects/cocoindex)\n[![CI](https://github.com/cocoindex-io/cocoindex/actions/workflows/CI.yml/badge.svg?event=push&color=5B5BD6)](https://github.com/cocoindex-io/cocoindex/actions/workflows/CI.yml)\n[![release](https://github.com/cocoindex-io/cocoindex/actions/workflows/release.yml/badge.svg?event=push&color=5B5BD6)](https://github.com/cocoindex-io/cocoindex/actions/workflows/release.yml)\n\n\n🌟 Please help star [CocoIndex](https://github.com/cocoindex-io/cocoindex) if you like this project!\n\n[Deutsch](https://readme-i18n.com/cocoindex-io/cocoindex-code?lang=de) |\n[English](https://readme-i18n.com/cocoindex-io/cocoindex-code?lang=en) |\n[Español](https://readme-i18n.com/cocoindex-io/cocoindex-code?lang=es) |\n[français](https://readme-i18n.com/cocoindex-io/cocoindex-code?lang=fr) |\n[日本語](https://readme-i18n.com/cocoindex-io/cocoindex-code?lang=ja) |\n[한국어](https://readme-i18n.com/cocoindex-io/cocoindex-code?lang=ko) |\n[Português](https://readme-i18n.com/cocoindex-io/cocoindex-code?lang=pt) |\n[Русский](https://readme-i18n.com/cocoindex-io/cocoindex-code?lang=ru) |\n[中文](https://readme-i18n.com/cocoindex-io/cocoindex-code?lang=zh)\n\n</div>\n\n\n## Get Started — zero config, let's go!\n\n### Install\n\nUsing [pipx](https://pipx.pypa.io/stable/installation/):\n```bash\npipx install 'cocoindex-code[full]'          # batteries included (local embeddings)\npipx upgrade cocoindex-code                  # upgrade\n```\n\nUsing [uv](https://docs.astral.sh/uv/getting-started/installation/):\n```bash\nuv tool install --upgrade 'cocoindex-code[full]'\n```\n\nTwo install styles — they mirror the Docker image variants of the same names:\n- `cocoindex-code[full]` — batteries-included. Pulls in `sentence-transformers` so local embeddings (no API key required) work out of the box. The `ccc init` interactive prompt defaults to [Snowflake/snowflake-arctic-embed-xs](https://huggingface.co/Snowflake/snowflake-arctic-embed-xs).\n- `cocoindex-code` (slim) — LiteLLM-only; requires a cloud embedding provider and API key. Use when you don't want the local-embedding deps (~1 GB of torch + transformers).\n\nNext, set up your [coding agent integration](#coding-agent-integration) — or jump to [Manual CLI Usage](#manual-cli-usage) if you prefer direct control.\n\n## Coding Agent Integration\n\nThis repository is a **single plugin marketplace** (`.claude-plugin/marketplace.json`) consumed by both **Claude Code** and **Grok** — same plugin id `cocoindex-code`, same `ccc` skill. Grok optionally activates the bundled hooks and MCP server with `--trust`; Claude Code users can install the same marketplace and rely on the skill alone or load hooks/MCP from the plugin as needed.\n\n### Skill (Recommended)\n\nInstall the `ccc` skill so your coding agent automatically uses semantic search when needed:\n\n```bash\nnpx skills add cocoindex-io/cocoindex-code\n```\n\nThat's it — no `ccc init` or `ccc index` needed. The skill teaches the agent to handle initialization, indexing, and searching on its own. It will automatically keep the index up to date as you work.\n\nThe agent uses semantic search automatically when it would be helpful. You can also nudge it explicitly — just ask it to search the codebase, e.g. *\"find how user sessions are managed\"*, or type `/ccc` to invoke the skill directly.\n\nWorks with [Claude Code](https://docs.anthropic.com/en/docs/claude-code) and other skill-compatible agents.\n\n#### Claude Code plugin marketplace\n\nFor Claude Code users, this repository is also a [plugin marketplace](https://code.claude.com/docs/en/plugin-marketplaces). Install the skill from inside Claude Code with:\n\n```text\n/plugin marketplace add cocoindex-io/cocoindex-code\n/plugin install cocoindex-code@cocoindex-code\n```\n\nThis bundles the same `ccc` skill, with version pinning and `/plugin marketplace update` for updates. The repository also ships `hooks/hooks.json` and `.mcp.json` for Grok (and Claude Code plugin installs that load those files); Claude users who want skill-only search can rely on the skill alone and add MCP manually in the [MCP Server](#mcp-server) section below instead of using the bundled `.mcp.json`.\n\n#### Grok plugin\n\nFor [Grok](https://github.com/xai-org/grok) users, install via Grok's plugin system. The plugin bundles three components:\n\n| Component | Purpose |\n|-----------|---------|\n| **Skill** (`skills/ccc/`) | Agent runs `ccc search` / `ccc index` via the CLI (same as Claude Code above) |\n| **Hook** (`hooks/hooks.json`) | `SessionStart` → increment",
+    "latestRelease": {
+      "tag": "v0.2.41",
+      "name": "v0.2.41",
+      "body": "## What's Changed\r\n* fix(search): surface daemon tracebacks and reject NULL KNN distances by @georgeh0 in https://github.com/cocoindex-io/cocoindex-code/pull/271\r\n\r\n\r\n**Full Changelog**: https://github.com/cocoindex-io/cocoindex-code/compare/v0.2.40...v0.2.41"
+    },
+    "otherCandidates": [
+      {
+        "name": "datastax/jvector",
+        "stars": 1739,
+        "description": "JVector: the most advanced embedded vector search engine"
+      },
+      {
+        "name": "groonga/groonga",
+        "stars": 854,
+        "description": "An embeddable fulltext search engine. Groonga is the successor project to Senna."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Launch HN: Exa (YC S21) – The web as a database",
+    "hnUrl": "https://news.ycombinator.com/item?id=43906841",
+    "points": 412,
+    "numComments": 133,
+    "createdAt": "2025-05-06T16:18:42Z"
+  }
+}

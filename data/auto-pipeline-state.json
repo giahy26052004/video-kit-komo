@@ -107,6 +107,7 @@
     "sourcery-ai/sourcery",
     "HexmosTech/git-lrc",
     "code-yeongyu/oh-my-openagent",
-    "waybarrios/vllm-mlx"
+    "waybarrios/vllm-mlx",
+    "cocoindex-io/cocoindex-code"
   ]
 }
