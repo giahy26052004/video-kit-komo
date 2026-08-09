@@ -1,0 +1,53 @@
+{
+  "query": "multimodal ai vision",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-09T02:30:48.133Z",
+  "github": {
+    "source": "github",
+    "name": "StarTrail-org/PixelRAG",
+    "description": "The end of web parsing. The beginning of scalable pixel-native search. link: https://pixelrag.ai/",
+    "url": "https://github.com/StarTrail-org/PixelRAG",
+    "stars": 9371,
+    "language": "Python",
+    "homepage": "https://arxiv.org/pdf/2606.28344",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/288858980?v=4",
+    "pushedAt": "2026-07-31T08:52:00Z",
+    "readmeExcerpt": "<p align=\"center\">\n  <img src=\"docs/assets/banner.png\" alt=\"PixelRAG — Visual Retrieval-Augmented Generation\" width=\"100%\">\n</p>\n<p align=\"center\">\n  Official codebase for <b><a href=\"https://arxiv.org/abs/2606.28344\">PIXELRAG: Web Screenshots Beat Text for\nRetrieval-Augmented Generation</a></b>\n</p>\n<p align=\"center\">\n  <a href=\"https://yichuan-w.github.io/\">Yichuan Wang</a>*,\n  <a href=\"https://zhifei.li/\">Zhifei Li</a>*,\n  <a href=\"https://zwcolin.github.io/\">Zirui Wang</a>,\n  <a href=\"https://www.linkedin.com/in/paul-teiletche/\">Paul Teiletche</a>,\n  <a href=\"https://www.linkedin.com/in/lesheng-jin-9618b0201/\">Lesheng Jin</a>\n  <br>\n  <a href=\"https://people.eecs.berkeley.edu/~matei/\">Matei Zaharia</a>†,\n  <a href=\"https://people.eecs.berkeley.edu/~jegonzal/\">Joseph E. Gonzalez</a>†,\n  <a href=\"https://www.sewonmin.com/\">Sewon Min</a>†\n</p>\n<p align=\"center\"><sub>* Equal contribution &nbsp; † Equal advising</sub><br><sub>Work done at <a href=\"https://sky.cs.berkeley.edu/\">Berkeley SkyLab</a> &amp; <a href=\"https://bair.berkeley.edu/\">BAIR</a> &amp; <a href=\"https://nlp.cs.berkeley.edu/\">Berkeley NLP</a></sub></p>\n<p align=\"center\">Search any document by how it <em>looks</em>, not just the text it contains.</p>\n\n<p align=\"center\">\n  <a href=\"https://github.com/StarTrail-org/PixelRAG/actions/workflows/ci.yml\"><img src=\"https://github.com/StarTrail-org/PixelRAG/actions/workflows/ci.yml/badge.svg\" alt=\"CI\"></a>\n  <a href=\"https://pixelrag.ai\"><img src=\"https://img.shields.io/badge/demo-pixelrag.ai-7c3aed\" alt=\"Live demo\"></a>\n  <a href=\"https://status.pixelrag.ai\"><img src=\"https://img.shields.io/badge/status-live-22c55e\" alt=\"Status\"></a>\n  <a href=\"https://join.slack.com/t/leann-e2u9779/shared_invite/zt-3ol2ww9ic-Eg_kB8omwe6xmYVd0epr4Q\"><img src=\"https://img.shields.io/badge/Slack-join-4A154B?logo=slack&logoColor=white\" alt=\"Slack\"></a>\n  <img src=\"https://img.shields.io/badge/license-Apache--2.0-blue\" alt=\"License\">\n</p>\n\n<p align=\"center\">\n  <a href=\"#what-it-is\">What it is</a> &middot;\n  <a href=\"#give-claude-eyes\">Give Claude eyes</a> &middot;\n  <a href=\"#how-it-works\">How it works</a> &middot;\n  <a href=\"#pipelines\">Pipelines</a>\n</p>\n\n---\n\n```bash\npip install pixelrag\n```\n\nThe two core operations — **render** a page to screenshots, **search** a visual index:\n\n```bash\n# Render any page or document to screenshot tiles\npixelshot https://en.wikipedia.org/wiki/Python --output ./tiles\n\n# Search a hosted index of 8.28M Wikipedia pages — no setup, runs against the live API\ncurl -X POST https://api.pixelrag.ai/search \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"queries\": [{\"text\": \"What is the capital of France?\"}], \"n_docs\": 5}'\n```\n\n> **Live, hosted endpoint** — [`https://api.pixelrag.ai`](https://api.pixelrag.ai/status) serves a\n> pre-built index of **8.28M Wikipedia pages**. No setup, no API key. It even takes an image as the query\n> ([visual search](https://pixelrag.ai/docs#search)) — see the **[API reference →](https://pixelrag.ai/docs)**.\n\nOr try it in the browser at **[pixelrag.ai](https://pixelrag.ai)**, or run the demo notebook in\nColab [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/StarTrail-org/PixelRAG/blob/main/demos/quickstart.ipynb) — it\nrenders a page and searches the hosted index, with the images inline.\n\n## What it is\n\nPixelRAG renders documents — web pages, PDFs, images — as screenshots and retrieves over the\nimages directly. Visual structure that HTML parsing throws away — tables, charts, layout,\ninfographics — stays intact, so the reader model can actually answer questions about it.\nWikipedia's 8.28M articles ship as a pre-built index; the pipeline itself is general-purpose.\n\n## Give Claude eyes\n\nThe renderer also ships as a Claude Code plugin — the **pixelbrowse** skill. Instead of fetching\nraw HTML, Claude screenshots a page with `pixelshot` and _reads the image_, so it sees\ncharts, diagrams, tables, and layout the way a person does.\n\nInstall it — no clone needed. Install the `pixelshot` CLI so it's on your `PATH`\n(use `uv tool` or `pipx` to keep it isolated yet always available to Claude — a\nplain `pip install` into a project venv may leave `pixelshot` off `PATH`):\n\n```bash\nuv tool install pixelrag                            # pixelshot on PATH (or: pipx install pixelrag)\nclaude plugin marketplace add StarTrail-org/PixelRAG\nclaude plugin install pixelbrowse@pixelrag-plugins\n```\n\nThen just ask Claude to look at a page:\n\n```bash\nclaude -p \"screenshot https://news.ycombinator.com and summarize the top stories\"\nclaude -p \"screenshot https://arxiv.org/abs/2404.12387 and explain the key findings\"\n```\n\nOr use the slash command in an interactive session: `/screenshot https://example.com`.\nNo MCP server, no backend: the skill just calls `pixelshot` (Playwright/CDP) on your machine.\n\n## How it works\n\n<p align=\"center\">\n  <img src=\"docs/assets/pipeline.png\" alt=\"Text-based RAG parses to text and loses the table; PixelRAG renders to screenshot tiles and keeps it\" width=\"100%\">\n</p>\n\nText-based RAG parses the page to text chunks and **loses the table** — the reader can't find the\nanswer. PixelRAG renders the page to **screenshot tiles**, retrieves the right tile, and the reader\nreads the number straight off the image.\n\nTwo pieces make this work: (1) rendering documents to images instead of parsing them to text, and\n(2) a `Qwen3-VL-Embedding` model, LoRA-fine-tuned on screenshot data, that embeds page images into\na space where visual content is retrievable.\n\n## Pipelines\n\nCapture is the standalone `pixelshot` command; the rest of the pipeline runs through the\n`pixelrag` umbrella — `pixelrag <stage>`. Install only the stages you need:\n\n| Command                                    | What it does                                                    | Install                         |\n| ------------------------------------------ | --------------------------------------------------------------- | -------------",
+    "latestRelease": {
+      "tag": "v0.4.0",
+      "name": "v0.4.0",
+      "body": "## Highlights\n\n**Smarter page readiness for arbitrary URLs.** `--wait-network-idle` now uses networkidle2 semantics — it counts in-flight requests over CDP Network events (≤2 pending for 500ms, 12s cap) instead of resetting a timer on every resource completion. Analytics-heavy pages that used to ride the 12s cap settle in ~1s (measured: 15.6s → 4.0s on a 200ms-beacon page), and already-quiet pages proceed the moment `load` fires. The index pipeline enables it by default for the `web` source only; kiwix/localhost and local-file renders stay on the fast path. (#96, #119, #120)\n\n**Safe incremental re-runs.** Tile directories now record which source document they were rendered from; re-running `pixelrag index build` after adding/removing/renaming files re-renders shifted positions instead of silently pairing one document's pixels with another's metadata. Manifest writes are atomic, and `article_id` is stamped into every manifest so the embed stage no longer guesses from directory names. (#83, #119)\n\n## New\n\n- Department-filtered search for local document indexes: `department` metadata from your directory layout, FAISS-native filtering, and a `GET /departments` endpoint (#115)\n- Local images (PNG/JPG) render into the tile pipeline — no more silent empty index from an image folder (#95, fixes #67)\n- `.md`/`.txt` files render natively (tables, fenced code, relative images resolved) (#101, #107)\n- `--cdp-url` to attach to an already-running browser (#76)\n- `--device auto`/`mps` accepted by `pixelrag index build` (#73)\n- MiniMax model configs for the eval harness, and registry endpoints now actually apply (#113, #119)\n- Progress bars for the chunk stage that stay readable under multiprocessing, with log-file progress preserved for unattended runs (#108, #119)\n\n## Fixed\n\n- Path-traversal hardening in the eval renderers (#80, fixes #78/#79)\n- Playwright Chromium picked by numeric revision, not lexicographic order (#74)\n- Chrome `--user-data-dir` isolated per worker (#65, fixes #54)\n- Transparent local images composite onto white instead of black (#119)\n- Non-numeric filename-stem IDs handled throughout the local pipeline (#66, #83)\n- Chat agent timeouts / loop prevention, back button and lightbox (#49)\n- `tqdm`/`pyyaml`/`numpy` moved from the heavy torch extras into core — light stages (`pixelrag chunk`, `index --help`) work on a bare `pip install pixelrag` (#118)\n\n## Install\n\n```bash\npip install -U pixelrag           # light: pixelshot + umbrella CLI\npip install -U 'pixelrag[all]'    # + embed/index/serve stages\n```"
+    },
+    "otherCandidates": [
+      {
+        "name": "bytedance/UI-TARS-desktop",
+        "stars": 38513,
+        "description": "The Open-Source Multimodal AI Agent Stack: Connecting Cutting-Edge AI Models and Agent Infra"
+      },
+      {
+        "name": "jonyzhang2023/awesome-embodied-vla-va-vln",
+        "stars": 3445,
+        "description": "A curated list of state-of-the-art research in embodied AI, focusing on vision-language-action (VLA) models, vision-language navigation (VLN), and related multimodal learning approaches. "
+      },
+      {
+        "name": "SkyworkAI/Skywork-R1V",
+        "stars": 3162,
+        "description": "Skywork-R1V is an advanced multimodal AI model series developed by Skywork AI, specializing in vision-language reasoning."
+      },
+      {
+        "name": "valentinfrlch/ha-llmvision",
+        "stars": 1418,
+        "description": "Visual intelligence for your home."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Ask HN: Pull the curtain back on Nvidia's CES keynote please",
+    "hnUrl": "https://news.ycombinator.com/item?id=42670808",
+    "points": 54,
+    "numComments": 15,
+    "createdAt": "2025-01-12T02:39:38Z"
+  }
+}
