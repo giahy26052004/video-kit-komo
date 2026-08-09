@@ -1,0 +1,54 @@
+{
+  "query": "rag optimization",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-09T20:52:44.921Z",
+  "github": {
+    "source": "github",
+    "name": "Marker-Inc-Korea/AutoRAG",
+    "description": "AutoRAG: Now your agent can find anything in your computer. It gets smarter if you are using it frequently.",
+    "url": "https://github.com/Marker-Inc-Korea/AutoRAG",
+    "stars": 4971,
+    "language": "TypeScript",
+    "homepage": "https://marker-inc-korea.github.io/AutoRAG/",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/74290595?v=4",
+    "pushedAt": "2026-08-09T10:00:22Z",
+    "readmeExcerpt": "# AutoRAG\n\n**A self-evolving librarian agent for document collections.**\n\n> [!IMPORTANT]\n> **Looking for the original AutoRAG (RAG AutoML / pipeline optimization tool)?**\n> This repository now hosts **AutoRAG 2.0**, a complete reimagining of AutoRAG as a self-evolving librarian agent. The original Python-based AutoRAG — the RAG AutoML tool for automatically finding an optimal RAG pipeline for your data — now lives in the [`legacy/`](legacy/) directory of this repository.\n>\n> **The legacy AutoRAG is NOT abandoned.** It continues to be maintained (bug fixes, dependency updates, and PyPI releases via `pip install AutoRAG`) in maintenance mode. Existing users can keep using it exactly as before — see the [legacy README](legacy/README.md) for its documentation, and file issues in this repository as usual. New feature development is focused on AutoRAG 2.0.\n\nAutoRAG searches your PDFs, wikis, notes, research papers, and knowledge bases — then curates the results into clean, numbered knowledge units. No raw grep dumps. Just answers.\n\nAutoRAG is a customized [Pi](https://github.com/earendil-works/pi-mono) agent — the Pi agent loop configured into a librarian. Searches use a two-tier workflow: a parent orchestrator delegates exploration to explorer agents. The roles and providers are independently configured from the models available in the user's authenticated runtime; AutoRAG does not ship a private provider default.\n\n## Why AutoRAG\n\n### The problem with search tools\n\nEvery search tool gives you the same thing: a list of file paths and matching lines. Then *you* have to:\n- Open each file\n- Read the surrounding context\n- Decide what's relevant\n- Synthesize an answer\n- Remember what worked for next time\n\nThat's the human doing all the hard work. The tool just points.\n\n### AutoRAG does the hard work\n\nAutoRAG is not a search tool. It's a **librarian** — it searches, reads, thinks, and reports back:\n\n```\nYou ask:  \"What were the key findings in the Q3 report?\"\n\nAutoRAG:\n[1] Revenue grew 23% YoY to $4.2M, driven by enterprise contracts. (pages 3-5)\n[2] Three new risk factors: supply chain, regulatory, talent retention. (pages 12-14)\n[3] Headcount target missed by 12 — engineering hiring bottleneck. (page 8)\n```\n\nNo file paths. No line numbers. Just curated knowledge you can act on.\n\n### It gets smarter over time\n\nAutoRAG has a **self-evolving memory system**. Every search teaches it something:\n\n- Which retrieval methods work for which types of queries\n- Which document areas are most productive\n- What the caller found useful (via explicit feedback)\n\nA fresh AutoRAG tries everything. A seasoned one knows exactly where to look. This is not a static configuration — it's learned behavior from real usage.\n\n### Multiple retrieval methods, one interface\n\nDifferent documents need different search strategies:\n\n| Your documents | Best method | Why |\n|---|---|---|\n| Plain text, config files | grep (pattern matching) | Fast, precise, literal |\n| Research papers, dense prose | Vector search (semantic) | Understands meaning, not just keywords |\n| Legal documents, specifications | BM25 (keyword ranking) | Handles domain terminology well |\n| Mixed collections | Hybrid (vector + BM25) | Combines precision and recall |\n\nAutoRAG supports **pluggable retrieval methods**. It ships with lexical **BM25** and semantic **MinSync** methods wired through the `RetrievalMethodRegistry`, and the architecture is ready for additional vector and hybrid backends. The parent orchestrator owns process-bound retrieval tools and gives bounded seed packs to explorers; explorers use read-only `read`/`grep`/`find`/`ls` tools to inspect the underlying documents. The `ResultMerger` handles cross-method score normalization and deduplication — you get one unified result set regardless of how many methods contributed.\n\nBM25 and MinSync are **enabled by default** — no explicit configuration is needed for standard lexical + semantic retrieval. Both can be disabled by setting `\"bm25\": false` or `\"minSync\": false` in the config file. MinSync uses a pre-installed binary (`autoInstall: false`); configure `minSync.embedder` via `autorag init --embedder-*` flags for remote embedding endpoints. AutoRAG never forces TEI or any external embedding service.\n\n### Real directory access\n\nAutoRAG reads configured source directories through delegated explorer tasks. Each explorer is assigned exactly one normalized configured search root as its `cwd`; the top-level `subagent` invocation sets `agentScope: \"user\"` and `artifacts: false` exactly once for single, `tasks`, `chain`, or `parallel` dispatch, and nested explorer task items omit both fields. Project-local `.pi-subagents` debug artifacts are disabled. Explorers use read-only `read`/`grep`/`find`/`ls`; the parent orchestrator owns retrieval seed tools and must delegate document reading before curating. Curated answers are returned as a structured `SearchDocumentsResponse`; results carry their real source (file path or datasource id) in the internal mapping for feedback and curation. BM25 and MinSync index parsed markdown mirrors under `.autorag`.\n\nEach explorer `task` contains an Assignment V1 block — a sentinel-wrapped JSON body with `originalQuery` (the caller query verbatim), `method` (the selected retrieval path), and `queryVariants` (a nonempty array), followed by canonical role lines requiring `retrievedAt` and temporal metadata:\n\n```text\n<<<AUTORAG_ASSIGNMENT_V1>>>\n{\"originalQuery\":\"<caller query verbatim>\",\"method\":\"<selected retrieval method>\",\"queryVariants\":[\"<variant 1>\",\"<variant 2>\"]}\n<<<END_AUTORAG_ASSIGNMENT_V1>>>\nRequired handoff: include retrievedAt.\nRequired handoff: include temporal metadata.\n```\n\nA legacy labeled format (`Original query:`, `Selected retrieval method:`, `Query variants:`) is accepted for compatibility. Missing or null top-level `artifacts`, `agentScope`, and leaf `model` fields are safely autofilled before validation; explicit wrong values (`artifacts: true`, `agentScope: \"p",
+    "latestRelease": {
+      "tag": "v2.1.0",
+      "name": "AutoRAG v2.1.0",
+      "body": "## What's Changed\n* chore(legacy): batch-apply Dependabot dependency updates by @vkehfdl1 in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1333\n* feat(generator): support latest OpenAI models (gpt-5.6 family) + migrate QA helpers to Responses API by @vkehfdl1 in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1338\n* Bump pi-heif from 0.22.0 to 1.3.0 in /legacy by @dependabot[bot] in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1337\n* feat(legacy): add Azure OpenAI generator support by @vkehfdl1 in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1340\n* feat(legacy): update MiniMax model catalog for M3 by @vkehfdl1 in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1341\n* fix(legacy): apply reviewed runtime and metric fixes by @vkehfdl1 in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1342\n* build(deps): bump pyasn1 from 0.6.1 to 0.6.4 in /legacy by @dependabot[bot] in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1339\n* feat(parser): add legacy HWP5 text extraction by @seongyeon1 in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1349\n* feat(datasource): macOS Spotlight skill + traceable sources (#1350) by @vkehfdl1 in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1351\n* release: AutoRAG v2.1.0 by @vkehfdl1 in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1352\n\n## New Contributors\n* @seongyeon1 made their first contribution in https://github.com/Marker-Inc-Korea/AutoRAG/pull/1349\n\n**Full Changelog**: https://github.com/Marker-Inc-Korea/AutoRAG/compare/v2.0.0...v2.1.0"
+    },
+    "otherCandidates": [
+      {
+        "name": "Kiln-AI/Kiln",
+        "stars": 5013,
+        "description": "Build, Evaluate, and Optimize AI Systems. Includes evals, RAG, agents, fine-tuning, synthetic data generation, dataset management, MCP, and more."
+      },
+      {
+        "name": "NVIDIA/GenerativeAIExamples",
+        "stars": 4143,
+        "description": "Generative AI reference workflows optimized for accelerated infrastructure and microservice architecture."
+      },
+      {
+        "name": "juyterman1000/entroly",
+        "stars": 435,
+        "description": "AI context optimization platform for files, conversations, RAG, code, logs and AI agents with context compression, evidence preservation, content-addressed recovery and auditable Context Receipts."
+      },
+      {
+        "name": "ratel-ai/ratel",
+        "stars": 415,
+        "description": "Context engineering for AI agents. ~80% fewer tokens. Fix tool overload. Skills and memory with in-process BM25 and semantic retrieval. Progressive Disclosure. No vector DB."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Launch HN: RunAnywhere (YC W26) – Faster AI Inference on Apple Silicon",
+    "url": "https://github.com/RunanywhereAI/rcli",
+    "hnUrl": "https://news.ycombinator.com/item?id=47326101",
+    "points": 240,
+    "numComments": 153,
+    "createdAt": "2026-03-10T17:14:52Z"
+  }
+}

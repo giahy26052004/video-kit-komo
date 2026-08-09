@@ -109,6 +109,7 @@
     "code-yeongyu/oh-my-openagent",
     "waybarrios/vllm-mlx",
     "cocoindex-io/cocoindex-code",
-    "mudler/LocalAI"
+    "mudler/LocalAI",
+    "Marker-Inc-Korea/AutoRAG"
   ]
 }
