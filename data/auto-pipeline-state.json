@@ -106,6 +106,7 @@
     "openlit/openlit",
     "sourcery-ai/sourcery",
     "HexmosTech/git-lrc",
-    "code-yeongyu/oh-my-openagent"
+    "code-yeongyu/oh-my-openagent",
+    "waybarrios/vllm-mlx"
   ]
 }
