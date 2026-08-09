@@ -1,5 +1,5 @@
 {
-  "queryIndex": 23,
+  "queryIndex": 24,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -104,6 +104,7 @@
     "StarTrail-org/PixelRAG",
     "SkyworkAI/Skywork-R1V",
     "openlit/openlit",
-    "sourcery-ai/sourcery"
+    "sourcery-ai/sourcery",
+    "HexmosTech/git-lrc"
   ]
 }
