@@ -119,6 +119,7 @@
     "getzep/graphiti",
     "citrolabs/ego-lite",
     "wildminder/awesome-ai-voice",
-    "ccxt/ccxt"
+    "ccxt/ccxt",
+    "sgl-project/sglang"
   ]
 }
