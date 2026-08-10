@@ -1,0 +1,54 @@
+{
+  "query": "code generation llm",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-10T08:05:49.110Z",
+  "github": {
+    "source": "github",
+    "name": "PurpleDoubleD/locally-uncensored",
+    "description": "Plug-and-play local AI studio: uncensored chat, image & video generation, coding agent. Runs abliterated LLMs + ComfyUI 100% offline. One installer, no Docker, no cloud.",
+    "url": "https://github.com/PurpleDoubleD/locally-uncensored",
+    "stars": 1033,
+    "language": "TypeScript",
+    "homepage": "https://locallyuncensored.com",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/224399100?v=4",
+    "pushedAt": "2026-08-10T00:10:38Z",
+    "readmeExcerpt": "<div align=\"center\">\n\n<img src=\"logos/LU-monogram-bw.png\" alt=\"Locally Uncensored\" width=\"80\">\n\n# Locally Uncensored\n\n**The plug-and-play local AI studio — uncensored chat, image & video generation, and a coding agent. One installer. No cloud.**\n\nInstall it like a normal app and you're chatting, generating images, and making videos in minutes. No command line, no Docker, no config files. Auto-detects 12 local backends. Your AI, your hardware, your rules.\n\n[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)\n[![GitHub stars](https://img.shields.io/github/stars/PurpleDoubleD/locally-uncensored?style=social)](https://github.com/PurpleDoubleD/locally-uncensored/stargazers)\n[![GitHub last commit](https://img.shields.io/github/last-commit/PurpleDoubleD/locally-uncensored)](https://github.com/PurpleDoubleD/locally-uncensored/commits)\n[![GitHub Discussions](https://img.shields.io/github/discussions/PurpleDoubleD/locally-uncensored)](https://github.com/PurpleDoubleD/locally-uncensored/discussions)\n[![Discord](https://img.shields.io/discord/1496087522042843146?style=flat-square&logo=discord&label=Discord&color=5865F2)](https://locallyuncensored.com/discord)\n[![Website](https://img.shields.io/badge/Website-locallyuncensored.com-8b5cf6)](https://locallyuncensored.com)\n\n<img src=\"docs/demo.gif\" alt=\"Locally Uncensored Demo\" width=\"700\">\n\n*The only desktop app that runs AI chat, image, and video generation — locally, one click, no cloud.*\n\n[Download](#download) · [Quick Start](#quick-start) · [Features](#features) · [Why This App?](#why-locally-uncensored) · [Models](#recommended-models) · [FAQ](#faq)\n\n</div>\n\n---\n\n## What is Locally Uncensored?\n\nLocally Uncensored (LU) is a **free, open-source local AI studio** for Windows and Linux. It combines four things most local-AI tools keep separate — **AI chat, a coding agent, image generation, and video generation** — in one desktop app, and it installs like a normal program: run one installer, let the setup wizard detect (or install) an AI engine, one-click a model, start typing.\n\n- **Uncensored by default** — first-class support for [abliterated models](https://locallyuncensored.com/blog/abliterated-models-guide.html) that answer directly, without refusals or lectures. Mainstream models are in the same menu.\n- **100% local and private** — zero telemetry, zero analytics, works fully offline after model download. Cloud providers (OpenAI, Anthropic, OpenRouter, Groq…) are optional and use your own keys.\n- **Plug and play** — auto-detects 12 local backends (Ollama, LM Studio, vLLM, KoboldCpp, Jan, llama.cpp, LocalAI, GPT4All, TabbyAPI, Aphrodite, SGLang, TGI). Nothing installed? One click installs the engine for you.\n- **Free forever** — AGPL-3.0. The models are open weights. No subscription, no credits, no rate limits.\n\n**New to local AI?** Start with the [5-minute beginner guide](https://locallyuncensored.com/blog/how-to-run-ai-locally.html) — no command line anywhere.\n\n---\n\n### Screenshots\n\n| Chat that draws your images | Built-in image & video studio |\n|:---:|:---:|\n| ![Chat](docs/screenshots/chat_generate_dark.webp) | ![Create](docs/screenshots/create_gallery_dark.webp) |\n| **Coding Agent reviews & fixes** | **Agent Mode builds it for you** |\n| ![Coding Agent](docs/screenshots/coding_review_dark.webp) | ![Agent Mode](docs/screenshots/agent_mode_dark.webp) |\n\n---\n\n## Download\n\nGrab the latest release from [**Releases**](https://github.com/PurpleDoubleD/locally-uncensored/releases/latest):\n\n| Platform | File | Status |\n|----------|------|--------|\n| **Windows 10/11** | `.exe` (NSIS, recommended) or `.msi` | Fully tested, signed auto-update channel |\n| **Linux** | `.deb` / `.rpm` / `.AppImage` | Packages on every release |\n| macOS | — | Coming soon (source builds via `npm run tauri build`) |\n\n> **Antivirus warning?** Some engines flag unsigned NSIS installers that download other binaries — a **false positive**. The installer is built by GitHub Actions from the public source on `master`, and the auto-update channel is signed against a public minisign key. Verification steps: [SECURITY.md](SECURITY.md#antivirus--browser-false-positives).\n\n**Current release: v2.6.4** (August 2026). Portable-friendly installers for Windows and Linux (no admin rights required), under the short in-app name **LU** by LU Labs. Full history in [Releases](https://github.com/PurpleDoubleD/locally-uncensored/releases) and [CHANGELOG.md](CHANGELOG.md).\n\n### What's new in 2.6.4\n\nTwo money fixes from your bug reports. The Cloud switch now really means off: flipping to Local with no local model running used to keep the cloud model silently active and kept billing credits; the send path now refuses any model from the wrong mode. And the music price in the picker follows the length slider live, billing was always per second but the label quoted 1 minute, so a 3 minute song looked three times cheaper than it was. What you see is what you pay.\n\n### What's new in 2.6.3\n\nThe reliability release. Agent and Code mode were driven end to end on the shipped build for a week and fixed where they actually broke: runs no longer stall, loop, or invent results, small local models get the tool transport their server really supports (the bundled engine used to swallow tool definitions silently), approvals stay visible, Stop always stops, and the run budget respects what LM Studio actually loaded. New: group chat with 2 to 4 local models answering in turn, an edit pencil on every model answer, one-click chips for the native Wan video sizes with a portrait/landscape flip, native HiRes fix for local image generation (community PR #97 by Kizerfluid), RTX 50 support for character training with a preflight that names a broken environment before the run, and personal API keys so any OpenAI-compatible tool can use your cloud plan. Long chats got a deep memory fix, generated images survive a restart, your own lyrics really get sung, every cloud model s",
+    "latestRelease": {
+      "tag": "v2.6.4",
+      "name": "LU v2.6.4",
+      "body": "Two money fixes, straight from bug-reports: what the app shows is what you pay, and the Cloud switch really means off.\n\n### Fixed\n\n- **Cloud off means cloud off.** Flipping the switch to Local while no local model was installed or running silently kept the cloud model active, and chats kept billing credits. The send path now refuses any model from the wrong mode, and the selection clears instead of lying, so the picker asks for a real local model.\n- **The music price follows the length slider.** The model picker quoted a fixed 1 minute price while billing runs per second, so a 3 minute song cost three times the shown number. The price next to each music model now updates live as you move the length slider: what you see is what you pay.\n\n## Download\n\n**Windows:** Download the `.exe` installer. During setup, choose \"Install for current user only\" for a portable/no-install experience. Or use the `.msi` for system-wide installation.\n\n**Linux:** Download the `.AppImage`, make it executable (`chmod +x`), and run. No installation needed.\n\n> All versions are portable-friendly - no admin rights required. LU by LU Labs."
+    },
+    "otherCandidates": [
+      {
+        "name": "the-open-agent/openagent",
+        "stars": 5511,
+        "description": "⚡️next-generation personal AI assistant powered by LLM, RAG and agent loops, supporting computer-use, browser-use and coding agent, demo: https://demo.openagentai.org"
+      },
+      {
+        "name": "Dong90/oh-my-taiyiforge",
+        "stars": 1008,
+        "description": "AI workflow automation plugin for intelligent code generation with Claude/Codex"
+      },
+      {
+        "name": "ZaxbyHub/opencode-swarm",
+        "stars": 437,
+        "description": "  Architect-centric agentic swarm plugin for OpenCode. Hub-and-spoke orchestration with SME consultation, code generation, and QA review."
+      },
+      {
+        "name": "Ivy-Interactive/Ivy-Framework",
+        "stars": 431,
+        "description": "The ultimate framework for building internal tools with LLM code generation by unifying front-end and back-end into a single C# codebase. "
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "LLM code generation may lead to an erosion of trust",
+    "url": "https://jaysthoughts.com/aithoughts1",
+    "hnUrl": "https://news.ycombinator.com/item?id=44384610",
+    "points": 248,
+    "numComments": 275,
+    "createdAt": "2025-06-26T06:07:49Z"
+  }
+}

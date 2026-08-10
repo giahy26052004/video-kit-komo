@@ -113,6 +113,7 @@
     "Marker-Inc-Korea/AutoRAG",
     "alphacep/vosk-api",
     "NVIDIA-AI-Blueprints/video-search-and-summarization",
-    "enricoros/big-AGI"
+    "enricoros/big-AGI",
+    "PurpleDoubleD/locally-uncensored"
   ]
 }
