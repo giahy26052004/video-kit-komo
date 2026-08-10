@@ -1,0 +1,86 @@
+name: Auto News Trend Reels (VN)
+
+# Cứ vài giờ tự tìm tin hot Việt Nam (BĐS/dự án, tài chính/ngân hàng,
+# drama/nhân vật, bóng đá) -> research -> viết content -> render -> đăng
+# Facebook Reels. Chạy trên GitHub-hosted runner, không phụ thuộc máy cá nhân.
+on:
+  # Lệch giờ/phút khác auto-pipeline.yml (17 */2) để 2 pipeline không tranh
+  # runner cùng lúc — chạy mỗi 3 tiếng, lệch phút 37.
+  schedule:
+    - cron: "37 */3 * * *"
+  workflow_dispatch:
+    inputs:
+      top:
+        description: "Số chủ đề tối đa xử lý trong lần chạy này"
+        required: false
+        default: "5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: news-pipeline
+  cancel-in-progress: false
+
+jobs:
+  run-cycle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Install root npm deps
+        run: npm install
+
+      - name: Install Remotion npm deps
+        working-directory: remotion
+        run: npm install
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Install Python deps
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run 1 news-pipeline cycle
+        env:
+          FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          KOMOAPI_LLM_URL: "https://nine.komoapi.site/v1/chat/completions"
+          KOMOAPI_LLM_KEY: ${{ secrets.KOMOAPI_LLM_KEY }}
+          KOMOAPI_LLM_MODEL: "cc/claude-haiku-4-5-20251001"
+          PYTHONIOENCODING: "utf-8"
+          TTS_BACKEND: "edge"
+          EDGE_TTS_VOICE: "vi-VN-NamMinhNeural"
+          EDGE_TTS_RATE: "+50%"
+          WHISPER_MODEL: "base"
+          WHISPER_LANGUAGE: "vi"
+        run: node scripts/news_pipeline.mjs --top "${{ github.event.inputs.top || '5' }}"
+
+      - name: Commit lại state (tránh lặp chủ đề lần sau)
+        run: |
+          git config user.name "news-pipeline-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/news-pipeline-state.json data/news-skipped.json || true
+          git diff --cached --quiet || git commit -m "chore: cap nhat state news-pipeline [skip ci]"
+          # Nhánh remote có thể đã đổi trong lúc job này chạy (push từ job
+          # auto-pipeline hoặc lần chạy trước) -> rebase lên rồi push lại.
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && break
+            echo "push lần $i thất bại, thử lại..."
+            sleep 5
+          done
