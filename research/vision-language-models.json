@@ -1,0 +1,54 @@
+{
+  "query": "vision language models",
+  "days": 14,
+  "minStars": 300,
+  "fetchedAt": "2026-08-10T02:36:29.381Z",
+  "github": {
+    "source": "github",
+    "name": "NVIDIA-AI-Blueprints/video-search-and-summarization",
+    "description": "NVIDIA AI Blueprint for video search and summarization (VSS) is a GPU-accelerated reference architecture for building video analytics agents with real-time verified alerts, visual Q&A, and automated reporting. The VSS Blueprint uses vision language models (VLMs) such as NVIDIA Cosmos, LLMs such as NVIDIA Nemotron, RAG, and NVIDIA NIMs.",
+    "url": "https://github.com/NVIDIA-AI-Blueprints/video-search-and-summarization",
+    "stars": 1789,
+    "language": "C++",
+    "homepage": "https://build.nvidia.com/nvidia/video-search-and-summarization",
+    "avatarUrl": "https://avatars.githubusercontent.com/u/178940881?v=4",
+    "pushedAt": "2026-08-09T15:33:32Z",
+    "readmeExcerpt": "<h2>NVIDIA AI Blueprint: Video Search and Summarization (VSS)</h2>\n\n**Build GPU-accelerated video AI agents that search, analyze, summarize, and reason over live or recorded video using natural language.**\n\nNVIDIA AI Blueprint for Video Search and Summarization (VSS) combines vision-language models, RAG, and NVIDIA NIM microservices to deliver real-time video analytics, visual Q&A, alert verification, clip retrieval, and long-video summarization.\n\n- Search video streams or archives using natural language queries\n- Summarize hours of video\n- Ask visual questions and automatically generate reports\n- Detect and verify real-time alerts with VLMs\n\n**[🚀 Try the Demo](https://build.nvidia.com/nvidia/video-search-and-summarization)** · **[⚡ Quickstart](#quickstart-guide)** · **[📚 Documentation](https://docs.nvidia.com/vss/latest/index.html)** · **[🏗️ Architecture](#software-components)** · **[📦 Latest Release](https://github.com/NVIDIA-AI-Blueprints/video-search-and-summarization/releases/latest)**\n\n### Table of Contents\n- [Overview](#overview)\n- [Use Case / Problem Description](#use-case--problem-description)\n- [Agent Workflows](#agent-workflows)\n- [Software Components](#software-components)\n- [Target Audience](#target-audience)\n- [Repository Structure Overview](#repository-structure-overview)\n- [Documentation](#documentation)\n- [Prerequisites](#prerequisites)\n- [Hardware Requirements](#hardware-requirements)\n- [Quickstart Guide](#quickstart-guide)\n- [Contributing](#contributing)\n- [License](#license)\n\n## Overview\n\nThe [NVIDIA Blueprint for Video Search and Summarization (VSS)](https://docs.nvidia.com/vss/latest/index.html) provides a suite of reference architectures for building vision agents and AI-powered video analytics applications. Those architectures bring together accelerated vision microservices, vision language models (VLMs), and large language models (LLMs) so you can use them in existing applications, as standalone microservices, or as part of a larger vision agent.\n\nVSS is organized into three areas of processing and analysis: **real-time video intelligence** (feature extraction, embeddings, and stream understanding with results published to a message broker), **downstream analytics** (enrichment of metadata into trajectories, incidents, and verified alerts), and **agentic and offline processing** (orchestrated tools for search, Q&A, summarization, and clip retrieval, including via the Model Context Protocol).\n\nThis repository implements the blueprint and powers the [NVIDIA build experience](https://build.nvidia.com/nvidia/video-search-and-summarization) for natural-language video agents—search, summarization, visual Q&A, and related workflows—backed by generative AI, VLMs and LLMs, and [NVIDIA NIM](https://build.nvidia.com/) microservices as configured in the stacks below.\n\n## Use Case / Problem Description\n\nThe NVIDIA AI Blueprint for Video Search and Summarization addresses the challenge of deploying visual agents capable of interacting with large volumes of video data, both stored and streamed. This can be used to create vision AI agents, that can be applied to a multitude of use cases such as monitoring smart spaces, warehouse automation, and SOP validation. This is important where quick and accurate video analysis can lead to better decision-making and enhanced operational efficiency.\n\n## Agent Workflows\nWe provide multiple reference [Agent Workflows](https://docs.nvidia.com/vss/latest/agent-workflows.html) which demonstrate how the individual components can be leveraged by an agent:\n\n| Workflow | Description |\n|----------|-------------|\n| [Q&A and Report Generation (Quickstart)](https://docs.nvidia.com/vss/latest/quickstart.html) | Video retrieval, VLM-based Q&A, and report generation on short video clips |\n| [Alert Verification](https://docs.nvidia.com/vss/latest/agent-workflow-alert-verification.html) | Realtime processing of videos using perception (object detection, tracking) and behavior analytics to generate alerts, which are subsequently verified with VLM to reduce false positives |\n| [Real-Time Alerts](https://docs.nvidia.com/vss/latest/agent-workflow-rt-alert.html) | Continuous processing of video streams through VLM for anomaly detection |\n| [Video Search](https://docs.nvidia.com/vss/latest/agent-workflow-search.html) | Natural language search across video archives using video embeddings (alpha) |\n| [Long Video Summarization](https://docs.nvidia.com/vss/latest/agent-workflow-lvs.html) | Analysis and summarization of extended video recordings through chunking and aggregation of dense captions |\n\n## Software Components\n<div align=\"center\">\n  <img src=\"https://github.com/NVIDIA-AI-Blueprints/video-search-and-summarization/raw/main/assets/vss-architecture.png\" width=\"800\">\n</div>\n\n1. **NIM microservices**: Here are models used in this blueprint:\n\n    - [Cosmos3 Nano Reasoner](https://build.nvidia.com/nvidia/cosmos3-nano-reasoner)\n    - [NVIDIA Nemotron-Nano-9B-v2](https://build.nvidia.com/nvidia/nvidia-nemotron-nano-9b-v2)\n\n2. **Real-time video intelligence**: The Real-Time Video Intelligence layer extracts rich visual features, semantic embeddings, and contextual understanding from video data in real-time, publishing results to a message broker for downstream analytics and agentic workflows. It provides three core microservices for processing video streams.\n\n3. **Downstream analytics**: The Downstream Analytics layer processes and enriches the metadata streams generated by real-time video intelligence microservices, transforming raw detections into actionable insights and verified alerts.\n\n4. **Agent and offline processing**: The top-level agent leverages the Model Context Protocol (MCP) to access video analytics data, incident records, and vision processing capabilities through a unified tool interface. It integrates multiple vision-based tools including video understanding with Vision Language Models (VLMs), semantic video search using embeddings, long video sum",
+    "latestRelease": {
+      "tag": "v3.2.1",
+      "name": "VSS 3.2.1",
+      "body": "### Key Features\r\n- Updated the default VLM model for the Real-Time Video Language Model (RT-VLM) microservice and the agent workflows to Cosmos Reason 3 Nano.\r\n- Updated the Smart City Industry profile to use 3.2.X microservices.\r\n- Updated CPU-based multimedia support.\r\n\r\n- For full release notes, including improvements to all microservices and workflows, see the [official documentation](https://docs.nvidia.com/vss/latest/release-notes.html#vss-3-2-1).\r\n\r\n**Note:** Users should use the VSS 3.2.1 GitHub release/branch and the container tags referenced by the 3.2.1 deployment assets. The 3.2.1 manifests may intentionally reference a mix of new 3.2.1 tags and unchanged 3.2 tags; this is expected. Only containers requiring a remediation or feature delta were republished.\r\n\r\nOlder affected 2.x, 3.0, and 3.1 container images are deprecated and should not be used for new deployments. These older images will be removed from NGC on September 30, 2026."
+    },
+    "otherCandidates": [
+      {
+        "name": "Blaizzy/mlx-vlm",
+        "stars": 5310,
+        "description": "MLX-VLM is a package for inference and fine-tuning of Vision Language Models (VLMs) on your Mac using MLX."
+      },
+      {
+        "name": "jonyzhang2023/awesome-embodied-vla-va-vln",
+        "stars": 3446,
+        "description": "A curated list of state-of-the-art research in embodied AI, focusing on vision-language-action (VLA) models, vision-language navigation (VLN), and related multimodal learning approaches. "
+      },
+      {
+        "name": "starVLA/starVLA",
+        "stars": 3424,
+        "description": "StarVLA: A Lego-like Codebase for Vision-Language-Action Model Developing"
+      },
+      {
+        "name": "SkyworkAI/Skywork-R1V",
+        "stars": 3162,
+        "description": "Skywork-R1V is an advanced multimodal AI model series developed by Skywork AI, specializing in vision-language reasoning."
+      }
+    ]
+  },
+  "hackernews": {
+    "source": "hackernews",
+    "title": "Vision language models are blind",
+    "url": "https://vlmsareblind.github.io/",
+    "hnUrl": "https://news.ycombinator.com/item?id=40926734",
+    "points": 451,
+    "numComments": 191,
+    "createdAt": "2024-07-10T13:35:22Z"
+  }
+}

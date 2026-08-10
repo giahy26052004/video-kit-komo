@@ -111,6 +111,7 @@
     "cocoindex-io/cocoindex-code",
     "mudler/LocalAI",
     "Marker-Inc-Korea/AutoRAG",
-    "alphacep/vosk-api"
+    "alphacep/vosk-api",
+    "NVIDIA-AI-Blueprints/video-search-and-summarization"
   ]
 }
