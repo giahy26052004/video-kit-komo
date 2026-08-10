@@ -11,6 +11,10 @@
  *      -> Reel có nhiều video khác nhau, không lặp 1 clip xuyên suốt
  *   5. video-explainer.mjs review + render (retry khi lỗi tạm thời)
  *   6. publish_facebook.mjs -> tự đăng Reel lên Page
+ *   7. Sau khi Reel đăng thành công: tự tải 1 ảnh minh hoạ (Pexels ảnh tĩnh,
+ *      KHÁC ảnh/video B-roll dùng cho Reel) + đăng THÊM 1 bài viết Facebook
+ *      thường (ảnh + nội dung dài, chi tiết hơn Reel) qua
+ *      publish_facebook_post.mjs — mỗi topic ra 2 nội dung: 1 Reel + 1 bài viết.
  *
  * AN TOÀN (vì không có người duyệt): nếu LLM tự đánh giá "confirmed=false"
  * (thông tin chưa được ≥2 nguồn xác nhận — dễ gặp ở nhóm drama/pháp lý) VÀ
@@ -30,7 +34,7 @@ import { fileURLToPath } from "node:url";
 import { fetchAllNews } from "./news_sources.mjs";
 import { scoreTopics } from "./score_topics.mjs";
 import { writeNewsScript } from "./llm_news_writer.mjs";
-import { findAndDownloadVideo } from "./media_providers.mjs";
+import { findAndDownloadVideo, findAndDownloadPhoto } from "./media_providers.mjs";
 
 const KIT_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const STATE_PATH = path.join(KIT_ROOT, "data", "news-pipeline-state.json");
@@ -227,6 +231,37 @@ function renderWithRetry(projectDir) {
   }
 }
 
+/**
+ * Đăng THÊM 1 bài viết Facebook thường (ảnh tĩnh + nội dung dài hơn Reel) cho
+ * cùng topic vừa đăng Reel. Lỗi ở bước nào (tải ảnh, gọi API) chỉ log warning
+ * — KHÔNG throw, vì Reel đã đăng thành công là phần quan trọng nhất, bài viết
+ * chỉ là nội dung bổ sung.
+ */
+async function publishNewsPost(topic, parsed, projectDir) {
+  const query = parsed.postImageQuery || topic.categoryLabel;
+  let photoResult = null;
+  try {
+    photoResult = await findAndDownloadPhoto(query, path.join(projectDir, "workspace", "post-image"), { orientation: "landscape" });
+  } catch (e) {
+    console.warn(`  [post] lỗi tải ảnh "${query}": ${e.message}`);
+  }
+  if (!photoResult) {
+    console.warn(`  [post] không tìm được ảnh cho "${query}" -> bỏ qua đăng bài viết (Reel vẫn đã đăng).`);
+    return;
+  }
+
+  const hashtagLine = (parsed.hashtags || []).map((h) => `#${String(h).replace(/^#/, "")}`).join(" ");
+  const caption = [parsed.postTitle || topic.title, "", parsed.postBody || topic.title, hashtagLine].filter(Boolean).join("\n\n");
+  const imagePath = path.join(projectDir, "workspace", photoResult.photoPath);
+
+  try {
+    execFileSync("node", [path.join(KIT_ROOT, "scripts/publish_facebook_post.mjs"), "--image", imagePath, "--caption", caption], { cwd: KIT_ROOT, stdio: "inherit" });
+    console.log("  [post] đã đăng bài viết Facebook kèm theo.");
+  } catch (e) {
+    console.error(`  [post] đăng bài viết thất bại (Reel vẫn đã đăng):`, e.message);
+  }
+}
+
 async function main() {
   const topArg = Number(arg("top", "5"));
   const dryRun = process.argv.includes("--dry-run");
@@ -295,11 +330,18 @@ async function main() {
     }
     try {
       execFileSync("node", [path.join(KIT_ROOT, "scripts/publish_facebook.mjs"), slug, "--caption", script.fbCaption || topic.title], { cwd: KIT_ROOT, stdio: "inherit" });
-      fs.rmSync(projectDir, { recursive: true, force: true });
-      console.log(`  [${slug}] đã đăng Facebook + xoá thư mục local.`);
+      console.log(`  [${slug}] đã đăng Reel Facebook.`);
     } catch (e) {
-      console.error(`  [${slug}] đăng Facebook thất bại (giữ lại video local):`, e.message);
+      console.error(`  [${slug}] đăng Reel Facebook thất bại (giữ lại video local):`, e.message);
+      continue; // Reel chưa đăng được thì không đăng bài viết kèm theo, giữ lại thư mục để xem lỗi.
     }
+
+    // Reel đã đăng thành công -> đăng thêm 1 bài viết Facebook thường (ảnh +
+    // nội dung dài hơn) cho CÙNG topic này, theo yêu cầu "reel và cả bài viết".
+    await publishNewsPost(topic, parsed, projectDir);
+
+    fs.rmSync(projectDir, { recursive: true, force: true });
+    console.log(`  [${slug}] đã xoá thư mục local.`);
   }
 
   console.log(`\n[news] hoàn tất: ${doneCount}/${topArg} chủ đề xử lý xong.`);

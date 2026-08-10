@@ -26,6 +26,9 @@ function fallbackScript(topic) {
       visual_query: "vietnam city news broadcast",
     })),
     fbCaption: topic.title,
+    postTitle: topic.title,
+    postBody: items.map((it) => it.summary || it.title).join(" "),
+    postImageQuery: "vietnam news city",
     hashtags: ["TinTuc", "VietNam", "TinMoiNhat"],
     confirmed: topic.sourceCount >= 2,
     confirmationNote: topic.sourceCount >= 2
@@ -69,8 +72,11 @@ Trả về DUY NHẤT 1 object JSON (không markdown, không giải thích thêm
 - "title_onscreen": tiêu đề hấp dẫn 4-8 từ hiện đầu video (có thể có 1 emoji đầu)
 - "hook_voice": 1 câu mở đầu gây chú ý, đọc giọng (10-20 từ)
 - "slides": mảng ĐÚNG 5-7 object {"text_onscreen": tối đa 8 từ hiện trên màn hình, "voice_text": 1-2 câu 20-40 từ đọc giọng, "visual_query": 3-6 từ TIẾNG ANH mô tả 1 HÌNH ẢNH/CẢNH QUAY chung (không phải chữ/số liệu) để tìm B-roll trên kho stock video Pexels — ví dụ "city skyline construction crane", "bank office signing documents", "stock market screen numbers", "football stadium crowd cheering", "person using smartphone night"} — đi theo đúng khung 5 phần ở trên, mỗi slide 1 ý
-- "fbCaption": caption Facebook tự nhiên 2-4 câu, có 1-2 emoji, KHÔNG kèm hashtag (hashtag được thêm riêng ở field khác)
-- "hashtags": mảng 4-6 hashtag tiếng Việt KHÔNG dấu, KHÔNG khoảng trắng, KHÔNG kèm ký tự #
+- "fbCaption": caption Facebook NGẮN dùng cho video Reel, tự nhiên 2-4 câu, có 1-2 emoji, KHÔNG kèm hashtag (hashtag được thêm riêng ở field khác)
+- "postTitle": tiêu đề cho 1 BÀI VIẾT Facebook thường (ảnh + chữ, khác Reel) — có thể giống hoặc khác title_onscreen, tối đa 12 từ, có thể có emoji
+- "postBody": nội dung ĐẦY ĐỦ của bài viết Facebook thường, 150-250 từ tiếng Việt, viết theo văn phong báo chí mạng xã hội tự nhiên (không phải kịch bản đọc giọng) — mở đầu bằng câu hook, sau đó trình bày chi tiết hơn cả 5 phần (tin gì/tại sao/ảnh hưởng ai/số liệu/vì sao đáng chú ý) so với các slide Reel, có thể xuống dòng giữa các đoạn. KHÔNG kèm hashtag ở đây.
+- "postImageQuery": 3-6 từ TIẾNG ANH mô tả 1 ảnh tĩnh minh hoạ chung cho bài viết (không phải chữ/số liệu), dùng để tìm ảnh trên kho ảnh Pexels
+- "hashtags": mảng 4-6 hashtag tiếng Việt KHÔNG dấu, KHÔNG khoảng trắng, KHÔNG kèm ký tự # (dùng chung cho cả Reel và bài viết)
 - "confirmed": true CHỈ KHI thông tin cốt lõi được từ 2 nguồn độc lập trở lên xác nhận rõ ràng, false nếu chỉ 1 nguồn hoặc mang tính đồn đoán/phát ngôn cá nhân
 - "confirmationNote": 1 câu ngắn tiếng Việt giải thích vì sao confirmed là true/false`;
 
