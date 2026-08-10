@@ -1,5 +1,5 @@
 {
-  "queryIndex": 36,
+  "queryIndex": 37,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -120,6 +120,7 @@
     "citrolabs/ego-lite",
     "wildminder/awesome-ai-voice",
     "ccxt/ccxt",
-    "sgl-project/sglang"
+    "sgl-project/sglang",
+    "Chia-Network/chia-blockchain"
   ]
 }
