@@ -1,5 +1,5 @@
 {
-  "queryIndex": 33,
+  "queryIndex": 36,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -118,6 +118,7 @@
     "natolambert/rlhf-book",
     "getzep/graphiti",
     "citrolabs/ego-lite",
-    "wildminder/awesome-ai-voice"
+    "wildminder/awesome-ai-voice",
+    "ccxt/ccxt"
   ]
 }
