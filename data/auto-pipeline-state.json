@@ -1,5 +1,5 @@
 {
-  "queryIndex": 28,
+  "queryIndex": 29,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -115,6 +115,7 @@
     "NVIDIA-AI-Blueprints/video-search-and-summarization",
     "enricoros/big-AGI",
     "PurpleDoubleD/locally-uncensored",
-    "natolambert/rlhf-book"
+    "natolambert/rlhf-book",
+    "getzep/graphiti"
   ]
 }
