@@ -1,5 +1,5 @@
 {
-  "queryIndex": 26,
+  "queryIndex": 27,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -112,6 +112,7 @@
     "mudler/LocalAI",
     "Marker-Inc-Korea/AutoRAG",
     "alphacep/vosk-api",
-    "NVIDIA-AI-Blueprints/video-search-and-summarization"
+    "NVIDIA-AI-Blueprints/video-search-and-summarization",
+    "enricoros/big-AGI"
   ]
 }
