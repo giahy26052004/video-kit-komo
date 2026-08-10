@@ -1,5 +1,5 @@
 {
-  "queryIndex": 29,
+  "queryIndex": 30,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -116,6 +116,7 @@
     "enricoros/big-AGI",
     "PurpleDoubleD/locally-uncensored",
     "natolambert/rlhf-book",
-    "getzep/graphiti"
+    "getzep/graphiti",
+    "citrolabs/ego-lite"
   ]
 }
