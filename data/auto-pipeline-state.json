@@ -1,5 +1,5 @@
 {
-  "queryIndex": 1,
+  "queryIndex": 2,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -126,6 +126,7 @@
     "superfluid-org/protocol-monorepo",
     "WalletConnect/walletconnect-monorepo",
     "karakeep-app/karakeep",
-    "NousResearch/hermes-agent"
+    "NousResearch/hermes-agent",
+    "ggml-org/llama.cpp"
   ]
 }
