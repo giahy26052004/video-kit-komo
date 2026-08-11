@@ -1,5 +1,5 @@
 {
-  "queryIndex": 5,
+  "queryIndex": 6,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -130,6 +130,7 @@
     "ggml-org/llama.cpp",
     "microsoft/graphrag",
     "pytorch/vision",
-    "calesthio/OpenMontage"
+    "calesthio/OpenMontage",
+    "buxuku/SmartSub"
   ]
 }
