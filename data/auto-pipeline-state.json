@@ -1,5 +1,5 @@
 {
-  "queryIndex": 2,
+  "queryIndex": 3,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -127,6 +127,7 @@
     "WalletConnect/walletconnect-monorepo",
     "karakeep-app/karakeep",
     "NousResearch/hermes-agent",
-    "ggml-org/llama.cpp"
+    "ggml-org/llama.cpp",
+    "microsoft/graphrag"
   ]
 }
