@@ -1,5 +1,5 @@
 {
-  "queryIndex": 46,
+  "queryIndex": 1,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -125,6 +125,7 @@
     "crytic/echidna",
     "superfluid-org/protocol-monorepo",
     "WalletConnect/walletconnect-monorepo",
-    "karakeep-app/karakeep"
+    "karakeep-app/karakeep",
+    "NousResearch/hermes-agent"
   ]
 }
