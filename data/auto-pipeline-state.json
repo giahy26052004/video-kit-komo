@@ -1,5 +1,5 @@
 {
-  "queryIndex": 40,
+  "queryIndex": 46,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -124,6 +124,7 @@
     "Chia-Network/chia-blockchain",
     "crytic/echidna",
     "superfluid-org/protocol-monorepo",
-    "WalletConnect/walletconnect-monorepo"
+    "WalletConnect/walletconnect-monorepo",
+    "karakeep-app/karakeep"
   ]
 }
