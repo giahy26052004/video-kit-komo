@@ -2,29 +2,28 @@
   "query": "web3 wallet",
   "days": 14,
   "minStars": 300,
-  "fetchedAt": "2026-07-31T17:54:18.879Z",
+  "fetchedAt": "2026-08-11T05:30:58.502Z",
   "github": {
     "source": "github",
-    "name": "unicity-sphere/sphere",
-    "description": "A Web3 wallet and agent platform for the Unicity network - crypto wallet, DMs, group chat, and marketplace.",
-    "url": "https://github.com/unicity-sphere/sphere",
-    "stars": 9770,
+    "name": "WalletConnect/walletconnect-monorepo",
+    "description": "WalletConnect Monorepo ",
+    "url": "https://github.com/WalletConnect/walletconnect-monorepo",
+    "stars": 1682,
     "language": "TypeScript",
-    "homepage": "https://unicity.ai",
-    "avatarUrl": "https://avatars.githubusercontent.com/u/261659312?v=4",
-    "pushedAt": "2026-07-31T10:33:43Z",
-    "readmeExcerpt": "# Unicity AgentSphere\n\nA Web3 wallet and agent platform for the Unicity network — crypto wallet, DMs, group chat, and marketplace.\n\n## Features\n\n**Unicity state transitions:**\n- Fast, low-cost token transfers\n- Token management and balance tracking\n- Incoming payment notifications\n- Nametag system (@username)\n\n**Common:** QR codes, wallet switching, seed phrase management, real-time market data.\n\n### Connect Protocol (dApp ↔ Wallet)\n\nSphere implements `ConnectHost` — the wallet side of the Sphere Connect protocol. External dApps can connect to Sphere and request wallet operations:\n\n- **Iframe mode** — dApp embedded inside Sphere as an iframe connects via `PostMessageTransport`\n- **Popup mode** — dApp opens Sphere as a popup window, user approves the connection\n- **Permission-based access** — dApp requests specific scopes; user approves or rejects\n- **Intent handling** — dApp triggers send/sign/DM flows in the wallet UI\n\nKey components: `ConnectPage` (`/connect` route), `ConnectProvider`, `ConnectionApprovalModal`.\n\n### Deep Links (`unicity-connect://`)\n\nSphere supports a custom URL protocol for inter-app linking within DMs. When a dApp sends a `unicity-connect://` URL in a DM, Sphere renders it as an interactive button with two options: **Open in Sphere** (loads the URL as an iframe agent) or **Open in browser** (opens in a new tab).\n\n**Protocol format:**\n```\nunicity-connect://host/path?query=params\n```\n\nWhen opened, the protocol is resolved to `https://` (or `http://` for `localhost`/`127.0.0.1`).\n\n**How it works:**\n\n1. **Sending** — a dApp builds a URL and replaces `https://` with `unicity-connect://` before sending it as a DM message\n2. **Rendering** — Sphere's markdown parser detects `unicity-connect://` in plain text, `[text](unicity-connect://...)`, and `<a href=\"unicity-connect://...\">` formats, rendering a `DeepLinkButton` dropdown\n3. **Opening in Sphere** — a global handler (registered by `useDeepLinkNavigation` in `DashboardLayout`) navigates to `/agents/custom?url=<httpsUrl>`, loading the target as an iframe agent\n4. **Opening in browser** — the resolved `http(s)://` URL is opened in a new tab via `window.open`\n\n**Key files:**\n- `src/utils/deepLinkHandler.ts` — protocol conversion (`deepLinkToHttps`), global click handler registry\n- `src/utils/markdown.tsx` — `DeepLinkButton` component, deep link detection in all link formats\n- `src/hooks/useDeepLinkNavigation.ts` — registers the Sphere-side navigation handler\n\n### Agent System\n\nAgents are specialized interfaces loaded as tabs. Currently active:\n- **Messages (DM)** — private conversations via Nostr\n- **Group Chat** — public group channels via NIP-29\n- **Sphere Agents** — load any external dApp via iframe (custom URL)\n\nAdditional agent types can be added in `src/config/activities.ts`.\n\n### Group Chat (NIP-29)\n\nRelay-based group messaging via [NIP-29](https://github.com/nostr-protocol/nips/blob/master/29.md):\n- Public and private groups with invite codes\n- Real-time messaging via WebSocket\n- Group discovery, join/leave, unread tracking\n- Dedicated Zooid relay at `wss://sphere-relay.unicity.network`\n\n## Quick Start\n\n### Requirements\n- Node.js 20+\n\n### Setup\n\n```bash\nnpm install\ncp .env.example .env    # Configure environment variables\nnpm run dev              # Start dev server at http://localhost:5173\n```\n\n### Commands\n\n```bash\nnpm run dev          # Development server\nnpm run build        # TypeScript compile + Vite production build\nnpm run preview      # Preview production build\nnpm run lint         # ESLint\nnpm run test         # Vitest watch mode\nnpm run test:run     # Vitest single run\n```\n\n## Environment Variables\n\nCopy `.env.example` to `.env`. Key variables:\n\n```env\nVITE_WELCOME_AGENT_NAMETAG=kbbot # Welcome DM agent nametag\nVITE_WELCOME_DELAY_MS=4000       # Delay before welcome DM (ms)\nSSL_CERT_PATH=                   # Dev server HTTPS (optional)\nHMR_HOST=                        # Remote HMR host (optional)\nBASE_PATH=/                      # Deployment base path\n```\n\n## Tech Stack\n\n- **React 19** + TypeScript, **Vite 7**\n- **TanStack Query v5** — server state\n- **Tailwind CSS 4** — styling\n- **Framer Motion** — animations\n- **React Router DOM v7** — routing\n- **@unicitylabs/sphere-sdk** — all wallet operations (L3, Nostr, IPFS)\n- **Vitest** + jsdom — testing\n\n## Project Structure\n\n```\nsrc/\n├── index.html           # HTML entry point\n├── main.tsx             # App bootstrap, provider tree\n├── App.tsx              # Route definitions\n├── sdk/                 # React adapter layer over sphere-sdk (24 files)\n│   ├── hooks/core/      # useSphere, useWalletStatus, useIdentity, useNametag, useSphereEvents, useIpfsSync\n│   ├── hooks/payments/  # useTokens, useBalance, useAssets, useTransfer, useTransactionHistory\n│   ├── hooks/comms/     # useSendDM, usePaymentRequests\n│   └── utils/           # format utilities\n├── components/\n│   ├── activity/        # Activity ticker, market feed display\n│   ├── agents/          # Agent cards and selection\n│   ├── chat/            # DM, group chat, mini chat, hooks\n│   ├── wallet/          # L3, onboarding, shared, ui components\n│   ├── layout/          # DashboardLayout, Header\n│   ├── desktop/         # Desktop layout, TabBar, Taskbar\n│   ├── connect/         # Wallet connection flow\n│   └── ...              # splash, theme, tutorial, ui\n├── pages/               # IntroPage, AgentPage, MarketsPage, + lazy-loaded pages\n├── hooks/               # 9 app-level hooks\n├── contexts/            # ServicesProvider (GroupChat)\n├── services/            # FaucetService\n├── config/              # activities, localStorage keys\n├── lib/                 # TanStack Query client config\n├── utils/               # markdown, mentions, retry\n└── types/               # TypeScript type definitions\ntests/\n└── unit/                # Vitest tests (jsdom)\n```\n\n## Docker\n\n```bash\ndocker compose up        # Runs on port 3010\n```\n\n## License\n\nPrivate project — Unicity Labs\n",
-    "latestRelease": null,
+    "homepage": null,
+    "avatarUrl": "https://avatars.githubusercontent.com/u/37784886?v=4",
+    "pushedAt": "2026-08-09T07:04:45Z",
+    "readmeExcerpt": "# WalletConnect v2.x.x\n\nOpen protocol for connecting Wallets to Dapps - https://walletconnect.com\n\n## Setup\n\n1. Ensure [nodejs](https://nodejs.org) and [npm](https://www.npmjs.com)\n2. Clone the repository\n3. Install all package dependencies, by running `npm install` from the root folder\n\n## Running checks for all packages\n\nTo ensure all packages lint, build and test correctly, we can run the following command from the root folder:\n\n> **For tests to pass in the following command, you will need your own `TEST_PROJECT_ID` value**,\n> which will be generated for you when you set up a new project on [WalletConnect Cloud](https://cloud.walletconnect.com).\n\n```zsh\nTEST_PROJECT_ID=YOUR_PROJECT_ID npm run check\n```\n\n## Command Overview\n\n- `clean` - Removes build folders from all packages\n- `lint` - Runs [eslint](https://eslint.org/) checks\n- `prettier` - Runs [prettier](https://prettier.io/) checks\n- `build` - Builds all packages\n- `test` - Tests all packages\n- `check` - Shorthand to run lint, build and test commands\n- `reset` - Shorthand to run clean and check commands\n\n## Troubleshooting\n\n1. If you are experiencing issues with installation ensure you install `npm i -g node-gyp`\n2. You will need to have xcode command line tools installed\n3. If there are issues with xcode command line tools try running\n\n```zsh\nsudo xcode-select --switch /Library/Developer/CommandLineTools\nsudo xcode-select --reset\n```\n\n## License\n\nWalletConnect Community License\n",
+    "latestRelease": {
+      "tag": "@walletconnect/pos-client@1.0.10",
+      "name": "@walletconnect/pos-client@1.0.10",
+      "body": "### Patch Changes\n\n- Updated dependencies [[`cd32ff1`](https://github.com/WalletConnect/walletconnect-monorepo/commit/cd32ff1ebccc6a186ca5890827ab96a0552f9c58), [`63ff999`](https://github.com/WalletConnect/walletconnect-monorepo/commit/63ff999cb096f77bb9ea9ae940cbf5dd2d7a0b6d), [`3233b47`](https://github.com/WalletConnect/walletconnect-monorepo/commit/3233b479fdd9864c60a4ed21c782a7e9194e581e), [`3ea740e`](https://github.com/WalletConnect/walletconnect-monorepo/commit/3ea740ed9b8abd0e6724f409b025a0c926a75106), [`4af4524`](https://github.com/WalletConnect/walletconnect-monorepo/commit/4af452446a5e83a465c76a5075d9db0b086e6851), [`da98172`](https://github.com/WalletConnect/walletconnect-monorepo/commit/da98172e1478620d4f8c9e8f833a8ad13520bfeb)]:\n  - @walletconnect/utils@2.23.10\n  - @walletconnect/sign-client@2.23.10\n  - @walletconnect/types@2.23.10\n  - @walletconnect/core@2.23.10"
+    },
     "otherCandidates": [
       {
-        "name": "WalletConnect/walletconnect-monorepo",
-        "stars": 1680,
-        "description": "WalletConnect Monorepo "
-      },
-      {
-        "name": "ant-design/ant-design-web3",
-        "stars": 1144,
-        "description": "🥳 Efficient react components for building dapps easier | Connect crypto wallets and more Web3 UI components | Web3 icons | Supports Ethereum, Solana, Bitcoin, TON, Sui, TRON and others."
+        "name": "unicity-sphere/sphere",
+        "stars": 9758,
+        "description": "A Web3 wallet and agent platform for the Unicity network - crypto wallet, DMs, group chat, and marketplace."
       },
       {
         "name": "rango-exchange/rango-client",
@@ -35,6 +34,11 @@
         "name": "mytonwallet-org/mytonwallet",
         "stars": 780,
         "description": "A crypto wallet you'll actually enjoy."
+      },
+      {
+        "name": "FrederikBolding/chainlist",
+        "stars": 717,
+        "description": "A list of EVM-based chains that also allows you to add chains to your favorite Web3 wallet. An alternative to chainlist.org"
       }
     ]
   },

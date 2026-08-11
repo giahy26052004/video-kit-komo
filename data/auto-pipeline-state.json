@@ -1,5 +1,5 @@
 {
-  "queryIndex": 39,
+  "queryIndex": 40,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -123,6 +123,7 @@
     "sgl-project/sglang",
     "Chia-Network/chia-blockchain",
     "crytic/echidna",
-    "superfluid-org/protocol-monorepo"
+    "superfluid-org/protocol-monorepo",
+    "WalletConnect/walletconnect-monorepo"
   ]
 }
