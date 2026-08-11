@@ -1,5 +1,5 @@
 {
-  "queryIndex": 4,
+  "queryIndex": 5,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -129,6 +129,7 @@
     "NousResearch/hermes-agent",
     "ggml-org/llama.cpp",
     "microsoft/graphrag",
-    "pytorch/vision"
+    "pytorch/vision",
+    "calesthio/OpenMontage"
   ]
 }
