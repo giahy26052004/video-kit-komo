@@ -1,5 +1,5 @@
 {
-  "queryIndex": 6,
+  "queryIndex": 7,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -131,6 +131,7 @@
     "microsoft/graphrag",
     "pytorch/vision",
     "calesthio/OpenMontage",
-    "buxuku/SmartSub"
+    "buxuku/SmartSub",
+    "unslothai/unsloth"
   ]
 }
