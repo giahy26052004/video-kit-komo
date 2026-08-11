@@ -1,5 +1,5 @@
 {
-  "queryIndex": 7,
+  "queryIndex": 8,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -132,6 +132,7 @@
     "pytorch/vision",
     "calesthio/OpenMontage",
     "buxuku/SmartSub",
-    "unslothai/unsloth"
+    "unslothai/unsloth",
+    "weaviate/weaviate"
   ]
 }
