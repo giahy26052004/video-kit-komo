@@ -1,5 +1,5 @@
 {
-  "queryIndex": 38,
+  "queryIndex": 39,
   "usedRepos": [
     "obra/superpowers",
     "huggingface/transformers",
@@ -122,6 +122,7 @@
     "ccxt/ccxt",
     "sgl-project/sglang",
     "Chia-Network/chia-blockchain",
-    "crytic/echidna"
+    "crytic/echidna",
+    "superfluid-org/protocol-monorepo"
   ]
 }
