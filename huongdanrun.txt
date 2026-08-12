@@ -1,0 +1,124 @@
+HƯỚNG DẪN VẬN HÀNH 3 PIPELINE TỰ ĐỘNG — claude-video-kit
+(ghi lúc 2026-08-12, đọc lại nếu quên đường chạy)
+
+===============================================================
+TÓM TẮT TRẠNG THÁI HIỆN TẠI
+===============================================================
+1. Auto AI Video Pipeline   (GitHub Actions)  -> ĐANG TẮT (disabled_manually)
+2. Auto News Trend Reels VN (GitHub Actions)  -> ĐANG TẮT (disabled_manually)
+3. Auto YouTube Reup Reels                    -> ĐANG CHẠY, nhưng KHÔNG chạy
+   trên GitHub Actions (workflow youtube-pipeline.yml cũng đã bị tắt) mà
+   chạy qua WINDOWS TASK SCHEDULER trên máy này, tên task:
+   "YoutubeReupPipeline", mỗi 2 tiếng 1 lần, mỗi lần đăng ĐÚNG 1 clip.
+
+   LÝ DO không chạy được trên GitHub Actions: YouTube chặn IP datacenter
+   của GitHub ("Sign in to confirm you're not a bot") -> yt-dlp không tải
+   được. Chỉ tải được từ IP nhà/máy cá nhân. Muốn chạy lại trên GitHub
+   Actions thì phải dùng cookie YouTube thật (xem mục "NẾU MUỐN BẬT LẠI
+   GITHUB ACTIONS CHO YOUTUBE" bên dưới).
+
+===============================================================
+1. AUTO AI VIDEO PIPELINE (video AI/công nghệ/crypto từ GitHub trending)
+===============================================================
+- File: scripts/auto_pipeline.mjs, workflow: .github/workflows/auto-pipeline.yml
+- Nội dung: research GitHub/HackerNews trending -> viết script (KomoAPI LLM)
+  -> render Remotion -> đăng Facebook Reels (Page KOMO AI) -> comment quảng
+  bá KomoAPI tự động dưới mỗi video.
+- Bật lại:   gh workflow enable "Auto AI Video Pipeline"
+- Tắt:       gh workflow disable "Auto AI Video Pipeline"
+- Chạy tay:  node scripts/auto_pipeline.mjs [--dry-run] [--skip-publish]
+- State chống trùng: data/auto-pipeline-state.json
+
+===============================================================
+2. AUTO NEWS TREND REELS VN (tin hot VN: BĐS, tài chính, drama, bóng đá)
+===============================================================
+- Files chính: scripts/news_sources.mjs (RSS 11 nguồn), scripts/score_topics.mjs
+  (chấm điểm trend), scripts/llm_news_writer.mjs (LLM viết script+caption+
+  hashtag, tự đánh giá độ tin cậy "confirmed"), scripts/news_pipeline.mjs
+  (orchestrator), scripts/publish_facebook_post.mjs (đăng thêm 1 bài viết
+  ảnh+chữ sau khi Reel đăng xong).
+- Workflow: .github/workflows/news-pipeline.yml, cron mỗi 2 tiếng (phút :37),
+  mặc định --top 1 (đúng 1 Reel/lần chạy, KHÔNG dồn nhiều bài).
+- An toàn: nếu 1 chủ đề LLM đánh giá "confirmed=false" (tin chưa chắc chắn,
+  hay gặp ở nhóm drama/pháp lý) VÀ chỉ có 1 nguồn báo -> tự động BỎ QUA,
+  không auto-publish (ghi log data/news-skipped.json).
+- Bật lại:   gh workflow enable "Auto News Trend Reels (VN)"
+- Tắt:       gh workflow disable "Auto News Trend Reels (VN)"
+- Chạy tay:  node scripts/news_pipeline.mjs --top 1 [--dry-run] [--skip-publish]
+- State chống trùng: data/news-pipeline-state.json
+
+===============================================================
+3. AUTO YOUTUBE REUP REELS (reup channel đã có phép -> Facebook Reels)
+===============================================================
+- Channel đang theo dõi: UCqWga83LRtNEmInHryVwbMw (@fobtv89) — ĐÃ CÓ PHÉP
+  reup, xác nhận với chủ kênh trước khi build pipeline này.
+- Files: scripts/youtube_sources.mjs (fetchChannelCatalog qua yt-dlp, liệt
+  kê TOÀN BỘ video+short của channel, cả video CŨ trong backlog), scripts/
+  youtube_downloader.mjs (tải bằng yt-dlp), scripts/whisper_srt.py
+  (transcribe toàn video 1 lần ra .srt), scripts/reels_splitter.mjs (cắt
+  9:16 + burn subtitle — chỉ cắt ĐÚNG 1 đoạn/lần gọi, không cắt hết 1 lần),
+  scripts/youtube_pipeline.mjs (orchestrator).
+- NHỊP ĐĂNG: mỗi lần chạy CHỈ đăng đúng 1 clip. Video dài chia nhiều đoạn
+  120s thì đăng dần qua nhiều lần chạy (tiến độ lưu trong
+  data/youtube-pipeline-state.json -> channels.<id>.pending).
+- Chạy qua WINDOWS TASK SCHEDULER (không phải GitHub Actions — xem lý do ở
+  trên):
+    Tên task:     YoutubeReupPipeline
+    Action:       scripts/youtube_pipeline_task.cmd
+                  (set YOUTUBE_CHANNEL_ID rồi gọi scripts/youtube_pipeline_cycle.sh
+                  qua "C:\Program Files\Git\bin\bash.exe")
+    Lịch:         mỗi 2 tiếng, lặp vô hạn (10 năm)
+    Xem trạng thái:  Get-ScheduledTaskInfo -TaskName "YoutubeReupPipeline"
+    Chạy tay ngay:   Start-ScheduledTask -TaskName "YoutubeReupPipeline"
+    Tắt:             Disable-ScheduledTask -TaskName "YoutubeReupPipeline"
+    Bật lại:         Enable-ScheduledTask -TaskName "YoutubeReupPipeline"
+    Xoá hẳn:         Unregister-ScheduledTask -TaskName "YoutubeReupPipeline"
+    (chạy các lệnh PowerShell trên trong PowerShell thường, không cần mở Claude Code)
+- Log: out/youtube-pipeline.log (append mỗi lần chạy)
+- Chạy tay không qua Task Scheduler:
+    node scripts/youtube_pipeline.mjs --channel-id UCqWga83LRtNEmInHryVwbMw [--dry-run] [--skip-publish]
+- Đổi channel: sửa YOUTUBE_CHANNEL_ID trong scripts/youtube_pipeline_task.cmd
+- LƯU Ý: máy phải BẬT + có mạng đúng giờ chạy thì Task Scheduler mới chạy
+  được (không giống GitHub Actions chạy trên cloud 24/7).
+
+BUG ĐÃ GẶP VÀ ĐÃ FIX (2026-08-12): lúc đầu code cắt HẾT N đoạn của 1 video
+dài trong 1 lần chạy (dễ vượt timeout) VÀ khi tải video lỗi thì đánh dấu
+nhầm "đã xử lý" — 1 lần chạy thử trên GitHub Actions đã lỡ đánh dấu gần
+hết 336 video trong catalog là "đã xử lý" dù chưa đăng được video nào (do
+YouTube chặn tải). Đã fix: chỉ cắt 1 đoạn/lần, lỗi tải KHÔNG đánh dấu
+processed nữa, giới hạn tối đa 3 lần thử tải liên tiếp/lần chạy.
+
+===============================================================
+NẾU MUỐN BẬT LẠI GITHUB ACTIONS CHO YOUTUBE (dùng cookie)
+===============================================================
+1. Cài extension trình duyệt "Get cookies.txt LOCALLY", đăng nhập YouTube,
+   export cookie domain youtube.com ra file cookies.txt.
+2. Đưa file cho Claude Code (qua đường dẫn file, không dán nội dung vào chat).
+3. Claude nạp vào GitHub Secret (vd YOUTUBE_COOKIES_B64), sửa
+   scripts/youtube_downloader.mjs thêm --cookies <file> cho yt-dlp, sửa
+   .github/workflows/youtube-pipeline.yml giải mã secret ra file trước khi
+   chạy, rồi bật lại: gh workflow enable "Auto YouTube Reup Reels"
+   (nhớ tắt task Task Scheduler nếu chuyển hẳn qua GitHub Actions, tránh
+   đăng trùng 2 nơi cùng lúc).
+Lưu ý: cookie có thể hết hạn sau vài tuần/tháng, cần xuất lại.
+
+===============================================================
+CÁC LỆNH GH CLI HAY DÙNG
+===============================================================
+gh workflow list --all              # xem trạng thái tất cả workflow
+gh run list --limit 10              # xem lịch sử chạy gần đây
+gh run list --workflow="<file>.yml" # lịch sử của 1 workflow
+gh workflow run "<tên workflow>"    # chạy thử tay 1 workflow qua CI
+gh secret list                      # xem tên các secret đã có (không xem được giá trị)
+
+===============================================================
+SECRET / ENV ĐANG DÙNG
+===============================================================
+- FB_PAGE_ACCESS_TOKEN — token Page "KOMO AI" (id 1238372036022307), TẤT CẢ
+  3 pipeline đều đăng chung page này (đã hỏi m, m chọn giữ chung 1 page).
+- PEXELS_API_KEY — dùng cho auto-pipeline và news-pipeline (tìm B-roll/ảnh),
+  KHÔNG dùng cho youtube-pipeline.
+- KOMOAPI_LLM_URL / KOMOAPI_LLM_KEY / KOMOAPI_LLM_MODEL — LLM viết content,
+  dùng cho auto-pipeline và news-pipeline, KHÔNG dùng cho youtube-pipeline.
+- Cả 2 nơi (.env local VÀ GitHub Secrets) đều cần các key trên cho pipeline
+  chạy tương ứng ở đó.
