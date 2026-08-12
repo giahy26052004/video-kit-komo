@@ -1,19 +1,21 @@
 name: Auto News Trend Reels (VN)
 
-# Cứ vài giờ tự tìm tin hot Việt Nam (BĐS/dự án, tài chính/ngân hàng,
-# drama/nhân vật, bóng đá) -> research -> viết content -> render -> đăng
-# Facebook Reels. Chạy trên GitHub-hosted runner, không phụ thuộc máy cá nhân.
+# Cứ 2 tiếng đăng ĐÚNG 1 Reel tin hot Việt Nam (BĐS/dự án, tài chính/ngân
+# hàng, drama/nhân vật, bóng đá) -> research -> viết content -> render -> đăng
+# Facebook Reels + 1 bài viết kèm theo. Nhịp đều 1 bài/2h (khớp auto-pipeline
+# và youtube-pipeline), KHÔNG dồn nhiều bài 1 lần chạy. Chạy trên GitHub-
+# hosted runner, không phụ thuộc máy cá nhân.
 on:
-  # Lệch giờ/phút khác auto-pipeline.yml (17 */2) để 2 pipeline không tranh
-  # runner cùng lúc — chạy mỗi 3 tiếng, lệch phút 37.
+  # Lệch phút so với auto-pipeline.yml (17 */2) để 2 pipeline không tranh
+  # runner cùng lúc, nhưng CÙNG nhịp 2 tiếng/lần.
   schedule:
-    - cron: "37 */3 * * *"
+    - cron: "37 */2 * * *"
   workflow_dispatch:
     inputs:
       top:
         description: "Số chủ đề tối đa xử lý trong lần chạy này"
         required: false
-        default: "5"
+        default: "1"
 
 permissions:
   contents: write
@@ -69,7 +71,7 @@ jobs:
           EDGE_TTS_RATE: "+50%"
           WHISPER_MODEL: "base"
           WHISPER_LANGUAGE: "vi"
-        run: node scripts/news_pipeline.mjs --top "${{ github.event.inputs.top || '5' }}"
+        run: node scripts/news_pipeline.mjs --top "${{ github.event.inputs.top || '1' }}"
 
       - name: Commit lại state (tránh lặp chủ đề lần sau)
         run: |
