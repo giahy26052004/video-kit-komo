@@ -72,12 +72,20 @@ function buildCaption(video, index, total) {
 /**
  * Bắt đầu xử lý 1 video MỚI: tải + transcribe 1 lần + TÍNH số đoạn (KHÔNG
  * cắt clip nào cả — cắt dần từng đoạn ở main(), xem comment đầu file).
+ *
+ * Video tải THẤT BẠI (vd YouTube chặn IP datacenter CI — "Sign in to confirm
+ * you're not a bot", gặp thật lúc test) KHÔNG được đánh dấu processedVideoIds
+ * — lỗi này có thể là tạm thời/hạ tầng (không liên quan bản thân video đó),
+ * đánh dấu nhầm "đã xử lý" sẽ làm mất video đó khỏi backlog vĩnh viễn dù
+ * chưa hề đăng được. Bỏ qua CHỈ trong phạm vi lần chạy này (excludeIds).
+ *
+ * @returns {"started"|"skip"|"done"}
  */
-function startNextVideo(channelId, channelState, segmentSeconds) {
+function startNextVideo(channelId, channelState, segmentSeconds, excludeIds) {
   const videos = fetchChannelCatalog(channelId);
   console.log(`[youtube] channel có ${videos.length} video/short, đã xử lý ${channelState.processedVideoIds.length}.`);
-  const next = videos.find((v) => !channelState.processedVideoIds.includes(v.videoId));
-  if (!next) return false;
+  const next = videos.find((v) => !channelState.processedVideoIds.includes(v.videoId) && !excludeIds.has(v.videoId));
+  if (!next) return "done";
 
   console.log(`\n[video] bắt đầu "${next.title}" (${next.videoId})`);
   const workDir = path.join(KIT_ROOT, "out", `_yt-${next.videoId}`);
@@ -87,10 +95,10 @@ function startNextVideo(channelId, channelState, segmentSeconds) {
   try {
     downloadResult = downloadVideo(next.videoId, originalPath);
   } catch (e) {
-    console.error(`  tải video thất bại (${e.message}) -> đánh dấu bỏ qua video này (tránh kẹt vòng lặp ở video lỗi).`);
+    console.error(`  tải video thất bại (${e.message}) -> bỏ qua video này CHO LẦN CHẠY NÀY (không đánh dấu processed — có thể lỗi tạm thời/hạ tầng, không phải do video này thật sự lỗi).`);
     fs.rmSync(workDir, { recursive: true, force: true });
-    channelState.processedVideoIds.push(next.videoId);
-    return true; // đã "xử lý" (bỏ qua) -> nơi gọi thử lại vòng while với video kế tiếp
+    excludeIds.add(next.videoId);
+    return "skip";
   }
 
   transcribeFull(originalPath, workDir); // ghi workDir/full.srt 1 lần, dùng lại ở mọi lần chạy sau
@@ -106,7 +114,7 @@ function startNextVideo(channelId, channelState, segmentSeconds) {
     totalClips: segments.length,
     nextIndex: 0,
   };
-  return true;
+  return "started";
 }
 
 async function main() {
@@ -124,16 +132,28 @@ async function main() {
   state.channels[channelId] = state.channels[channelId] || { processedVideoIds: [], pending: null };
   const channelState = state.channels[channelId];
 
+  const MAX_DOWNLOAD_ATTEMPTS = 3; // chặn lỗi hạ tầng lặp (vd IP bị YouTube chặn) khỏi cày hết cả catalog trong 1 lần chạy
+  const skippedThisRun = new Set();
+  let downloadAttempts = 0;
+
   let clipsPosted = 0;
   while (clipsPosted < maxClips) {
     if (!channelState.pending) {
-      const started = startNextVideo(channelId, channelState, segmentSeconds);
-      saveState(state);
-      if (!started) {
-        console.log("[youtube] hết video/short chưa xử lý.");
+      if (downloadAttempts >= MAX_DOWNLOAD_ATTEMPTS) {
+        console.error(`[youtube] tải thất bại ${MAX_DOWNLOAD_ATTEMPTS} video liên tiếp -> dừng lần chạy này (nghi lỗi hạ tầng, ví dụ IP bị YouTube chặn), thử lại ở lần chạy sau.`);
         break;
       }
-      if (!channelState.pending) continue; // video vừa bị đánh dấu bỏ qua (tải lỗi) -> thử video kế tiếp
+      const result = startNextVideo(channelId, channelState, segmentSeconds, skippedThisRun);
+      if (result === "done") {
+        console.log("[youtube] hết video/short chưa xử lý.");
+        saveState(state);
+        break;
+      }
+      if (result === "skip") {
+        downloadAttempts++;
+        continue; // thử video kế tiếp, KHÔNG lưu state (video vừa skip không bị đánh dấu processed)
+      }
+      saveState(state); // result === "started"
     }
 
     const pending = channelState.pending;
