@@ -14,7 +14,10 @@ const VIRAL_PATTERNS = [
   /khởi công/i, /động thổ/i, /đình trệ/i, /tháo gỡ/i, /sốt đất/i, /vỡ nợ/i,
 ];
 
-const CATEGORY_WEIGHT = { bds: 1, "tai-chinh": 1, drama: 0.9, bongda: 0.85 };
+// drama (drama nghệ sĩ/idol TikTok, kiểu Bà Phương Hằng...) ưu tiên cao nhất —
+// đây là nội dung "câu view" chính của page, chỉ khi KHÔNG có chủ đề drama
+// nào đủ hot (score thấp) thì mới rơi xuống các nhóm khác trong top đã chấm điểm.
+const CATEGORY_WEIGHT = { bds: 1, "tai-chinh": 1, drama: 1.15, bongda: 0.85, "the-gioi": 1, crypto: 1, ai: 1 };
 
 function stripDiacritics(s) {
   return s.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/đ/gi, "d");

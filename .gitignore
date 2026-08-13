@@ -35,3 +35,7 @@ examples/*/distribute.zip
 # *.mp3/*.wav output tạm bị ignore ở trên), vì GitHub Actions cần có sẵn.
 !remotion/assets-library/**/*.mp3
 !remotion/assets-library/**/*.wav
+
+# Video demo KomoAPI dùng cho slide CTA cuối video news-pipeline — CẦN commit
+# (khác *.mp4 output tạm bị ignore ở trên), vì GitHub Actions cần có sẵn.
+!docs/komoapi/**/*.mp4

@@ -66,7 +66,7 @@ ${JSON.stringify(sources, null, 2)}
 
 YÊU CẦU QUAN TRỌNG NHẤT VỀ ĐỘ TIN CẬY: Phân biệt rõ thông tin đã được nhiều nguồn xác nhận và thông tin mới lan truyền/phát ngôn 1 phía/chưa kiểm chứng — đặc biệt nếu chủ đề liên quan tới 1 vụ việc/nhân vật gây tranh cãi hoặc pháp lý. Nếu không chắc, PHẢI viết dè dặt ("theo thông tin đang lan truyền...", "chưa được xác nhận chính thức...", "theo phát ngôn của...") — TUYỆT ĐỐI không khẳng định 1 tin đồn hay lời kể 1 phía là sự thật hiển nhiên.
 
-Viết theo khung: (1) tin gì vừa xảy ra, (2) tại sao nó xảy ra / bối cảnh, (3) ảnh hưởng tới ai, (4) có con số/chi tiết đáng chú ý nào không (chỉ nêu số liệu có thật trong bài báo trên), (5) tóm lại vì sao đang được quan tâm. Giọng văn nói chuyện tự nhiên, ngắn gọn, KHÔNG đọc lại nguyên văn bài báo.
+Viết theo khung: (1) tin gì vừa xảy ra, (2) tại sao nó xảy ra / bối cảnh, (3) ảnh hưởng tới ai, (4) có con số/chi tiết đáng chú ý nào không (chỉ nêu số liệu có thật trong bài báo trên), (5) tóm lại vì sao đang được quan tâm. Giọng văn nói chuyện tự nhiên, ngắn gọn, KHÔNG đọc lại nguyên văn bài báo — viết dí dỏm, cuốn, giật tít kiểu các trang giải trí/tin tức lớn hay đăng (câu mở đầu gây tò mò, nhịp câu ngắn dồn), nhưng KHÔNG được đánh đổi với yêu cầu về độ tin cậy ở trên.
 
 Trả về DUY NHẤT 1 object JSON (không markdown, không giải thích thêm) với các field:
 - "title_onscreen": tiêu đề hấp dẫn 4-8 từ hiện đầu video (có thể có 1 emoji đầu)

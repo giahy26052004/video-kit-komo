@@ -47,9 +47,12 @@ function arg(name, def) {
 
 function loadState() {
   try {
-    return JSON.parse(fs.readFileSync(STATE_PATH, "utf8"));
+    const state = JSON.parse(fs.readFileSync(STATE_PATH, "utf8"));
+    if (state.lastKomoAssetFile === undefined) state.lastKomoAssetFile = null;
+    if (state.lastKomoPitchIndex === undefined) state.lastKomoPitchIndex = -1;
+    return state;
   } catch {
-    return { usedTopics: [] };
+    return { usedTopics: [], lastKomoAssetFile: null, lastKomoPitchIndex: -1 };
   }
 }
 function saveState(state) {
@@ -90,8 +93,74 @@ const TEMPLATES = ["screen", "banner", "poster"];
 const SFX_POOL = ["whoosh", "impact", "transition", "ui", "laser"];
 const MUSIC_POOL = ["night", "chill", "lounge", "festive"];
 
+// Slide CTA KomoAPI chèn cuối MỌI video (bất kể nhóm tin) — ảnh/video minh hoạ
+// THẬT (không phải B-roll Pexels) lấy từ docs/komoapi/, tăng độ tin cậy.
+const KOMOAPI_DIR = path.join(KIT_ROOT, "docs", "komoapi");
+const KOMOAPI_POSTER = "hinh khi chat voi claude code sử dụng api key này .png";
+const KOMOAPI_ASSETS = [
+  { file: "KomoAPI — Một API key, nhiều model AI cho developer Việt Nam - Google Chrome 2026-08-13 13-26-38.mp4", slug: "komo-web-overview.mp4", mediaType: "video", imageMode: "screen" },
+  { file: "setup ne.mp4", slug: "komo-setup.mp4", mediaType: "video", imageMode: "popup" },
+  { file: "vào tele lấy api key ne.mp4", slug: "komo-telegram-key.mp4", mediaType: "video", imageMode: "popup" },
+  { file: "hinh cách thanh toán ne .png", slug: "komo-payment.png", mediaType: "image", imageMode: "popup" },
+  { file: "hinh khi chat voi claude code sử dụng api key này .png", slug: "komo-claude-code-chat.png", mediaType: "image", imageMode: "screen" },
+];
+const KOMOAPI_PITCHES = [
+  "À mà nếu m code có dùng AI thì đừng bỏ lỡ KomoAPI — 1 API key dùng được GPT, Claude Opus, Grok, giá chỉ 30 ngàn một ngày, 10 triệu token, không giới hạn số lượt gọi.",
+  "Đang trả tiền riêng cho OpenAI, Anthropic, Google làm gì cho mệt — KomoAPI gộp hết vào 1 API key, dùng ngay với Claude Code, Cursor, Cline, giá chỉ từ 30 ngàn một ngày.",
+  "Code thoải mái không lo hết quota giữa buổi nữa — KomoAPI có gói theo ngày, theo tuần, 10 triệu token mỗi ngày, dùng được Claude Opus, GPT, Grok qua đúng 1 API key.",
+  "Muốn thử Claude Code mà sợ tốn tiền? KomoAPI có gói 30 ngàn một ngày, 10 triệu token, không giới hạn lượt gọi, cắm vào chạy ngay không cần đổi gì nhiều.",
+];
+
+/** Chọn 1 asset + 1 câu pitch KHÁC lần chạy trước (né lặp y hệt 2 video liên tiếp). */
+function pickKomoAsset(state) {
+  const pool = KOMOAPI_ASSETS.filter((a) => a.slug !== state.lastKomoAssetFile);
+  const list = pool.length ? pool : KOMOAPI_ASSETS;
+  return list[Math.floor(Math.random() * list.length)];
+}
+function pickKomoPitchIndex(state) {
+  const indices = KOMOAPI_PITCHES.map((_, i) => i).filter((i) => i !== state.lastKomoPitchIndex);
+  const list = indices.length ? indices : KOMOAPI_PITCHES.map((_, i) => i);
+  return list[Math.floor(Math.random() * list.length)];
+}
+
+/**
+ * Copy 1 asset thật của KomoAPI vào workspace + trả về slide "image" chèn cuối
+ * video. Video local không có poster riêng -> dùng chung 1 ảnh chụp màn hình
+ * làm poster fallback (chỉ hiện nếu OffthreadVideo lỗi runtime).
+ */
+function buildKomoApiCtaSlide(projectDir, state) {
+  const asset = pickKomoAsset(state);
+  const pitchIndex = pickKomoPitchIndex(state);
+  const destDir = path.join(projectDir, "workspace");
+  fs.mkdirSync(destDir, { recursive: true });
+  fs.copyFileSync(path.join(KOMOAPI_DIR, asset.file), path.join(destDir, asset.slug));
+
+  const slide = {
+    type: "image",
+    imageMode: asset.imageMode,
+    title: "KomoAPI Claude Code gói ngày",
+    voice_text: KOMOAPI_PITCHES[pitchIndex],
+    sfx: "laser",
+    sfxVolume: 0.09,
+  };
+  if (asset.mediaType === "video") {
+    if (!fs.existsSync(path.join(destDir, "komo-poster.png"))) {
+      fs.copyFileSync(path.join(KOMOAPI_DIR, KOMOAPI_POSTER), path.join(destDir, "komo-poster.png"));
+    }
+    slide.imageSrc = "komo-poster.png";
+    slide.mediaType = "video";
+    slide.videoSrc = asset.slug;
+  } else {
+    slide.imageSrc = asset.slug;
+  }
+
+  state.lastKomoAssetFile = asset.slug;
+  state.lastKomoPitchIndex = pitchIndex;
+  return slide;
+}
+
 /** Build script.json từ topic đã chấm điểm + content do LLM viết (chưa gán video). */
-function buildScript(topic, parsed) {
+function buildScript(topic, parsed, komoSlide) {
   const theme = THEMES[Math.floor(Math.random() * THEMES.length)];
   const template = TEMPLATES[Math.floor(Math.random() * TEMPLATES.length)];
   const captionPosition = template === "screen" ? undefined : "center";
@@ -105,6 +174,8 @@ function buildScript(topic, parsed) {
     ...(captionPosition ? { captionPosition } : {}),
     _visualQuery: s.visual_query,
   }));
+
+  contentSlides.push(komoSlide);
 
   contentSlides.push({
     type: "cover",
@@ -289,11 +360,13 @@ async function main() {
       continue;
     }
 
-    const script = buildScript(topic, parsed);
     const baseSlug = slugify(parsed.title_onscreen || topic.title) || `tin-${Date.now()}`;
     const slug = fs.existsSync(path.join(KIT_ROOT, "out", baseSlug)) ? `${baseSlug}-${Date.now().toString().slice(-5)}` : baseSlug;
     const projectDir = path.join(KIT_ROOT, "out", slug);
     fs.mkdirSync(path.join(projectDir, "workspace"), { recursive: true });
+
+    const komoSlide = buildKomoApiCtaSlide(projectDir, state);
+    const script = buildScript(topic, parsed, komoSlide);
 
     await attachBroll(script, projectDir);
 

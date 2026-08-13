@@ -30,18 +30,30 @@ TÓM TẮT TRẠNG THÁI HIỆN TẠI
 - State chống trùng: data/auto-pipeline-state.json
 
 ===============================================================
-2. AUTO NEWS TREND REELS VN (tin hot VN: BĐS, tài chính, drama, bóng đá)
+2. AUTO NEWS TREND REELS VN (tin hot VN: BĐS, tài chính, drama, bóng đá,
+   thế giới, crypto, AI) + CTA KomoAPI cuối mỗi video
 ===============================================================
-- Files chính: scripts/news_sources.mjs (RSS 11 nguồn), scripts/score_topics.mjs
-  (chấm điểm trend), scripts/llm_news_writer.mjs (LLM viết script+caption+
-  hashtag, tự đánh giá độ tin cậy "confirmed"), scripts/news_pipeline.mjs
+- Files chính: scripts/news_sources.mjs (RSS 7 nhóm: bds, tai-chinh, drama,
+  bongda, the-gioi, crypto, ai), scripts/score_topics.mjs (chấm điểm trend —
+  drama đang được ƯU TIÊN CAO NHẤT (weight 1.15) vì là nội dung câu view
+  chính (sao Việt/idol TikTok/drama kiểu Bà Phương Hằng), chỉ rơi xuống nhóm
+  khác khi không có chủ đề drama nào đủ hot), scripts/llm_news_writer.mjs
+  (LLM viết script+caption+hashtag, giọng dí dỏm/giật tít kiểu trang lớn,
+  tự đánh giá độ tin cậy "confirmed"), scripts/news_pipeline.mjs
   (orchestrator), scripts/publish_facebook_post.mjs (đăng thêm 1 bài viết
   ảnh+chữ sau khi Reel đăng xong).
+- CTA KomoAPI: MỌI video (cả 7 nhóm) đều có thêm 1 slide cuối clip (ngay
+  trước slide "theo dõi trang") quảng bá KomoAPI — dùng ảnh/video THẬT trong
+  docs/komoapi/ (không phải B-roll Pexels), xoay vòng asset + câu pitch khác
+  nhau mỗi lần chạy (xem KOMOAPI_ASSETS/KOMOAPI_PITCHES + state
+  lastKomoAssetFile/lastKomoPitchIndex trong news_pipeline.mjs). Chỉ ở trong
+  video Reel, KHÔNG thêm vào bài viết ảnh kèm theo.
 - Workflow: .github/workflows/news-pipeline.yml, cron mỗi 2 tiếng (phút :37),
-  mặc định --top 1 (đúng 1 Reel/lần chạy, KHÔNG dồn nhiều bài).
+  mặc định --top 1 (đúng 1 Reel + 1 bài viết/lần chạy, KHÔNG dồn nhiều bài).
 - An toàn: nếu 1 chủ đề LLM đánh giá "confirmed=false" (tin chưa chắc chắn,
-  hay gặp ở nhóm drama/pháp lý) VÀ chỉ có 1 nguồn báo -> tự động BỎ QUA,
-  không auto-publish (ghi log data/news-skipped.json).
+  hay gặp ở nhóm drama/pháp lý/crypto) VÀ chỉ có 1 nguồn báo -> tự động BỎ
+  QUA, không auto-publish (ghi log data/news-skipped.json). Áp dụng y nguyên
+  cho 3 nhóm mới (the-gioi/crypto/ai), không có ngoại lệ.
 - Bật lại:   gh workflow enable "Auto News Trend Reels (VN)"
 - Tắt:       gh workflow disable "Auto News Trend Reels (VN)"
 - Chạy tay:  node scripts/news_pipeline.mjs --top 1 [--dry-run] [--skip-publish]

@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 /**
- * news_sources.mjs — Fetch tin tức Việt Nam đang hot theo 4 nhóm chủ đề, qua
+ * news_sources.mjs — Fetch tin tức Việt Nam đang hot theo 7 nhóm chủ đề, qua
  * RSS công khai của các báo lớn (KHÔNG cần API key, không scrape HTML).
  *
  *   🏠 bds        — dự án / bất động sản
  *   💰 tai-chinh  — tiền, ngân hàng, vay, chứng khoán
  *   🔥 drama      — nhân vật/vụ việc đang gây tranh luận (giải trí + pháp luật)
  *   ⚽ bongda     — bóng đá
+ *   🌍 the-gioi   — tin thế giới
+ *   💹 crypto     — tiền số / crypto
+ *   🤖 ai         — công nghệ / AI
  *
  * 1 feed lỗi (đổi URL, timeout, chặn bot...) chỉ log warning và bị bỏ qua —
  * KHÔNG làm hỏng cả lần chạy, vì luôn còn feed khác trong cùng nhóm.
@@ -25,8 +28,19 @@ export const FEEDS = [
   { url: "https://vnexpress.net/rss/giai-tri.rss", source: "VnExpress", category: "drama" },
   { url: "https://vnexpress.net/rss/phap-luat.rss", source: "VnExpress", category: "drama" },
   { url: "https://znews.vn/rss/giai-tri.rss", source: "Znews", category: "drama" },
+  // Source riêng cho drama sao Việt/idol TikTok (khác nguồn tin giải trí/pháp
+  // luật chung ở trên) — bắt đúng loại tin "beef nghệ sĩ", "idol TikTok" mà
+  // 2 feed VnExpress/Znews tổng hợp phía trên có thể bỏ sót vì quá chung.
+  { url: "https://kenh14.vn/star.rss", source: "Kenh14", category: "drama" },
+  { url: "https://vietnamnet.vn/rss/giai-tri.rss", source: "VietnamNet", category: "drama" },
   { url: "https://vnexpress.net/rss/the-thao.rss", source: "VnExpress", category: "bongda" },
   { url: "https://znews.vn/rss/the-thao.rss", source: "Znews", category: "bongda" },
+  { url: "https://vnexpress.net/rss/the-gioi.rss", source: "VnExpress", category: "the-gioi" },
+  { url: "https://znews.vn/rss/the-gioi.rss", source: "Znews", category: "the-gioi" },
+  { url: "https://vn.investing.com/rss/news_301.rss", source: "Investing.com", category: "crypto" },
+  { url: "https://cointelegraph.com/rss", source: "Cointelegraph", category: "crypto" },
+  { url: "https://vnexpress.net/rss/so-hoa.rss", source: "VnExpress", category: "ai" },
+  { url: "https://genk.vn/rss/home.rss", source: "GenK", category: "ai" },
 ];
 
 export const CATEGORY_LABEL = {
@@ -34,6 +48,9 @@ export const CATEGORY_LABEL = {
   "tai-chinh": "💰 Tiền – ngân hàng – vay",
   drama: "🔥 Drama / nhân vật",
   bongda: "⚽ Bóng đá",
+  "the-gioi": "🌍 Thế giới",
+  crypto: "💹 Crypto / tiền số",
+  ai: "🤖 Công nghệ / AI",
 };
 
 function normalizeItem(feedItem, feed) {
